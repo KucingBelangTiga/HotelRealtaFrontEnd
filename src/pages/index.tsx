@@ -124,6 +124,7 @@
 // }
 
 //liat contoh tugas week 8 day 7, sementara
+//home
 import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
