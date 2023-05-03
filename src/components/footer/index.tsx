@@ -209,18 +209,6 @@ export default function Footer() {
                         Accounts Review
                       </a>
                     </li>
-      
-                    <li>
-                      <a href="#" className="text-gray-700 transition hover:opacity-75">
-                        HR Consulting
-                      </a>
-                    </li>
-      
-                    <li>
-                      <a href="#" className="text-gray-700 transition hover:opacity-75">
-                        SEO Optimisation
-                      </a>
-                    </li>
                   </ul>
                 </nav>
               </div>
@@ -300,11 +288,6 @@ export default function Footer() {
                       </a>
                     </li>
       
-                    <li>
-                      <a href="#" className="text-gray-700 transition hover:opacity-75">
-                        Hiring Statistics
-                      </a>
-                    </li>
                   </ul>
                 </nav>
               </div>
