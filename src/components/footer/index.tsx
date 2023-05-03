@@ -59,8 +59,7 @@ export default function Footer() {
               </div>
       
               <p className="max-w-xs mt-4 text-gray-500">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Esse non
-                cupiditate quae nam molestias.
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit. 
               </p>
       
               <ul className="flex gap-6 mt-8">
@@ -204,11 +203,6 @@ export default function Footer() {
                       </a>
                     </li>
       
-                    <li>
-                      <a href="#" className="text-gray-700 transition hover:opacity-75">
-                        Accounts Review
-                      </a>
-                    </li>
                   </ul>
                 </nav>
               </div>
@@ -230,11 +224,6 @@ export default function Footer() {
                       </a>
                     </li>
       
-                    <li>
-                      <a href="#" className="text-gray-700 transition hover:opacity-75">
-                        Accounts Review
-                      </a>
-                    </li>
                   </ul>
                 </nav>
               </div>
@@ -256,11 +245,6 @@ export default function Footer() {
                       </a>
                     </li>
       
-                    <li>
-                      <a href="#" className="text-gray-700 transition hover:opacity-75">
-                        Live Chat
-                      </a>
-                    </li>
                   </ul>
                 </nav>
               </div>
@@ -279,12 +263,6 @@ export default function Footer() {
                     <li>
                       <a href="#" className="text-gray-700 transition hover:opacity-75">
                         Returns Policy
-                      </a>
-                    </li>
-      
-                    <li>
-                      <a href="#" className="text-gray-700 transition hover:opacity-75">
-                        Refund Policy
                       </a>
                     </li>
       

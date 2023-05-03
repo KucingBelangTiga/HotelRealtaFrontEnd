@@ -6,14 +6,14 @@ import { useRouter } from 'next/router'
 
 const navigation = [
     { name: 'Dashboard', href: '/', current: true },
-    { name: 'Department', href: '/department', current: false },
-    { name: 'Employee', href: '/employee', current: false },
-    { name: 'Dept. History', href: '/employee_department_history', current: false },
-    { name: 'Pay History', href: '/employee_pay_history', current: false },
-    { name: 'Job Role', href: '/job_role', current: false },
-    { name: 'Shift', href: '/shift', current: false },
-    { name: 'Work Order', href: '/work_orders', current: false },
-    { name: 'Work Order Detail', href: '/work_order_detail', current: false }
+    { name: 'Department', href: '/hr/department', current: false },
+    { name: 'Employee', href: '/hr/employee', current: false },
+    { name: 'Dept. History', href: '/hr/employee_department_history', current: false },
+    { name: 'Pay History', href: '/hr/employee_pay_history', current: false },
+    { name: 'Job Role', href: '/hr/job_role', current: false },
+    { name: 'Shift', href: '/hr/shift', current: false },
+    { name: 'Work Order', href: '/hr/work_orders', current: false },
+    { name: 'Work Order Detail', href: '/hr/work_order_detail', current: false }
 ]
 
 function classNames(...classes: any) {
