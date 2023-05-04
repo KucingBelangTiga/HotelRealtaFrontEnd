@@ -37,18 +37,19 @@ const createEmp = async (payload: any) => {
 //     }
 // }
 //kalau gagal, samain dgn api add
-const upload = async (id: number, file: File) => {
-    const formData = new FormData();
-    formData.append('id', id.toString());
-    formData.append('file', file);
+//gajadi pake, masuk ke add
+// const upload = async (id: number, file: File) => {
+//     const formData = new FormData();
+//     formData.append('id', id.toString());
+//     formData.append('file', file);
 
-    try {
-        const result = await axios.post('http://localhost:3002/employee/upload', formData);
-        return result;
-    } catch (error) {
-        return error;
-    }
-}
+//     try {
+//         const result = await axios.post('http://localhost:3002/employee/upload', formData);
+//         return result;
+//     } catch (error) {
+//         return error;
+//     }
+// }
 
 // const updatePhoto = async (payload: any) => {
 //     try {
@@ -59,17 +60,18 @@ const upload = async (id: number, file: File) => {
 //     }
 // }
 //kalau gagal, samain dgn api edit, tetap pakai patch
-const updatePhoto = async (id: number, file: File) => {
-    const formData = new FormData();
-    formData.append('file', file);
+//gajadi pake, masuk ke edit
+// const updatePhoto = async (id: number, file: File) => {
+//     const formData = new FormData();
+//     formData.append('file', file);
 
-    try {
-        const result = await axios.patch(`http://localhost:3002/employee/${id}/photo`, formData);
-        return result;
-    } catch (error) {
-        return error;
-    }
-}
+//     try {
+//         const result = await axios.patch(`http://localhost:3002/employee/${id}/photo`, formData);
+//         return result;
+//     } catch (error) {
+//         return error;
+//     }
+// }
 
 const updateEmp = async (payload: any) => {
     try {
@@ -89,4 +91,4 @@ const deleteEmp = async (id: any) => {
     }
 }
 
-export default { findData, findOne, createEmp, upload, updatePhoto, updateEmp, deleteEmp }
+export default { findData, findOne, createEmp, updateEmp, deleteEmp }
