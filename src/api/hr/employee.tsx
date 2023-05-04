@@ -36,6 +36,7 @@ const createEmp = async (payload: any) => {
 //         return error
 //     }
 // }
+//kalau gagal, samain dgn api add
 const upload = async (id: number, file: File) => {
     const formData = new FormData();
     formData.append('id', id.toString());
@@ -57,6 +58,7 @@ const upload = async (id: number, file: File) => {
 //         return error;
 //     }
 // }
+//kalau gagal, samain dgn api edit, tetap pakai patch
 const updatePhoto = async (id: number, file: File) => {
     const formData = new FormData();
     formData.append('file', file);

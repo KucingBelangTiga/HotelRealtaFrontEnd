@@ -1,7 +1,8 @@
 import * as ActionType from '../../constant/hr/employeeConstant'
 
 const init_state = {
-    emps: []
+    emps: [],
+    emp: []
 }
 
 const empReducer = (state = init_state, action: any) => {
@@ -59,7 +60,7 @@ const FindEmp = (state: any, action: any) => {
     const { payload } = action
     return {
         ...state,
-        emps: payload //kalau gagal, tambah action.payload
+        emp: payload //kalau gagal, tambah action.payload dan/ atau ganti ke emps
     }
 }
 
@@ -67,7 +68,7 @@ const EditEmp = (state:any, action:any) => {
     const {payload} = action 
     return {
         ...state, 
-        emps:[...state.emps,payload] //kalau gagal, buat hanya state saja
+        // emps:[...state.emps,payload] //kalau gagal, tambah ini
     }
 }
 
@@ -83,17 +84,21 @@ const EditPhoto = (state:any, action:any) => {
     const {payload} = action 
     return {
         ...state, 
-        emps:[...state.emps,payload] //kalau gagal, buat hanya state saja
+        // emps:[...state.emps,payload] //kalau gagal, tambah ini
     }
 }
 
 const DeleteEmp = (state:any, action:any) => {
-    const { payload } = action
-    const updatedEmps = state.emps.filter((emps: { id: number }) => emps.id !== payload.id)
+    // const { payload } = action
+    // const updatedEmps = state.emps.filter((emps: { id: number }) => emps.id !== payload.id)
+    // return {
+    //     ...state,
+    //     emps: updatedEmps //kalau gagal, ganti jadi: emps:[...state.emps,payload]
+    // }
     return {
         ...state,
-        emps: updatedEmps //kalau gagal, ganti jadi: emps:[...state.emps,payload]
     }
+    //kalau gagal, pake yg dikomentari di atas
 }
 
 export default empReducer

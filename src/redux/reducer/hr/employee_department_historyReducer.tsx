@@ -1,7 +1,8 @@
 import * as ActionType from '../../constant/hr/employee_department_historyConstant'
 
 const init_state = {
-    edhis: []
+    edhis: [],
+    edhi: []
 }
 
 const edhiReducer = (state = init_state, action: any) => {
@@ -51,7 +52,7 @@ const FindEdhi = (state: any, action: any) => {
     const { payload } = action
     return {
         ...state,
-        edhis: payload //kalau gagal, tambah action.payload
+        edhi: payload //kalau gagal, tambah action.payload dan/ atau ganti ke edhis
     }
 }
 
@@ -59,17 +60,21 @@ const EditEdhi = (state:any, action:any) => {
     const {payload} = action 
     return {
         ...state, 
-        edhis:[...state.edhis,payload] //kalau gagal, buat hanya state saja
+        // edhis:[...state.edhis,payload] //kalau gagal, tambah ini
     }
 }
 
 const DeleteEdhi = (state:any, action:any) => {
-    const { payload } = action
-    const updatedEdhis = state.edhis.filter((edhis: { id: number }) => edhis.id !== payload.id)
+    // const { payload } = action
+    // const updatedEdhis = state.edhis.filter((edhis: { id: number }) => edhis.id !== payload.id)
+    // return {
+    //     ...state,
+    //     edhis: updatedEdhis //kalau gagal, ganti jadi: edhis:[...state.edhis,payload]
+    // }
     return {
         ...state,
-        edhis: updatedEdhis //kalau gagal, ganti jadi: edhis:[...state.edhis,payload]
     }
+    //kalau gagal, pake yg dikomentari di atas
 }
 
 export default edhiReducer

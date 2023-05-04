@@ -1,7 +1,8 @@
 import * as ActionType from '../../constant/hr/employee_pay_historyConstant'
 
 const init_state = {
-    ephis: []
+    ephis: [],
+    ephi: []
 }
 
 const ephiReducer = (state = init_state, action: any) => {
@@ -51,7 +52,7 @@ const FindEphi = (state: any, action: any) => {
     const { payload } = action
     return {
         ...state,
-        ephis: payload //kalau gagal, tambah action.payload
+        ephi: payload //kalau gagal, tambah action.payload dan/ atau ganti ke ephis
     }
 }
 
@@ -59,17 +60,21 @@ const EditEphi = (state:any, action:any) => {
     const {payload} = action 
     return {
         ...state, 
-        ephis:[...state.ephis,payload] //kalau gagal, buat hanya state saja
+        // ephis:[...state.ephis,payload] //kalau gagal, tambah ini
     }
 }
 
 const DeleteEphi = (state:any, action:any) => {
-    const { payload } = action
-    const updatedEphis = state.ephis.filter((ephis: { id: number }) => ephis.id !== payload.id)
+    // const { payload } = action
+    // const updatedEphis = state.ephis.filter((ephis: { id: number }) => ephis.id !== payload.id)
+    // return {
+    //     ...state,
+    //     ephis: updatedEphis //kalau gagal, ganti jadi: ephis:[...state.ephis,payload]
+    // }
     return {
         ...state,
-        ephis: updatedEphis //kalau gagal, ganti jadi: ephis:[...state.ephis,payload]
     }
+    //kalau gagal, pake yg dikomentari di atas
 }
 
 export default ephiReducer

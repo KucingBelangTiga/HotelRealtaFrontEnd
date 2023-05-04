@@ -1,7 +1,8 @@
 import * as ActionType from '../../constant/hr/work_ordersConstant'
 
 const init_state = {
-    woros: []
+    woros: [],
+    woro: []
 }
 
 const woroReducer = (state = init_state, action: any) => {
@@ -51,7 +52,7 @@ const FindWoro = (state: any, action: any) => {
     const { payload } = action
     return {
         ...state,
-        woros: payload //kalau gagal, tambah action.payload
+        woro: payload //kalau gagal, tambah action.payload dan/ atau ganti ke woros
     }
 }
 
@@ -59,17 +60,21 @@ const EditWoro = (state:any, action:any) => {
     const {payload} = action 
     return {
         ...state, 
-        woros:[...state.woros,payload] //kalau gagal, buat hanya state saja
+        // woros:[...state.woros,payload] //kalau gagal, tambah ini
     }
 }
 
 const DeleteWoro = (state:any, action:any) => {
-    const { payload } = action
-    const updatedWoros = state.woros.filter((woros: { id: number }) => woros.id !== payload.id)
+    // const { payload } = action
+    // const updatedWoros = state.woros.filter((woros: { id: number }) => woros.id !== payload.id)
+    // return {
+    //     ...state,
+    //     woros: updatedWoros //kalau gagal, ganti jadi: woros:[...state.woros,payload]
+    // }
     return {
         ...state,
-        woros: updatedWoros //kalau gagal, ganti jadi: woros:[...state.woros,payload]
     }
+    //kalau gagal, pake yg dikomentari di atas
 }
 
 export default woroReducer

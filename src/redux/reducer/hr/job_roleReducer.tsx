@@ -1,7 +1,8 @@
 import * as ActionType from '../../constant/hr/job_roleConstant'
 
 const init_state = {
-    joros: []
+    joros: [],
+    joro: []
 }
 
 const joroReducer = (state = init_state, action: any) => {
@@ -51,7 +52,7 @@ const FindJoro = (state: any, action: any) => {
     const { payload } = action
     return {
         ...state,
-        joros: payload //kalau gagal, tambah action.payload
+        joro: payload //kalau gagal, tambah action.payload dan/ atau ganti ke joros
     }
 }
 
@@ -59,17 +60,21 @@ const EditJoro = (state:any, action:any) => {
     const {payload} = action 
     return {
         ...state, 
-        joros:[...state.joros,payload] //kalau gagal, buat hanya state saja
+        // joros:[...state.joros,payload] //kalau gagal, tambah ini
     }
 }
 
 const DeleteJoro = (state:any, action:any) => {
-    const { payload } = action
-    const updatedJoros = state.joros.filter((joros: { id: number }) => joros.id !== payload.id)
+    // const { payload } = action
+    // const updatedJoros = state.joros.filter((joros: { id: number }) => joros.id !== payload.id)
+    // return {
+    //     ...state,
+    //     joros: updatedJoros //kalau gagal, ganti jadi: joros:[...state.joros,payload]
+    // }
     return {
         ...state,
-        joros: updatedJoros //kalau gagal, ganti jadi: joros:[...state.joros,payload]
     }
+    //kalau gagal, pake yg dikomentari di atas
 }
 
 export default joroReducer
