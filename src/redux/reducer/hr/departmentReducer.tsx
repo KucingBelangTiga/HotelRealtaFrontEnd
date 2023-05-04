@@ -1,7 +1,8 @@
 import * as ActionType from '../../constant/hr/departmentConstant'
 
 const init_state = {
-    departments: []
+    departments: [],
+    messageError: null, 
 }
 
 const departmentReducer = (state = init_state, action: any) => {
