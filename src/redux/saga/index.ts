@@ -1,6 +1,8 @@
 import { takeEvery, all } from "redux-saga/effects";
 import * as ActionRegions from "../constant/master/regionsContants";
 import * as ActionCountries from "../constant/master/countriesConstant";
+import * as ActionProvinces from "../constant/master/provincesConstants";
+import * as ActionCity from "../constant/master/cityConstant";
 
 import {
   handleRegions,
@@ -16,6 +18,20 @@ import {
   editCountries,
   deleteCountries,
 } from "./master/countriesSaga";
+import {
+  handleProvinces,
+  handleAddProvinces,
+  findProvinces,
+  editProvinces,
+  deleteProvinces,
+} from "./master/provincesSaga";
+import {
+  handleCity,
+  handleAddCity,
+  findCity,
+  editCity,
+  deleteCity,
+} from "./master/citySaga";
 
 function* watchAll() {
   yield all([
@@ -30,6 +46,18 @@ function* watchAll() {
     takeEvery(ActionCountries.FIND_COUNTRIES_REQUEST, findCountries),
     takeEvery(ActionCountries.EDIT_COUNTRIES_REQUEST, editCountries),
     takeEvery(ActionCountries.DEL_COUNTRIES_REQUEST, deleteCountries),
+
+    takeEvery(ActionProvinces.GET_PROVINCES_REQUEST, handleProvinces),
+    takeEvery(ActionProvinces.ADD_PROVINCES_REQUEST, handleAddProvinces),
+    takeEvery(ActionProvinces.FIND_PROVINCES_REQUEST, findProvinces),
+    takeEvery(ActionProvinces.EDIT_PROVINCES_REQUEST, editProvinces),
+    takeEvery(ActionProvinces.DEL_PROVINCES_REQUEST, deleteProvinces),
+
+    takeEvery(ActionCity.GET_CITY_REQUEST, handleCity),
+    takeEvery(ActionCity.ADD_CITY_REQUEST, handleAddCity),
+    takeEvery(ActionCity.FIND_CITY_REQUEST, findCity),
+    takeEvery(ActionCity.EDIT_CITY_REQUEST, editCity),
+    takeEvery(ActionCity.DEL_CITY_REQUEST, deleteCity),
   ]);
 }
 
