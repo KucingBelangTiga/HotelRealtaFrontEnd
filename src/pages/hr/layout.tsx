@@ -2,10 +2,10 @@ import Link from "next/link";
 import React from "react";
 import Layout from "../../components/layout";
 
-const navigation = [
+const navigation = [ 
   {
     name: "Department",
-    href: "department",
+    href: "department", 
     svg: (
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
@@ -25,27 +25,27 @@ const navigation = [
         </svg>
     ),
   },
-  {
-    name: "Job Role",
-    href: "job_role",
-    svg: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
-        <line x1="7" y1="7" x2="7.01" y2="7"></line>
-        </svg>
-    ),
-  },
-  {
-    name: "Shift",
-    href: "shift",
-    svg: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M17 2.1l4 4-4 4"/>
-        <path d="M3 12.2v-2a4 4 0 0 1 4-4h12.8M7 21.9l-4-4 4-4"/>
-        <path d="M21 11.8v2a4 4 0 0 1-4 4H4.2"/>
-        </svg>
-    ),
-  },
+  // {
+  //   name: "Job Role",
+  //   href: "job_role",
+  //   svg: (
+  //       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  //       <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+  //       <line x1="7" y1="7" x2="7.01" y2="7"></line>
+  //       </svg>
+  //   ),
+  // },
+  // {
+  //   name: "Shift",
+  //   href: "shift",
+  //   svg: (
+  //       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  //       <path d="M17 2.1l4 4-4 4"/>
+  //       <path d="M3 12.2v-2a4 4 0 0 1 4-4h12.8M7 21.9l-4-4 4-4"/>
+  //       <path d="M21 11.8v2a4 4 0 0 1-4 4H4.2"/>
+  //       </svg>
+  //   ),
+  // },
   {
     name: "Work Order",
     href: "work_orders",
@@ -92,6 +92,6 @@ export default function LayoutHr({
       </aside>
       <div>{children}</div>
     </div>
-    </Layout>
+</Layout>
   );
 }
