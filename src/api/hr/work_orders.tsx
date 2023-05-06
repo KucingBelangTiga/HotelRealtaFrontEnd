@@ -30,7 +30,7 @@ const createWoro = async (payload: any) => {
 
 const updateWoro = async (payload: any) => {
     try {
-        const result = await axios.put('http://localhost:3002/work-orders/' + payload.id, payload)
+        const result = await axios.put('http://localhost:3002/work-orders/' + payload.woroId, payload)
         return result
     } catch (error) {
         return error

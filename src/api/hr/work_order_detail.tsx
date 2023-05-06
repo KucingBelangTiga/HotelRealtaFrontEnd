@@ -30,7 +30,7 @@ const createWode = async (payload: any) => {
 
 const updateWode = async (payload: any) => {
     try {
-        const result = await axios.put('http://localhost:3002/work-order-detail/' + payload.id, payload)
+        const result = await axios.put('http://localhost:3002/work-order-detail/' + payload.wodeId, payload)
         return result
     } catch (error) {
         return error

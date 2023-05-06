@@ -60,7 +60,7 @@ const EditDept = (state:any, action:any) => {
     const {payload} = action 
     return {
         ...state, 
-        // departments:[...state.departments,payload] //kalau gagal, tambah ini
+        // department:[...state.department,payload] //kalau gagal, tambah ini
     }
 }
 

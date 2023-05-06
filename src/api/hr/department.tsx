@@ -30,7 +30,7 @@ const createDept = async (payload: any) => {
 
 const updateDept = async (payload: any) => {
     try {
-        const result = await axios.put('http://localhost:3002/department/' + payload.id, payload)
+        const result = await axios.put('http://localhost:3002/department/' + payload.deptId, payload) //kalo error payload.deptId ganti jadi payload.id
         return result
     } catch (error) {
         return error

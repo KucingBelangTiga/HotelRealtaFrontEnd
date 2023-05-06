@@ -30,7 +30,7 @@ const createJoro = async (payload: any) => {
 
 const updateJoro = async (payload: any) => {
     try {
-        const result = await axios.put('http://localhost:3002/job-role/' + payload.id, payload)
+        const result = await axios.put('http://localhost:3002/job-role/' + payload.joroId, payload)
         return result
     } catch (error) {
         return error

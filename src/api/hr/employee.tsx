@@ -75,7 +75,7 @@ const createEmp = async (payload: any) => {
 
 const updateEmp = async (payload: any) => {
     try {
-        const result = await axios.put('http://localhost:3002/employee/' + payload.id, payload)
+        const result = await axios.put('http://localhost:3002/employee/' + payload.empId, payload)
         return result
     } catch (error) {
         return error

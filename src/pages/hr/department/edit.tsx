@@ -7,14 +7,14 @@ import {
 import { useFormik, FormikProvider } from "formik";
 
 export default function Edit(props: any) {
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false); 
   const [id, setId] = useState<number>(props.id);
   const dispatch = useDispatch();
   const { department } = useSelector((state: any) => state.deptState);
 
   useEffect(() => {
     dispatch(FindDeptRequest(id));
-  }, [dispatch, id, showModal]);
+  }, [dispatch, props.id, showModal]);
 
   const formik = useFormik({
     enableReinitialize: true,
@@ -23,11 +23,10 @@ export default function Edit(props: any) {
       deptName: department.deptName,
     },
     onSubmit: async (values) => {
-      dispatch(EditDeptRequest({ id: id, values: values }));
-      await dispatch(FindDeptRequest(id));
+      dispatch(EditDeptRequest(values));
       props.setRefresh(true);
       setShowModal(false);
-    },
+    },   
   });
 
   const editButton = () => {

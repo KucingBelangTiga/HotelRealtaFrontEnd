@@ -30,7 +30,7 @@ const createEdh = async (payload: any) => {
 
 const updateEdh = async (payload: any) => {
     try {
-        const result = await axios.put('http://localhost:3002/employee-department-history/' + payload.id, payload)
+        const result = await axios.put('http://localhost:3002/employee-department-history/' + payload.edhiId, payload)
         return result
     } catch (error) {
         return error

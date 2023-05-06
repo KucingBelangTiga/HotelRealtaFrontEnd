@@ -30,7 +30,7 @@ const createShift = async (payload: any) => {
 
 const updateShift = async (payload: any) => {
     try {
-        const result = await axios.put('http://localhost:3002/shift/' + payload.id, payload)
+        const result = await axios.put('http://localhost:3002/shift/' + payload.shiftId, payload)
         return result
     } catch (error) {
         return error
