@@ -15,7 +15,7 @@ function* handleFindOneWode(action: any): any {
     const { payload } = action
     try {
         const result = yield call(Wode.findOne, payload)
-        yield put(FindWodeSuccess(result.data))
+        yield put(FindWodeSuccess(result))
     } catch (error) {
         yield put(FindWodeFailed(error))
     }

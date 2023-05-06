@@ -15,7 +15,7 @@ function* handleFindOneJoro(action: any): any {
     const { payload } = action
     try {
         const result = yield call(Joro.findOne, payload)
-        yield put(FindJoroSuccess(result.data))
+        yield put(FindJoroSuccess(result))
     } catch (error) {
         yield put(FindJoroFailed(error))
     }

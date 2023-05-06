@@ -7,7 +7,7 @@ const init_state = {
 
 const joroReducer = (state = init_state, action: any) => {
     switch (action.type) {
-        case ActionType.GET_JORO_REQUEST:
+        case ActionType.GET_JORO_REQUEST: 
             return { ...state }
         case ActionType.GET_JORO_SUCCESS:
             return GetJoro(state, action)
@@ -34,9 +34,10 @@ const joroReducer = (state = init_state, action: any) => {
 }
 
 const GetJoro = (state: any, action: any) => {
+    const {payload} = action;
     return {
         ...state,
-        joros: action.payload
+        joros: payload,
     }
 }
 
@@ -58,7 +59,7 @@ const FindJoro = (state: any, action: any) => {
 
 const EditJoro = (state:any, action:any) => {
     const {payload} = action 
-    return {
+    return { 
         ...state, 
         // joros:[...state.joros,payload] //kalau gagal, tambah ini
     }

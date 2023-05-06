@@ -17,13 +17,16 @@ export default function Layout(props: LayoutProps) {
         // </div>
         <div>
       <Header />
-      <div className="flex flex-col">
+      {/* <div className="flex flex-col">
         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
             {props.children}
             </div>
         </div>
-    </div>
+    </div> */}
+    <div className="p-10 sm:ml-72">
+        <div className="p-4 mt-14">{children}</div>
+      </div>
     {/* <div className="flex items-center justify-between mt-6">
         <a href="#" className="flex items-center px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-5 h-5 rtl:-scale-x-100">

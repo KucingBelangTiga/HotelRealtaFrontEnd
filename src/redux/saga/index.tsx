@@ -10,7 +10,7 @@ import * as ActionTypeWoro from '../constant/hr/work_ordersConstant'
 import { handleFindDept, handleAddDept, handleFindOneDept, handleEditDept, handleDeleteDept } from './hr/departmentSaga'
 import { handleFindEdhi, handleAddEdhi, handleFindOneEdhi, handleEditEdhi, handleDeleteEdhi } from './hr/employee_department_historySaga'
 import { handleFindEphi, handleAddEphi, handleFindOneEphi, handleEditEphi, handleDeleteEphi } from './hr/employee_pay_historySaga'
-import { handleFindEmp, handleAddEmp, handleFindOneEmp, handleEditEmp, handleAddPhoto,handleEditPhoto, handleDeleteEmp } from './hr/employeeSaga'
+import { handleFindEmp, handleAddEmp, handleFindOneEmp, handleEditEmp, handleDeleteEmp } from './hr/employeeSaga'
 import { handleFindJoro, handleAddJoro, handleFindOneJoro, handleEditJoro, handleDeleteJoro } from './hr/job_roleSaga'
 import { handleFindShift, handleAddShift, handleFindOneShift, handleEditShift, handleDeleteShift } from './hr/shiftSaga'
 import { handleFindWode, handleAddWode, handleFindOneWode, handleEditWode, handleDeleteWode } from './hr/work_order_detailSaga'
@@ -35,13 +35,13 @@ function* watchAll(){
         takeEvery(ActionTypeEphi.ADD_EPHI_REQUEST, handleAddEphi),
         takeEvery(ActionTypeEphi.EDIT_EPHI_REQUEST, handleEditEphi),
         takeEvery(ActionTypeEphi.DELETE_EPHI_REQUEST, handleDeleteEphi),
-        //employee ada handle AddPhoto dan EditPhoto
+        //add dan edit photo gajadi pake, gabung ke add dan edit
         takeEvery(ActionTypeEmp.GET_EMP_REQUEST, handleFindEmp),
         takeEvery(ActionTypeEmp.FIND_EMP_REQUEST, handleFindOneEmp),
         takeEvery(ActionTypeEmp.ADD_EMP_REQUEST, handleAddEmp),
         takeEvery(ActionTypeEmp.EDIT_EMP_REQUEST, handleEditEmp),
-        takeEvery(ActionTypeEmp.ADD_PHOTO_REQUEST, handleAddPhoto),
-        takeEvery(ActionTypeEmp.EDIT_PHOTO_REQUEST, handleEditPhoto),
+        // takeEvery(ActionTypeEmp.ADD_PHOTO_REQUEST, handleAddPhoto),
+        // takeEvery(ActionTypeEmp.EDIT_PHOTO_REQUEST, handleEditPhoto),
         takeEvery(ActionTypeEmp.DELETE_EMP_REQUEST, handleDeleteEmp),
 
         takeEvery(ActionTypeJoro.GET_JORO_REQUEST, handleFindJoro),

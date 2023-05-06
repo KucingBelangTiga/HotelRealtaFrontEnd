@@ -23,14 +23,15 @@ const empReducer = (state = init_state, action: any) => {
             return {...state}
         case ActionType.EDIT_EMP_SUCCESS:
             return EditEmp(state,action)
-        case ActionType.ADD_PHOTO_REQUEST:
-            return {...state}
-        case ActionType.ADD_PHOTO_SUCCESS:
-            return AddPhoto(state,action)
-        case ActionType.EDIT_PHOTO_REQUEST:
-            return {...state}
-        case ActionType.EDIT_PHOTO_SUCCESS:
-            return EditPhoto(state,action)
+        //add dan edit photo gajadi pake, gabung ke add dan edit
+        // case ActionType.ADD_PHOTO_REQUEST:
+        //     return {...state}
+        // case ActionType.ADD_PHOTO_SUCCESS:
+        //     return AddPhoto(state,action)
+        // case ActionType.EDIT_PHOTO_REQUEST:
+        //     return {...state}
+        // case ActionType.EDIT_PHOTO_SUCCESS:
+        //     return EditPhoto(state,action)
         case ActionType.DELETE_EMP_REQUEST:
             return {...state}
         case ActionType.DELETE_EMP_SUCCESS:
@@ -72,21 +73,21 @@ const EditEmp = (state:any, action:any) => {
     }
 }
 
-const AddPhoto = (state:any, action:any) => {
-    const {payload} = action
-    return {
-        ...state,
-        emps:[...state.emps,payload]
-    }
-}
+// const AddPhoto = (state:any, action:any) => {
+//     const {payload} = action
+//     return {
+//         ...state,
+//         emps:[...state.emps,payload]
+//     }
+// }
 
-const EditPhoto = (state:any, action:any) => {
-    const {payload} = action 
-    return {
-        ...state, 
-        // emps:[...state.emps,payload] //kalau gagal, tambah ini
-    }
-}
+// const EditPhoto = (state:any, action:any) => {
+//     const {payload} = action 
+//     return {
+//         ...state, 
+//         // emps:[...state.emps,payload] //kalau gagal, tambah ini
+//     }
+// }
 
 const DeleteEmp = (state:any, action:any) => {
     // const { payload } = action

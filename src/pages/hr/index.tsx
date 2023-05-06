@@ -1,20 +1,20 @@
-//home
-import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
-import styles from '../../../styles/Home.module.css'
-import Layout from '../../components/layout'
+//push to hr/layout
+import Layout from "../../components/layout";
+import Link from "next/link";
+import React, { useEffect } from "react";
+import { useRouter } from "next/router";
 
-const inter = Inter({ subsets: ['latin'] })
+function Index() {
+  const router = useRouter();
 
-export default function Home() {
+  useEffect(() => {
+    router.push("/hr/layout");
+  }, []);
+
   return (
-    <div>
-      <Layout>
-        <h1 className="text-3xl font-bold" style={{ marginLeft: "40px", marginTop: "25px"}}>
-          Hello world! &#x1F642;
-        </h1>
-      </Layout>
-    </div>
-  )
+    <Layout>
+      <h1>Redirecting to HR...</h1>
+    </Layout>
+  );
 }
+export default Index;

@@ -15,7 +15,7 @@ function* handleFindOneEmp(action: any): any {
     const { payload } = action
     try {
         const result = yield call(Emp.findOne, payload)
-        yield put(FindEmpSuccess(result.data))
+        yield put(FindEmpSuccess(result))
     } catch (error) {
         yield put(FindEmpFailed(error))
     }
@@ -41,6 +41,7 @@ function* handleEditEmp(action: any): any {
     }
 }
 
+//add dan edit photo gajadi pake, gabung ke add dan edit
 // function* handleAddPhoto(action: any): any {
 //     const { payload } = action
 //     try {
@@ -50,15 +51,15 @@ function* handleEditEmp(action: any): any {
 //         yield put(AddPhotoFailed(error))
 //     }
 // }
-function* handleAddPhoto(action: any): any {
-    const { payload } = action
-    try {
-        const result = yield call({ fn: Emp.upload, context: Emp }, payload.id, payload.file)
-        yield put(AddPhotoSuccess(result.data))
-    } catch (error) {
-        yield put(AddPhotoFailed(error))
-    }
-}
+// function* handleAddPhoto(action: any): any {
+//     const { payload } = action
+//     try {
+//         const result = yield call({ fn: Emp.upload, context: Emp }, payload.id, payload.file)
+//         yield put(AddPhotoSuccess(result.data))
+//     } catch (error) {
+//         yield put(AddPhotoFailed(error))
+//     }
+// }
 
 // function* handleEditPhoto(action: any): any {
 //     const { payload } = action
@@ -69,15 +70,15 @@ function* handleAddPhoto(action: any): any {
 //         yield put(EditPhotoFailed(error))
 //     }
 // }
-function* handleEditPhoto(action: any): any {
-    const { payload } = action
-    try {
-        const result = yield call({ fn: Emp.updatePhoto, context: Emp }, payload.id, payload.file)
-        yield put(EditPhotoSuccess(result.data))
-    } catch (error) {
-        yield put(EditPhotoFailed(error))
-    }
-}
+// function* handleEditPhoto(action: any): any {
+//     const { payload } = action
+//     try {
+//         const result = yield call({ fn: Emp.updatePhoto, context: Emp }, payload.id, payload.file)
+//         yield put(EditPhotoSuccess(result.data))
+//     } catch (error) {
+//         yield put(EditPhotoFailed(error))
+//     }
+// }
 
 function* handleDeleteEmp(action: any): any {
     const { payload } = action
@@ -94,7 +95,7 @@ export {
     handleFindOneEmp,
     handleAddEmp,
     handleEditEmp,
-    handleAddPhoto,
-    handleEditPhoto,
+    // handleAddPhoto,
+    // handleEditPhoto,
     handleDeleteEmp
 }

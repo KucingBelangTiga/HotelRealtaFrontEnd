@@ -15,7 +15,7 @@ function* handleFindOneEdhi(action: any): any {
     const { payload } = action
     try {
         const result = yield call(Edhi.findOne, payload)
-        yield put(FindEdhiSuccess(result.data))
+        yield put(FindEdhiSuccess(result))
     } catch (error) {
         yield put(FindEdhiFailed(error))
     }

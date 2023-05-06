@@ -15,7 +15,7 @@ function* handleFindOneDept(action: any): any {
     const { payload } = action
     try {
         const result = yield call(Department.findOne, payload)
-        yield put(FindDeptSuccess(result.data))
+        yield put(FindDeptSuccess(result))
     } catch (error) {
         yield put(FindDeptFailed(error))
     }

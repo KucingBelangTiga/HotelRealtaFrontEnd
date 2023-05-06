@@ -13,7 +13,7 @@ const departmentReducer = (state = init_state, action: any) => {
             return GetDept(state, action)
         case ActionType.ADD_DEPT_REQUEST:
             return {...state}
-        case ActionType.ADD_DEPT_SUCCESS:
+        case ActionType.ADD_DEPT_SUCCESS: 
             return AddDept(state,action)
         case ActionType.FIND_DEPT_REQUEST:
             return {...state}

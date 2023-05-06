@@ -5,9 +5,9 @@ export const GetJoroRequest = () => ({
 })
 
 export const GetJoroSuccess = (payload: any) => ({
-    type: joroAction.GET_JORO_SUCCESS,
+    type: joroAction.GET_JORO_SUCCESS, 
     payload
-})
+}) 
 
 export const GetJoroFailed = (payload: any) => ({
     type: joroAction.GET_JORO_FAILED,

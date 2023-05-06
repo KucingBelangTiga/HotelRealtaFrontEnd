@@ -15,7 +15,7 @@ function* handleFindOneEphi(action: any): any {
     const { payload } = action
     try {
         const result = yield call(Ephi.findOne, payload)
-        yield put(FindEphiSuccess(result.data))
+        yield put(FindEphiSuccess(result))
     } catch (error) {
         yield put(FindEphiFailed(error))
     }

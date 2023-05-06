@@ -1,7 +1,7 @@
 import axios from "axios";
 import config from "../../config/config";
 
-const findData = async () => {
+const findData = async () => { 
     try {
         const result = await axios.get('http://localhost:3002/job-role/')
         return result.data

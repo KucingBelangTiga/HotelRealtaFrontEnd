@@ -15,7 +15,7 @@ function* handleFindOneShift(action: any): any {
     const { payload } = action
     try {
         const result = yield call(Shift.findOne, payload)
-        yield put(FindShiftSuccess(result.data))
+        yield put(FindShiftSuccess(result))
     } catch (error) {
         yield put(FindShiftFailed(error))
     }
