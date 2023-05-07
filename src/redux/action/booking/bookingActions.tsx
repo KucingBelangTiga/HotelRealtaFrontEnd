@@ -14,6 +14,48 @@ export const GetBookingFailed = (payload: any) => ({
     payload
 })
 
+export const GetHotelRequest = () => ({
+    type: ActionBooking.HOTEL_DATA_REQUEST
+})
+
+export const GetHotelSuccess = (payload: any) => ({
+    type: ActionBooking.HOTEL_DATA_SUCCESS,
+    payload
+})
+
+export const GetHotelFailed = (payload: any) => ({
+    type: ActionBooking.HOTEL_DATA_FAILED,
+    payload
+})
+
+export const GetFacilitiesHotelRequest = (payload: any) => ({
+    type: ActionBooking.FACILITIES_DATA_REQUEST
+})
+
+export const GetFacilitiesHotelSuccess = (payload: any) => ({
+    type: ActionBooking.FACILITIES_DATA_SUCCESS,
+    payload
+})
+
+export const GetFacilitiesHotelFailed = (payload: any) => ({
+    type: ActionBooking.FACILITIES_DATA_FAILED,
+    payload
+})
+
+export const GetReviewsRequest = (payload: any) => ({
+    type: ActionBooking.REVIEW_DATA_REQUEST
+})
+
+export const GetReviewsSuccess = (payload: any) => ({
+    type: ActionBooking.REVIEW_DATA_SUCCESS,
+    payload
+})
+
+export const GetReviewsFailed = (payload: any) => ({
+    type: ActionBooking.REVIEW_DATA_FAILED, 
+    payload
+})
+
 export const AddBookingRequest = (payload: any) => ({
     type: ActionBooking.ADD_DATA_REQUEST,
     payload

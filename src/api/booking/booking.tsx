@@ -9,6 +9,52 @@ const GetData = async () => {
     }
 }
 
+const GetDataHotel = async () => {
+    try {
+        const result = await axios.get('http://localhost:3001/hotel/')
+        return result.data
+    } catch (error) {
+        return error
+    }
+}
+
+
+const GetFacilitiesHotel = async (id: any) => {
+    try {
+        const result = await axios.get('http://localhost:3001/hotel/facilities/', id)
+        return result.data
+    } catch (error) {
+        return error
+    }
+}
+
+const GetHotelDetails = async (id: any) => {
+    try {
+        const result = await axios.get('http://localhost:3001/hotel/'+ id)
+        return result.data
+    } catch (error) {
+        return error
+    }
+}
+
+const GetReviews = async () => {
+    try {
+        const result = await axios.get('http://localhost:3001/hotel/reviews')
+        return result.data
+    } catch (error) {
+        return error
+    }
+}
+
+const findData = async (id: any) => {
+    try {
+        const result = await axios.get('http://localhost:3001/booking-order/' + id)
+        return result.data
+    } catch (error) {
+        return error
+    }
+}
+
 const Create = async (payload: any) => {
     try {
         const result = await axios.post('http://localhost:3001/booking-order/', payload)
@@ -46,20 +92,14 @@ const Update = async (payload: any) => {
     }
 }
 
-const findData = async (id: any) => {
-    try {
-        const result = await axios.get('http://localhost:3001/booking-order/' + id)
-        return result.data
-    } catch (error) {
-        return error
-    }
-}
-
 export default {
     GetData,
     Create,
     Update,
     findData,
     // upload,
-    Delete
+    Delete,
+    GetDataHotel,
+    GetFacilitiesHotel,
+    GetReviews,
 }

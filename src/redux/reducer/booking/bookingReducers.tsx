@@ -14,6 +14,14 @@ const BookingReduce = (state = init_state, action: any) => {
             return {...state}
         case ActionType.ADD_DATA_SUCCESS:
             return AddBooking(state,action)
+        case ActionType.HOTEL_DATA_REQUEST:
+            return {...state}
+        case ActionType.HOTEL_DATA_SUCCESS:
+            return HotelData(state,action)
+        case ActionType.FACILITIES_DATA_SUCCESS:
+            return HotelFacilitiesData(state,action)
+        case ActionType.REVIEW_DATA_SUCCESS:
+            return ReviewsData(state,action)
         default:
             return { ...state };
     }
@@ -23,6 +31,29 @@ const GetBooking = (state: any, action: any) => {
     return {
         ...state,
         bookings: action.payload
+    }
+}
+
+const HotelData = (state: any, action: any) => {
+    return {
+        ...state,
+        bookings: action.payload
+    }
+}
+
+const HotelFacilitiesData = (state: any, action: any) => {
+    const {payload} = action
+    return {
+        ...state,
+        bookings: [action.payload,payload]
+    }
+}
+
+const ReviewsData = (state: any, action: any) => {
+    const {payload} = action
+    return {
+        ...state,
+        bookings: [action.payload,payload]
     }
 }
 
