@@ -85,9 +85,12 @@ export default function LayoutHr({
               </li>
             ))}
           </ul>
-          <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" style={{ marginTop: "272px"}} />
-          <span className="block text-sm text-gray-500 sm:text-center dark:text-gray-400">&copy; 2023 <a href="#" target="_blank" className="hover:underline"> Realta Hotels</a>.
-          </span>
+          <hr className="fixed bottom-20 w-full border-gray-200 sm:mx-auto dark:border-gray-700" />
+          <span className="fixed bottom-8 left-0 right-0 text-sm text-gray-500 sm:text-center dark:text-gray-400">
+            &copy; 2023 <a href="#" className="hover:underline">
+          Realta Hotels
+        </a>.
+      </span>
         </div>
       </aside>
       <div>{children}</div>

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import Layout from "../../../components/layout";
+import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Layout from "../../../components/layout";
 import { GetDeptRequest } from "../../../redux/action/hr/departmentAction";
 
 import { DataTable, DataTableFilterMeta } from "primereact/datatable";
@@ -8,6 +8,10 @@ import { Column } from "primereact/column";
 import { FilterMatchMode, FilterOperator } from 'primereact/api';
 import { InputText } from 'primereact/inputtext';
 
+import { OverlayPanel } from 'primereact/overlaypanel';
+import { Dropdown } from 'primereact/dropdown';
+import { Menubar } from 'primereact/menubar';
+import { Button } from 'primereact/button';
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.css";
 import 'primeflex/primeflex.css';
@@ -36,19 +40,48 @@ export default function IndexDept() {
       setRefresh(false);
       setLoading(true);
     }, [dispatch, refresh]);
-  
-    const dept = (rowData: any) => {
+    
+    //asli
+    // const dept = (rowData: any) => {
+    //   return (
+    //     <div>
+    //       <Edit id={rowData.deptId} setRefresh={setRefresh} />
+    //       <Delete
+    //         id={rowData.deptId}
+    //         name={rowData.deptName}
+    //         setRefresh={setRefresh}
+    //       />
+    //     </div>
+    //   );
+    // };
+
+    const Dept = (rowData: any) => {
+      // const deptRef = useRef(null);
+      const deptRef = useRef<OverlayPanel>(null)
       return (
         <div>
-          <Edit id={rowData.deptId} setRefresh={setRefresh} />
-          <Delete
-            id={rowData.deptId}
-            name={rowData.deptName}
-            setRefresh={setRefresh}
-          />
+          {/* <button type="button" className="p-link">
+            <i className="pi pi-ellipsis-v"></i> */}
+            <Button type="button" severity="secondary" icon="pi pi-ellipsis-v" tooltip="Actions Menu" tooltipOptions={{ position: 'top', showDelay: 300 }} onClick={(e) => deptRef.current?.toggle(e)} text />
+            {/* <OverlayPanel appendTo={document.body} trigger="click" position="bottom"> */}
+            <OverlayPanel ref={deptRef} >
+            <div>
+          {rowData && (
+            <>
+              <Edit id={rowData.deptId} setRefresh={setRefresh} />
+              <Delete
+                id={rowData.deptId}
+                name={rowData.deptName}
+                setRefresh={setRefresh}
+              />
+            </>
+          )}
+        </div>
+            </OverlayPanel>
+          {/* </button> */}
         </div>
       );
-    };
+    };    
 
     const onGlobalFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
@@ -62,11 +95,11 @@ export default function IndexDept() {
 
   const renderHeader = () => {
     return (
-        <div className="flex justify-content-end">
-          {/* <label className="search-label text-base font-normal">Search: </label> */}
+        <div className="flex justify-content-end align-items-center">
+          <label htmlFor="globalFilter" className="search-label mr-2">Search: </label>
             <span className="p-input-icon-left">
                 <i className="pi pi-search" />
-                <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="department name" />
+                <InputText id="globalFilter" value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="department name" style={{ height: "40px" }}/>
             </span>
         </div>
     );
@@ -84,7 +117,7 @@ const header = renderHeader();
                   <div className="card">
                   <DataTable
                     value={departments}
-                    stripedRows
+                    stripedRows 
                     tableStyle={{ minWidth: "50rem" }}
                     className="bg-white text-black"
                     paginator
@@ -101,9 +134,9 @@ const header = renderHeader();
                     <Column
                       field="deptId"
                       header={<Add setRefresh={setRefresh} />}
-                      body={dept}
+                      body={Dept}
                     ></Column>
-                  </DataTable></div>
+                    </DataTable></div>
                 </div>
               )}
             </LayoutHr>
