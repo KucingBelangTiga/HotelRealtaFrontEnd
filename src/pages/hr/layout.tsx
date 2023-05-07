@@ -85,7 +85,7 @@ export default function LayoutHr({
               </li>
             ))}
           </ul>
-          <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" style={{ marginTop: "175px"}} />
+          <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" style={{ marginTop: "272px"}} />
           <span className="block text-sm text-gray-500 sm:text-center dark:text-gray-400">&copy; 2023 <a href="#" target="_blank" className="hover:underline"> Realta Hotels</a>.
           </span>
         </div>
