@@ -121,11 +121,13 @@ export default function index() {
             </li>
           </ul>
           <hr className="fixed bottom-20 w-full border-gray-200 sm:mx-auto dark:border-gray-700" />
-          <span className="fixed bottom-8 left-0 right-0 text-sm text-gray-500 sm:text-center dark:text-gray-400">
-            &copy; 2023 <a href="#" className="hover:underline">
-          Realta Hotels
-        </a>.
-      </span>
+          <Link href="/dashboard" className="hover:underline" passHref>
+            <span className="fixed bottom-8 left-0 right-0 text-sm text-gray-500 sm:text-center dark:text-gray-400" title="Dashboard">
+              &copy; 2023 <a className="hover:underline">
+                Realta Hotels
+              </a>.
+            </span>
+          </Link>
         </div>
       </aside>
     </Layout>

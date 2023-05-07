@@ -1,6 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import Layout from "../../components/layout";
+import { useState } from "react";
 
 const navigation = [ 
   {
@@ -58,43 +59,90 @@ const navigation = [
   },
 ];
 
-export default function LayoutHr({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+//asal
+// export default function LayoutHr({
+//   children,
+// }: {
+//   children: React.ReactNode;
+// }) {
+//   return (
+//     <Layout>
+//     <div>
+//       <aside
+//         id="logo-sidebar"
+//         className="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-darkBlue dark:border-coldBlue"
+//         aria-label="Sidebar"
+//       >
+//         <div className="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-darkBlue">
+//           <ul className="space-y-2 font-medium">
+//             {navigation.map((item, index) => (
+//               <li key={index}>
+//                 <Link
+//                   href={item.href}
+//                   className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-lightBlue dark:hover:bg-coldBlue"
+//                 >
+//                   {item.svg}
+//                   <span className="ml-3">{item.name}</span>
+//                 </Link>
+//               </li>
+//             ))}
+//           </ul>
+//           <hr className="fixed bottom-20 w-full border-gray-200 sm:mx-auto dark:border-gray-700" />
+//           <span className="fixed bottom-8 left-0 right-0 text-sm text-gray-500 sm:text-center dark:text-gray-400">
+//             &copy; 2023 <a href="#" className="hover:underline">
+//           Realta Hotels
+//         </a>.
+//       </span>
+//         </div>
+//       </aside>
+//       <div>{children}</div>
+//     </div>
+// </Layout>
+//   );
+// }
+
+//activeItem
+export default function LayoutHr({ children }: { children: React.ReactNode }) {
+  const [activeItem, setActiveItem] = useState("Department"); //dalam string pada useState masukkan item sesuai navigation name di atas, yg pertama kali jadi activeItem, misal "Department". atau kosongkan string jika tak menentukan item active di awal: ""
+  
+  const handleClick = (item: string) => {
+    setActiveItem(item);
+  };
   return (
     <Layout>
-    <div>
-      <aside
-        id="logo-sidebar"
-        className="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-darkBlue dark:border-coldBlue"
-        aria-label="Sidebar"
-      >
-        <div className="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-darkBlue">
-          <ul className="space-y-2 font-medium">
-            {navigation.map((item, index) => (
-              <li key={index}>
-                <Link
-                  href={item.href}
-                  className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-lightBlue dark:hover:bg-coldBlue"
-                >
-                  {item.svg}
-                  <span className="ml-3">{item.name}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-          <hr className="fixed bottom-20 w-full border-gray-200 sm:mx-auto dark:border-gray-700" />
-          <span className="fixed bottom-8 left-0 right-0 text-sm text-gray-500 sm:text-center dark:text-gray-400">
-            &copy; 2023 <a href="#" className="hover:underline">
-          Realta Hotels
-        </a>.
-      </span>
-        </div>
-      </aside>
-      <div>{children}</div>
-    </div>
-</Layout>
+      <div>
+        <aside
+          id="logo-sidebar"
+          className="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-darkBlue dark:border-coldBlue"
+          aria-label="Sidebar"
+        >
+          <div className="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-darkBlue">
+            <ul className="space-y-2 font-medium">
+              {navigation.map((item, index) => (
+                <li key={index}>
+                  <Link
+                    href={item.href}
+                    className={`flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-lightBlue dark:hover:bg-coldBlue ${activeItem === item.name ? "bg-lightBlue dark:bg-coldBlue" : ""}`}
+                    onClick={() => handleClick(item.name)}
+                  >
+                    {item.svg}
+                    <span className="ml-3">{item.name}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <hr className="fixed bottom-20 w-full border-gray-200 sm:mx-auto dark:border-gray-700" />
+            <Link href="/dashboard" className="hover:underline" passHref>
+            <span className="fixed bottom-8 left-0 right-0 text-sm text-gray-500 sm:text-center dark:text-gray-400" title="Dashboard">
+              &copy; 2023 <a className="hover:underline">
+                Realta Hotels
+              </a>.
+            </span>
+            </Link>
+          </div>
+        </aside>
+        <div>{children}</div>
+      </div>
+    </Layout>
   );
 }
