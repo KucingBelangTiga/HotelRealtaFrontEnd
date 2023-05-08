@@ -1,38 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  FindRegionsRequest,
-  EditRegionsRequest,
-} from "../../../../redux/action/master/regionsAction";
+import { AddCountriesRequest } from "../../../../redux/action/master/countriesAction";
 import { useFormik, FormikProvider } from "formik";
 
-export default function Edit(props: any) {
+export default function AddCountry(props: any) {
   const [showModal, setShowModal] = useState(false);
-  const [id, setId] = useState<number>();
   const dispatch = useDispatch();
-  const { region } = useSelector((state: any) => state.regionsState);
-
-  useEffect(() => {
-    dispatch(FindRegionsRequest(id));
-  }, [dispatch, id, showModal]);
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      regionCode: props.id,
-      regionName: region.regionName,
+      countryName: "",
+      countryRegion:
+        props.region === undefined ? null : props.region.regionCode,
     },
     onSubmit: async (values) => {
-      dispatch(EditRegionsRequest(values));
-      props.setRefresh(true);
+      dispatch(AddCountriesRequest(values));
       setShowModal(false);
+      props.setRefresh(true);
     },
   });
-
-  const editButton = () => {
-    setId(props.id);
-    setShowModal(true);
-  };
 
   const modal = () => {
     props.setRefresh(true);
@@ -42,11 +29,11 @@ export default function Edit(props: any) {
   return (
     <>
       <button
-        className="p-2 bg-coldBlue text-white active:bg-coldBlue font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+        className="bg-darkBlue text-white active:bg-darkBlue font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
         type="button"
-        onClick={editButton}
+        onClick={() => setShowModal(true)}
       >
-        <span>Edit</span>
+        Add +
       </button>
       {showModal ? (
         <>
@@ -75,14 +62,26 @@ export default function Edit(props: any) {
                           <label className="py-2 text-black font-bold w-full">
                             Region Name
                           </label>
+                          <p className=" w-full py-2 text-black border-slate-900">
+                            {props.region === undefined
+                              ? "[Choose Region]"
+                              : props.region.regionName}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="py-4 px-8 ">
+                        <div className="flex gap-10 ">
+                          <label className="text-black py-2 font-bold w-full">
+                            Country Name
+                          </label>
                           <input
-                            className=" border rounded w-full py-2 px-3 text-black border-slate-900 "
+                            className="border rounded w-full py-2 px-3 text-black border-slate-900 "
                             type="text"
-                            name="regionName"
-                            id="regionName"
+                            name="countryName"
+                            id="countryName"
                             onChange={formik.handleChange}
-                            value={formik.values.regionName}
-                            placeholder="Region Name"
+                            value={formik.values.countryName}
+                            placeholder="Country Name"
                           />
                         </div>
                       </div>

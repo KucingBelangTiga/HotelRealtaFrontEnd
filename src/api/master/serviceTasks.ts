@@ -3,7 +3,7 @@ import config from "../../config/config";
 
 const list = async () => {
   try {
-    const result = await axios.get(`${config.domain}/country/`);
+    const result = await axios.get(`${config.domain}/service-task/`);
     return result.data;
   } catch (error) {
     return await error;
@@ -12,7 +12,7 @@ const list = async () => {
 
 const deleted = async (id: any) => {
   try {
-    const result = await axios.delete(`${config.domain}/country/${id}`);
+    const result = await axios.delete(`${config.domain}/service-task/${id}`);
     return result;
   } catch (error) {
     return await error;
@@ -21,7 +21,7 @@ const deleted = async (id: any) => {
 
 const create = async (payload: any) => {
   try {
-    const result = await axios.post(`${config.domain}/country/`, payload);
+    const result = await axios.post(`${config.domain}/service-task/`, payload);
     return result;
   } catch (error) {
     return await error;
@@ -31,7 +31,7 @@ const create = async (payload: any) => {
 const update = async (payload: any) => {
   try {
     const result = await axios.put(
-      `${config.domain}/country/${payload.countryId}`,
+      `${config.domain}/service-task/${payload.setaId}`,
       payload
     );
     return result;
@@ -42,7 +42,7 @@ const update = async (payload: any) => {
 
 const findOne = async (id: any) => {
   try {
-    const result = await axios.get(`${config.domain}/country/${id}`);
+    const result = await axios.get(`${config.domain}/service-task/${id}`);
     return result.data;
   } catch (error) {
     return await error;

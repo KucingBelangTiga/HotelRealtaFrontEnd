@@ -2,17 +2,16 @@ import React, { useEffect, useState } from "react";
 import Layout from "@/src/components/layout";
 import LayoutMaster from "../layout";
 import { useDispatch, useSelector } from "react-redux";
-import { GetPolicyRequest } from "../../../redux/action/master/policyAction";
+import { GetServiceTasksRequest } from "../../../redux/action/master/serviceTasksAction";
 
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { InputSwitch } from "primereact/inputswitch";
 
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.css";
-import AddPolicy from "./AddPolicy";
-import EditPolicy from "./EditPolicy";
-import DeletePolicy from "./DeletePolicy";
+import AddServiceTask from "./AddServiceTask";
+import EditServiceTask from "./EditServiceTask";
+import DeleteServiceTask from "./DeleteServiceTask";
 
 export default function Index() {
   const dispatch = useDispatch();
@@ -21,21 +20,38 @@ export default function Index() {
   const [first, setFirst] = useState(0);
   const [refresh, setRefresh] = useState(false);
 
-  const { policies } = useSelector((state: any) => state.policyState);
+  const { serviceTasks, max } = useSelector(
+    (state: any) => state.serviceTasksState
+  );
 
   useEffect(() => {
-    dispatch(GetPolicyRequest());
+    dispatch(GetServiceTasksRequest());
     setRefresh(false);
     setLoading(true);
   }, [dispatch, refresh]);
 
-  const kebabPolicy = (rowData: any) => {
+  // console.log(max);
+  // console.log(serviceTasks);
+
+  // const maxObj = serviceTasks
+  //   ? serviceTasks.reduce((accumulator: any, current: any) => {
+  //       return accumulator.setaId > current.setaId ? accumulator : current;
+  //     })
+  //   : null;
+  // console.log(priceItems);
+  // console.log(maxObj);
+
+  const kebabPriceItems = (rowData: any) => {
     return (
       <div>
-        <EditPolicy id={rowData.poliId} setRefresh={setRefresh} />
-        <DeletePolicy
-          id={rowData.poliId}
-          name={rowData.poliName}
+        <EditServiceTask
+          id={rowData.setaId}
+          setRefresh={setRefresh}
+          // maxId={maxObj.setaId}
+        />
+        <DeleteServiceTask
+          id={rowData.setaId}
+          name={rowData.setaName}
           setRefresh={setRefresh}
         />
       </div>
@@ -51,7 +67,7 @@ export default function Index() {
           <div className="min-h-screen">
             <h2 className="text-center my-5 font-bold text-3xl">Regions</h2>
             <DataTable
-              value={policies}
+              value={serviceTasks}
               stripedRows
               tableStyle={{ minWidth: "50rem" }}
               className="bg-white text-black"
@@ -59,12 +75,13 @@ export default function Index() {
               rows={5}
               first={first}
             >
-              <Column field="poliId" header="Id"></Column>
-              <Column field="poliName" header="Name"></Column>
+              <Column field="setaId" header="Id"></Column>
+              <Column field="setaName" header="Name"></Column>
+              <Column field="setSeq" header="Sequence Order"></Column>
               <Column
-                field="poliId"
-                header={<AddPolicy setRefresh={setRefresh} />}
-                body={kebabPolicy}
+                field="pritId"
+                header={<AddServiceTask setRefresh={setRefresh} />}
+                body={kebabPriceItems}
               ></Column>
             </DataTable>
           </div>

@@ -3,6 +3,9 @@ import * as ActionRegions from "../constant/master/regionsContants";
 import * as ActionCountries from "../constant/master/countriesConstant";
 import * as ActionProvinces from "../constant/master/provincesConstants";
 import * as ActionCity from "../constant/master/cityConstant";
+import * as ActionPolicy from "../constant/master/policyConstant";
+import * as ActionPriceItems from "../constant/master/priceItemsConstant";
+import * as ActionServiceTasks from "../constant/master/serviceTasksConstant";
 
 import {
   handleRegions,
@@ -32,6 +35,27 @@ import {
   editCity,
   deleteCity,
 } from "./master/citySaga";
+import {
+  handlePolicy,
+  handleAddPolicy,
+  findPolicy,
+  editPolicy,
+  deletePolicy,
+} from "./master/policySaga";
+import {
+  handlePriceItems,
+  handleAddPriceItems,
+  findPriceItems,
+  editPriceItems,
+  deletePriceItems,
+} from "./master/priceItemsSaga";
+import {
+  handleServiceTasks,
+  handleAddServiceTasks,
+  findServiceTasks,
+  editServiceTasks,
+  deleteServiceTasks,
+} from "./master/serviceTasksSaga";
 
 function* watchAll() {
   yield all([
@@ -58,6 +82,27 @@ function* watchAll() {
     takeEvery(ActionCity.FIND_CITY_REQUEST, findCity),
     takeEvery(ActionCity.EDIT_CITY_REQUEST, editCity),
     takeEvery(ActionCity.DEL_CITY_REQUEST, deleteCity),
+
+    takeEvery(ActionPolicy.GET_POLICY_REQUEST, handlePolicy),
+    takeEvery(ActionPolicy.ADD_POLICY_REQUEST, handleAddPolicy),
+    takeEvery(ActionPolicy.FIND_POLICY_REQUEST, findPolicy),
+    takeEvery(ActionPolicy.EDIT_POLICY_REQUEST, editPolicy),
+    takeEvery(ActionPolicy.DEL_POLICY_REQUEST, deletePolicy),
+
+    takeEvery(ActionPriceItems.GET_PRICE_ITEMS_REQUEST, handlePriceItems),
+    takeEvery(ActionPriceItems.ADD_PRICE_ITEMS_REQUEST, handleAddPriceItems),
+    takeEvery(ActionPriceItems.FIND_PRICE_ITEMS_REQUEST, findPriceItems),
+    takeEvery(ActionPriceItems.EDIT_PRICE_ITEMS_REQUEST, editPriceItems),
+    takeEvery(ActionPriceItems.DEL_PRICE_ITEMS_REQUEST, deletePriceItems),
+
+    takeEvery(ActionServiceTasks.GET_SERVICE_TASKS_REQUEST, handleServiceTasks),
+    takeEvery(
+      ActionServiceTasks.ADD_SERVICE_TASKS_REQUEST,
+      handleAddServiceTasks
+    ),
+    takeEvery(ActionServiceTasks.FIND_SERVICE_TASKS_REQUEST, findServiceTasks),
+    takeEvery(ActionServiceTasks.EDIT_SERVICE_TASKS_REQUEST, editServiceTasks),
+    takeEvery(ActionServiceTasks.DEL_SERVICE_TASKS_REQUEST, deleteServiceTasks),
   ]);
 }
 

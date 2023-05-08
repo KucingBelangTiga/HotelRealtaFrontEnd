@@ -1,31 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  FindRegionsRequest,
-  EditRegionsRequest,
-} from "../../../../redux/action/master/regionsAction";
+  EditServiceTasksRequest,
+  FindServiceTasksRequest,
+} from "../../../redux/action/master/serviceTasksAction";
 import { useFormik, FormikProvider } from "formik";
 
-export default function Edit(props: any) {
+export default function EditServiceTask(props: any) {
   const [showModal, setShowModal] = useState(false);
   const [id, setId] = useState<number>();
   const dispatch = useDispatch();
-  const { region } = useSelector((state: any) => state.regionsState);
+  const { serviceTask } = useSelector((state: any) => state.serviceTasksState);
 
   useEffect(() => {
-    dispatch(FindRegionsRequest(id));
+    dispatch(FindServiceTasksRequest(id));
   }, [dispatch, id, showModal]);
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      regionCode: props.id,
-      regionName: region.regionName,
+      setaId: props.id,
+      setaName: serviceTask.setaName,
+      setSeq: serviceTask.setSeq,
     },
     onSubmit: async (values) => {
-      dispatch(EditRegionsRequest(values));
-      props.setRefresh(true);
+      dispatch(EditServiceTasksRequest(values));
       setShowModal(false);
+      props.setRefresh(true);
     },
   });
 
@@ -42,11 +43,11 @@ export default function Edit(props: any) {
   return (
     <>
       <button
-        className="p-2 bg-coldBlue text-white active:bg-coldBlue font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+        className="bg-darkBlue text-white active:bg-darkBlue font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
         type="button"
         onClick={editButton}
       >
-        <span>Edit</span>
+        Edit
       </button>
       {showModal ? (
         <>
@@ -56,7 +57,9 @@ export default function Edit(props: any) {
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 {/*header*/}
                 <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
-                  <h3 className="text-3xl font-semibold">Modal Title</h3>
+                  <h3 className="text-3xl font-semibold">
+                    Modal Title {props.id}
+                  </h3>
                   <button
                     className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                     onClick={() => setShowModal(false)}
@@ -73,16 +76,32 @@ export default function Edit(props: any) {
                       <div className="py-4 px-8 ">
                         <div className="flex gap-10 ">
                           <label className="py-2 text-black font-bold w-full">
-                            Region Name
+                            Task Name
                           </label>
                           <input
-                            className=" border rounded w-full py-2 px-3 text-black border-slate-900 "
+                            className="border rounded w-full py-2 px-3 text-black border-slate-900 "
                             type="text"
-                            name="regionName"
-                            id="regionName"
+                            name="setaName"
+                            id="setaName"
                             onChange={formik.handleChange}
-                            value={formik.values.regionName}
-                            placeholder="Region Name"
+                            value={formik.values.setaName}
+                            placeholder="Task Name"
+                          />
+                        </div>
+                      </div>
+                      <div className="py-4 px-8 ">
+                        <div className="flex gap-10 ">
+                          <label className="text-black py-2 font-bold w-full">
+                            Sequence Order
+                          </label>
+
+                          <input
+                            className="border rounded w-full py-2 px-3 text-black border-slate-900 "
+                            name="setSeq"
+                            id="setSeq"
+                            onChange={formik.handleChange}
+                            value={formik.values.setSeq}
+                            placeholder="Sequence Orderr"
                           />
                         </div>
                       </div>

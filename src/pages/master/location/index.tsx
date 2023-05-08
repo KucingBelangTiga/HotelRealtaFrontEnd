@@ -16,17 +16,27 @@ import Add from "./regions/Add";
 import Edit from "./regions/Edit";
 import Delete from "./regions/Delete";
 import LayoutMaster from "../layout";
+import AddCountry from "./countries/AddCountry";
+import EditCountry from "./countries/EditCountry";
+import DeleteCountry from "./countries/DeleteCountry";
+import AddProvince from "./provinces/AddProvince";
+import EditProvince from "./provinces/EditProvince";
+import DeleteProvince from "./provinces/DeleteProvince";
 
 export default function Index() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-  const [id, setId] = useState<number>();
+  const [id, setId] = useState<number>(0);
   const [first, setFirst] = useState(0);
   const [refresh, setRefresh] = useState(false);
+
   const { regions } = useSelector((state: any) => state.regionsState);
   const { countries } = useSelector((state: any) => state.countriesState);
   const { provinces } = useSelector((state: any) => state.provincesState);
   const { cities } = useSelector((state: any) => state.cityState);
+
+  const [selectedRegion, setSelectedRegion] = useState(regions[0]);
+  const [selectedCountry, setSelectedCountry] = useState(countries[0]);
 
   useEffect(() => {
     dispatch(GetRegionsRequest());
@@ -50,6 +60,40 @@ export default function Index() {
     );
   };
 
+  const kebabCountry = (rowData: any) => {
+    return (
+      <div>
+        <EditCountry
+          id={rowData.countryId}
+          setRefresh={setRefresh}
+          region={selectedRegion}
+        />
+        <DeleteCountry
+          id={rowData.countryId}
+          name={rowData.countryName}
+          setRefresh={setRefresh}
+        />
+      </div>
+    );
+  };
+
+  const kebabProvince = (rowData: any) => {
+    return (
+      <div>
+        <EditProvince
+          id={rowData.provId}
+          setRefresh={setRefresh}
+          country={selectedCountry}
+        />
+        <DeleteProvince
+          id={rowData.provId}
+          name={rowData.provName}
+          setRefresh={setRefresh}
+        />
+      </div>
+    );
+  };
+
   return (
     <div>
       <Layout>
@@ -59,7 +103,6 @@ export default function Index() {
           ) : (
             <div className="min-h-screen">
               <h2 className="text-center my-5 font-bold text-3xl">Regions</h2>
-
               <DataTable
                 value={regions}
                 stripedRows
@@ -68,7 +111,14 @@ export default function Index() {
                 paginator
                 rows={5}
                 first={first}
+                selectionMode="single"
+                selection={selectedRegion}
+                onSelectionChange={(e) => setSelectedRegion(e.value)}
               >
+                {/* <Column
+                  selectionMode="single"
+                  headerStyle={{ width: "3rem" }}
+                ></Column> */}
                 <Column field="regionCode" header="Code"></Column>
                 <Column field="regionName" header="Name"></Column>
                 <Column
@@ -87,14 +137,26 @@ export default function Index() {
                 paginator
                 rows={5}
                 first={first}
+                selectionMode="single"
+                selection={selectedCountry}
+                onSelectionChange={(e) => setSelectedCountry(e.value)}
               >
+                {/* <Column
+                  selectionMode="single"
+                  headerStyle={{ width: "3rem" }}
+                ></Column> */}
                 <Column field="countryId" header="Id"></Column>
                 <Column field="countryName" header="Name"></Column>
-                {/* <Column
+                <Column
                   field="countryId"
-                  header={<Add setRefresh={setRefresh} />}
-                  body={kebab}
-                ></Column> */}
+                  header={
+                    <AddCountry
+                      setRefresh={setRefresh}
+                      region={selectedRegion}
+                    />
+                  }
+                  body={kebabCountry}
+                ></Column>
               </DataTable>
 
               <h2 className="text-center my-5 font-bold text-3xl">Provinces</h2>
@@ -110,11 +172,16 @@ export default function Index() {
               >
                 <Column field="provId" header="Id"></Column>
                 <Column field="provName" header="Name"></Column>
-                {/* <Column
+                <Column
                   field="provId"
-                  header={<Add setRefresh={setRefresh} />}
-                  body={kebab}
-                ></Column> */}
+                  header={
+                    <AddProvince
+                      setRefresh={setRefresh}
+                      country={selectedCountry}
+                    />
+                  }
+                  body={kebabProvince}
+                ></Column>
               </DataTable>
 
               <h2 className="text-center my-5 font-bold text-3xl">City</h2>

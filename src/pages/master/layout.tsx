@@ -46,7 +46,7 @@ const navigation = [
   },
   {
     name: "Price Items",
-    href: "#",
+    href: "priceitems",
     svg: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -60,7 +60,7 @@ const navigation = [
   },
   {
     name: "Service Task",
-    href: "#",
+    href: "servicetask",
     svg: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -103,7 +103,9 @@ export default function LayoutMaster({
         </div>
       </aside>
 
-      <div>{children}</div>
+      <div className="p-10 sm:ml-72">
+        <div className="p-4 mt-14">{children}</div>
+      </div>
     </div>
   );
 }

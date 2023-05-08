@@ -10,9 +10,7 @@ export default function Layout(props: LayoutProps) {
   return (
     <div>
       <Header />
-      <div className="p-10 sm:ml-72">
-        <div className="p-4 mt-14">{children}</div>
-      </div>
+      {children}
     </div>
   );
 }

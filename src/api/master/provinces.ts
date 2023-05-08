@@ -31,7 +31,7 @@ const create = async (payload: any) => {
 const update = async (payload: any) => {
   try {
     const result = await axios.put(
-      `${config.domain}/provinces/${payload.regionCode}`,
+      `${config.domain}/provinces/${payload.provId}`,
       payload
     );
     return result;

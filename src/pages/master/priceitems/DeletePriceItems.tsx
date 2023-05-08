@@ -1,20 +1,20 @@
 import React, { useState } from "react";
-import { DelRegionsRequest } from "../../../../redux/action/master/regionsAction";
+import { DelPriceItemsRequest } from "../../../redux/action/master/priceItemsAction";
 import { useDispatch } from "react-redux";
 
-export default function Delete(props: any) {
+export default function DeletePriceItems(props: any) {
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
 
   const deleteModal = () => {
-    dispatch(DelRegionsRequest(props.id));
+    dispatch(DelPriceItemsRequest(props.id));
     props.setRefresh(true);
     setShowModal(false);
   };
   return (
     <>
       <button
-        className="bg-coldBlue text-white active:bg-coldBlue font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+        className="bg-darkBlue text-white active:bg-darkBlue font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
         type="button"
         onClick={() => setShowModal(true)}
       >
@@ -41,7 +41,8 @@ export default function Delete(props: any) {
                 {/*body*/}
                 <div className="relative p-6 flex-auto">
                   <p className="my-4 text-slate-500 text-lg leading-relaxed">
-                    Are you sure you want to delete region {props.name}
+                    Are you sure you want to delete Items {props.name}
+                    {props.id}
                   </p>
                 </div>
                 {/*footer*/}
