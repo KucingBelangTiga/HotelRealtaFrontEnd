@@ -116,6 +116,31 @@ function Booking() {
         }
     } 
 
+    const hotelReviewStar = (id) => {
+        let result = []
+        for(let i = 0; i < review.length; i++){
+            if(review[i]['horeHotel']['hotelId'] == id){
+                result.push(review[i]['horeRating'])
+            }
+        }
+        const sum = result.reduce((a, b) => a + b, 0);
+        const avg = (sum / result.length) || 0;
+        switch(avg){
+            case 1:
+                return ['/starorange2.png', '/stargrey2.png', '/stargrey2.png', '/stargrey2.png', '/stargrey2.png']
+            case 2:
+                return ['/starorange2.png', '/starorange2.png', '/stargrey2.png', '/stargrey2.png', '/stargrey2.png']
+            case 3:
+                return ['/starorange2.png', '/starorange2.png', '/starorange2.png', '/stargrey2.png', '/stargrey2.png']
+            case 4:
+                return ['/starorange2.png', '/starorange2.png', '/starorange2.png', '/starorange2.png', '/stargrey2.png']
+            case 5:
+                return ['/starorange2.png', '/starorange2.png', '/starorange2.png', '/starorange2.png', '/starorange2.png']
+            default:
+                return ['/stargrey2.png', '/stargrey2.png', '/stargrey2.png', '/stargrey2.png', '/stargrey2.png']
+        }
+    }
+
     const onFormChange = (e, updatedAt) => {
         const name = e.target.name;
         const value = e.target.value;
@@ -226,7 +251,13 @@ function Booking() {
                                         <p>Guest Ratings: {reviewList(hotel[hotelItem]['hotelId'])}</p>
                                     </Card.Text> */}
                                     <Card.Text>
-                                        <p>Guest Ratings: {hotelReview(hotel[hotelItem]['hotelId'])}</p>
+                                        <p>Guest Ratings:
+                                            <span><img src={hotelReviewStar(hotel[hotelItem]['hotelId'])[0]} alt="" style={{ maxHeigh:20, maxWidth:20, display:'inline' }}/></span>
+                                            <span><img src={hotelReviewStar(hotel[hotelItem]['hotelId'])[1]} alt="" style={{ maxHeigh:20, maxWidth:20, display:'inline' }}/></span>
+                                            <span><img src={hotelReviewStar(hotel[hotelItem]['hotelId'])[2]} alt="" style={{ maxHeigh:20, maxWidth:20, display:'inline' }}/></span>
+                                            <span><img src={hotelReviewStar(hotel[hotelItem]['hotelId'])[3]} alt="" style={{ maxHeigh:20, maxWidth:20, display:'inline' }}/></span>
+                                            <span><img src={hotelReviewStar(hotel[hotelItem]['hotelId'])[4]} alt="" style={{ maxHeigh:20, maxWidth:20, display:'inline' }}/></span>
+                                        </p>
                                     </Card.Text>
                                     <Card.Text>
                                         Contact : {hotel[hotelItem]['hotelPhonenumber']}
