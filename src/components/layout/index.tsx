@@ -10,8 +10,7 @@ export default function Layout(props: LayoutProps) {
   return (
     <div>
       <Header />
-      <div>{children}</div>
-      <Footer />
+      {children}
     </div>
   );
 }

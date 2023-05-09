@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Layout from "../../../components/layout";
+import Layout from "@/components/layout";
 import { useDispatch, useSelector } from "react-redux";
 import { FindHotelsRequest } from "../../../redux/action/hotel/hotelsAction";
 import { GetFacilitiesRequest } from "../../../redux/action/hotel/facilitiesAction";
-import KebabMenuView from "../../../components/layout/KebabMenuView";
-import Pagination from "../../../components/component/Pagination";
+import KebabMenuView from "@/components/layout/KebabMenuView";
+import Pagination from "@/components/component/Pagination";
 import { useRouter } from "next/router";
 
 export default function Index() {

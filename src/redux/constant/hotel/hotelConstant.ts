@@ -1,7 +1,3 @@
-export const GETALL_HOTELS_REQUEST = "getAll/hotels/request";
-export const GETALL_HOTELS_SUCCESS = "getAll/hotels/success";
-export const GETALL_HOTELS_FAILED = "getAll/hotels/failed";
-
 export const GET_HOTELS_REQUEST = "get/hotels/request";
 export const GET_HOTELS_SUCCESS = "get/hotels/success";
 export const GET_HOTELS_FAILED = "get/hotels/failed";

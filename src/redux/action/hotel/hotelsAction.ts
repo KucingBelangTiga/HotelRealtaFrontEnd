@@ -1,22 +1,7 @@
 import * as ActionHotels from "../../constant/hotel/hotelConstant";
 
-export const GetAllHotelsRequest = () => ({
-  type: ActionHotels.GETALL_HOTELS_REQUEST,
-});
-
-export const GetAllHotelsSuccess = (payload: any) => ({
-  type: ActionHotels.GETALL_HOTELS_SUCCESS,
-  payload,
-});
-
-export const GetAllHotelsFailed = (payload: any) => ({
-  type: ActionHotels.GETALL_HOTELS_FAILED,
-  payload,
-});
-
-export const GetHotelsRequest = (payload: any) => ({
+export const GetHotelsRequest = () => ({
   type: ActionHotels.GET_HOTELS_REQUEST,
-  payload,
 });
 
 export const GetHotelsSuccess = (payload: any) => ({

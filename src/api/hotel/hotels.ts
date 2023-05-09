@@ -1,20 +1,9 @@
 import axios from "axios";
 import config from "../../config/config";
 
-const listAll = async () => {
+const list = async () => {
   try {
     const result = await axios.get(`${config.domain}/hotels/`);
-    return result.data;
-  } catch (error) {
-    return await error;
-  }
-};
-
-const list = async (action: any) => {
-  try {
-    const result = await axios.get(
-      `${config.domain}/hotels/?page=${action.page}&name=${action.name}`
-    );
     return result.data;
   } catch (error) {
     return await error;
@@ -66,7 +55,6 @@ const allApi = {
   create,
   update,
   findOne,
-  listAll,
 };
 
 export default allApi;

@@ -1,8 +1,6 @@
 import { call, put } from "redux-saga/effects";
 import Hotels from "../../../api/hotel/hotels";
 import {
-  GetAllHotelsSuccess,
-  GetAllHotelsFailed,
   GetHotelsSuccess,
   GetHotelsFailed,
   AddHotelsSuccess,
@@ -15,19 +13,9 @@ import {
   DelHotelsFailed,
 } from "../../action/hotel/hotelsAction";
 
-function* handleAllHotels(): any {
+function* handleHotels(): any {
   try {
-    const result = yield call(Hotels.listAll);
-    yield put(GetAllHotelsSuccess(result));
-  } catch (error) {
-    yield put(GetAllHotelsFailed(error));
-  }
-}
-
-function* handleHotels(action: any): any {
-  const { payload } = action;
-  try {
-    const result = yield call(Hotels.list, payload);
+    const result = yield call(Hotels.list);
     yield put(GetHotelsSuccess(result));
   } catch (error) {
     yield put(GetHotelsFailed(error));
@@ -74,11 +62,4 @@ function* deleteHotels(action: any): any {
   }
 }
 
-export {
-  handleAllHotels,
-  handleHotels,
-  handleAddHotels,
-  findHotels,
-  editHotels,
-  deleteHotels,
-};
+export { handleHotels, handleAddHotels, findHotels, editHotels, deleteHotels };

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Layout from "../../../components/layout";
+import Layout from "@/components/layout";
 import { useDispatch, useSelector } from "react-redux";
 import { GetFacPriceHistRequest } from "../../../redux/action/hotel/facilityPriceHistoryAction";
 import { useRouter } from "next/router";

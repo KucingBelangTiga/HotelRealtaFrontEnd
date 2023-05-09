@@ -6,7 +6,6 @@ import * as ActionCategoryGroup from "../constant/master/categoryGroupConstant";
 import * as ActionAddress from "../constant/master/addressConstant";
 import * as ActionFacilityPhotos from "../constant/hotel/facilityPhotosConstant";
 import {
-  handleAllHotels,
   handleHotels,
   handleAddHotels,
   findHotels,
@@ -39,7 +38,6 @@ import {
 } from "./hotel/facilitiesSaga";
 function* watchAll() {
   yield all([
-    takeEvery(ActionHotels.GETALL_HOTELS_REQUEST, handleAllHotels),
     takeEvery(ActionHotels.GET_HOTELS_REQUEST, handleHotels),
     takeEvery(ActionHotels.ADD_HOTELS_REQUEST, handleAddHotels),
     takeEvery(ActionHotels.FIND_HOTELS_REQUEST, findHotels),
