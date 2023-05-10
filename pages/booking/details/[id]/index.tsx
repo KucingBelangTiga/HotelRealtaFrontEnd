@@ -12,15 +12,21 @@ import { useRouter } from 'next/router';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Carousel from 'react-bootstrap/Carousel';
 import ProgressBar from 'react-bootstrap/ProgressBar';
+import Modal from 'react-bootstrap/Modal';
+import React, {useRef} from 'react';
+
 
 export default function HotelDetails(){
     const [hotel, setHotel] = useState<any[]>([])
     const [facility, setFacility] = useState<any[]>([])
     const [review, setReviews] = useState<any[]>([])
+    const [voucher, setVoucher] = useState<any[]>([])
     const [refresh, setRefresh] = useState<any>(false)
     // const [id, setId] = useState()
     // const router = useRouter()
     const [values, setValues] = useState({});
+    const [values2, setValues2] = useState({});
+    const [smShow, setSmShow] = useState(false);
 
     const router = useRouter();
 
@@ -51,6 +57,16 @@ export default function HotelDetails(){
             Hotel.GetReviews().then
                 (data => {
                     setReviews(data)
+                })
+        }, 2000)
+        return () => clearInterval(intervalId);
+    }, [refresh])
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            Hotel.GetVoucherList().then
+                (data => {
+                    setVoucher(data)
                 })
         }, 2000)
         return () => clearInterval(intervalId);
@@ -138,8 +154,6 @@ export default function HotelDetails(){
         return [avg1*20, avg2*20, avg3*20, avg4*20, avg5*20]
     }
 
-    // console.log(hotelReviewPercent(id))
-
     const hotelReviewCount = (id) => {
         let result = []
         for(let i = 0; i < review.length; i++){
@@ -168,7 +182,109 @@ export default function HotelDetails(){
         }
     }
 
-    // console.log(hotelReviewStar(id)[1])
+    const onFormChange = (e, updatedAt) => {
+        const name = e.target.name;
+        const value = e.target.value;
+        setValues({ ...values, [name]: value });
+    };
+
+    const onFormChange2 = (e, updatedAt) => {
+        const id = e.target.id;
+        const value = e.target.value;
+        let count = 0
+        setValues2({ ...values2, [id]: {value, count: count+1} });
+    };
+
+    const inverseState = (id) => {
+        // if(values2[1][id]['count']%2 == 0){
+
+        // }
+    }
+
+    const bookSubmitHandler: FormEventHandler = (event) => {
+        event.preventDefault();
+        event.persist();
+        // console.log('push data somewhere :)')
+        console.log([values,values2]);
+    };
+
+    const currencyFormatter = new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR',
+    });
+
+    const appliedVoucherList = () => {
+        let vlid = []
+        for(var prop in values2){
+            vlid.push({'spofId': prop});
+        }
+        let results = voucher.filter(({ spofId: id1 }) => vlid.some(({ spofId: id2 }) => id2 == id1));
+        return results
+    }
+
+    // console.log(voucher);
+
+    const moneyToInt = (money) => {
+        let without_rp = money.toString().slice(2)
+        let remove_dot = without_rp.split('.').join('')
+        let result = parseInt(remove_dot)
+        return result
+    }
+
+    const moneyToInt2 = (money = 0) => {
+        let without_rp = money.toString().slice(3)
+        let remove_dot = without_rp.split('.').join('').slice(0,without_rp.length-3)
+        let result = parseInt(remove_dot)
+        return result
+    }
+
+    const getDiscountPrice = () => {
+        let result = [0]
+        for(let i = 0; i < appliedVoucherList().length; i++){
+            result.push(moneyToInt(appliedVoucherList()[i]['spofDiscount']))
+        }
+        return result
+    }
+
+    // console.log(getDiscountPrice())
+
+    const priceList = (id) => {
+        for(let i = 0; i<facility.length; i++){
+            if(facility[i]['faciHotel']['hotelId'] == id && facility[i]['faciMeasureUnit'] == 'Beds'){
+                if(facility[i]['faciDiscount'] === 'Rp0'){
+                    let disc = 0
+                    for(let j = 0; j < getDiscountPrice().length; j++){
+                        disc += getDiscountPrice()[j]
+                    }
+                    let real_price = moneyToInt(facility[i]['faciRatePrice']) + moneyToInt(facility[i]['faciTaxRate']) - disc
+                    if(real_price>0){
+                        return currencyFormatter.format(real_price)
+                    }else{
+                        return currencyFormatter.format(0)
+                    }
+                }else if(facility[i]['faciTaxRate'] === 'Rp0'){
+                    let real_price = moneyToInt(facility[i]['faciRatePrice']) - moneyToInt(facility[i]['faciDiscount'])
+                    return `${currencyFormatter.format(real_price)} <strike>${currencyFormatter.format(moneyToInt(facility[i]['faciRatePrice']))}</strike>`
+                }
+            }
+        }
+        if(facility[id] === undefined){
+            return 'still loading';
+        }
+    }
+
+    const hotelAminities = (id) => {
+        let result = [];
+        for(let i = 0; i<facility.length; i++){
+            if(facility[i]['faciHotel']['hotelId'] == id){
+                result.push(facility[i]['faciName']);
+            }
+        }
+        return result
+    }
+
+    // console.log(getDiscountPrice());
+    // console.log(hotelAminities(1));
 
     return(
         <Layout>   
@@ -222,9 +338,9 @@ export default function HotelDetails(){
                                 </Row>
                                 <Row>
                                     <h3>Aminities</h3>
-                                    <p>{Array.from(facility).map((_, faciItem) => (
-                                            ((facility[faciItem]['faciHotel']['hotelId'])==(hotel[id-1]['hotelId']) ? facility[faciItem]['faciName'] : '')
-                                        ))}</p>
+                                    <p>{Array.from(hotelAminities(id)).map((_, faciItem) => (
+                                        hotelAminities(id)[faciItem]
+                                    )).join(', ')}</p>
                                 </Row>
                                 <Row>
                                     <h3>Rating & Reviews</h3>
@@ -254,15 +370,50 @@ export default function HotelDetails(){
                             </Row>
                         </Row>
                     </Col>
-                    <Col xs lg="2" className='mt-5'>
-                        <Card>
+                    <Col xs lg="3" className='mt-5 ml-1'>
+                        <Card className='p-3'>
                             <Card.Header>
-                                Book and Vouchers
+                                Book Form
                             </Card.Header>
+                            <Card.Text>Price: {priceList(id)}</Card.Text>
+                            <Form onSubmit={bookSubmitHandler}>
+                                <Form.Group controlId='formCheckIn' className='mb-2'>
+                                    <Form.Label>Check In</Form.Label>
+                                    <Form.Control name='check_in' type='date' onChange={onFormChange}></Form.Control>
+                                </Form.Group>
+                                <Form.Group controlId='formCheckOut' className='mb-2'>
+                                    <Form.Label>Check Out</Form.Label>
+                                    <Form.Control name='check_out' type='date' onChange={onFormChange}></Form.Control>
+                                </Form.Group>
+                                <Button onClick={() => setSmShow(true)} className="me-2">Select Vouchers</Button>
+                                {(appliedVoucherList().length != 0)?
+                                    <p>Voucher Applied: {Array.from(appliedVoucherList()).map((_,v)=>(
+                                        appliedVoucherList()[v].spofDescription
+                                    ).replace(/,/g, '')).join(', ')}</p>
+                                : ''} 
+                                <br /><hr />
+                                <Button variant='success' type='submit'>Book Now</Button>
+                            </Form>
                         </Card>
                     </Col>
                 </Row>
             </Container>
+                <Modal
+                    size="sm"
+                    show={smShow}
+                    onHide={() => setSmShow(false)}
+                    aria-labelledby="example-modal-sizes-title-sm">
+                    <Modal.Header closeButton>
+                        <Modal.Title id="example-modal-sizes-title-sm">
+                            Vouchers
+                        </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        {Array.from(voucher).map((_, vouchers) => (
+                            <Form.Check type='checkbox' name={voucher[vouchers].spofId} label={voucher[vouchers].spofName} id={voucher[vouchers].spofId} onChange={onFormChange2} onClick={inverseState(voucher[vouchers].spofId)}/>
+                        ))}
+                    </Modal.Body>
+                </Modal>
         </Layout>
     );
 }

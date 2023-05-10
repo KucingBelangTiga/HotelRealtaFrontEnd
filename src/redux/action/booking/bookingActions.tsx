@@ -56,6 +56,20 @@ export const GetReviewsFailed = (payload: any) => ({
     payload
 })
 
+export const GetVoucherListRequest = (payload: any) => ({
+    type: ActionBooking.VOUCHER_DATA_REQUEST
+})
+
+export const GetVoucherListSuccess = (payload: any) => ({
+    type: ActionBooking.VOUCHER_DATA_SUCCESS,
+    payload
+})
+
+export const GetVoucherListFailed = (payload: any) => ({
+    type: ActionBooking.VOUCHER_DATA_FAILED, 
+    payload
+})
+
 export const AddBookingRequest = (payload: any) => ({
     type: ActionBooking.ADD_DATA_REQUEST,
     payload

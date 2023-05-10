@@ -22,6 +22,8 @@ const BookingReduce = (state = init_state, action: any) => {
             return HotelFacilitiesData(state,action)
         case ActionType.REVIEW_DATA_SUCCESS:
             return ReviewsData(state,action)
+        case ActionType.VOUCHER_DATA_SUCCESS:
+            return VoucherData(state,action)
         default:
             return { ...state };
     }
@@ -50,6 +52,14 @@ const HotelFacilitiesData = (state: any, action: any) => {
 }
 
 const ReviewsData = (state: any, action: any) => {
+    const {payload} = action
+    return {
+        ...state,
+        bookings: [action.payload,payload]
+    }
+}
+
+const VoucherData = (state: any, action: any) => {
     const {payload} = action
     return {
         ...state,

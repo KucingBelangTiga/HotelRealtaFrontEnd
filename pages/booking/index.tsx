@@ -146,6 +146,16 @@ function Booking() {
         const value = e.target.value;
         setValues({ ...values, [name]: value });
     };
+
+    const hotelAminities = (id) => {
+        let result = [];
+        for(let i = 0; i<facility.length; i++){
+            if(facility[i]['faciHotel']['hotelId'] == id){
+                result.push(facility[i]['faciName']);
+            }
+        }
+        return result
+    }
     
     // const submitHandler: FormEventHandler = (event) => {
     // event.preventDefault();
@@ -243,9 +253,9 @@ function Booking() {
                                         {hotel[hotelItem]['hotelDescription']}
                                     </Card.Text>
                                     <Card.Text>
-                                        Facilities : {Array.from(facility).map((_, faciItem) => (
-                                            ((facility[faciItem]['faciHotel']['hotelId'])==(hotel[hotelItem]['hotelId']) ? facility[faciItem]['faciName'] : '')
-                                        ))}
+                                        Facilities : {Array.from(hotelAminities(hotel[hotelItem]['hotelId'])).map((_, faciItem) => (
+                                        hotelAminities(hotel[hotelItem]['hotelId'])[faciItem]
+                                    )).join(', ')}
                                     </Card.Text>
                                     {/* <Card.Text>
                                         <p>Guest Ratings: {reviewList(hotel[hotelItem]['hotelId'])}</p>
