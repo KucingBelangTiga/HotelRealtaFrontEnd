@@ -49,7 +49,7 @@ export default function Index() {
           <h1>loading</h1>
         ) : (
           <div className="min-h-screen">
-            <h2 className="text-center my-5 font-bold text-3xl">Regions</h2>
+            <h2 className="text-center my-5 font-bold text-3xl">Policy</h2>
             <DataTable
               value={policies}
               stripedRows

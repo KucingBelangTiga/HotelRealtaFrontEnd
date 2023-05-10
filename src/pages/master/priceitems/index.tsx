@@ -13,13 +13,16 @@ import AddPriceItems from "./AddPriceItems";
 import EditPriceItems from "./EditPriceItems";
 import DeletePriceItems from "./DeletePriceItems";
 
+const categories = ["SOFTDRINK", "SNACK", "FOOD", "FACILITY", "SERVICE"];
+
 export default function Index() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [id, setId] = useState<number>(0);
   const [first, setFirst] = useState(0);
   const [refresh, setRefresh] = useState(false);
-
+  const [filterTags, setFilterTags] = useState([]);
+  const [categoryFilters, setcategoryFilters] = useState(new Set());
   const { priceItems } = useSelector((state: any) => state.priceItemsState);
 
   useEffect(() => {
@@ -41,6 +44,22 @@ export default function Index() {
     );
   };
 
+  const updateFilters = (checked: any, categoryFilter: any) => {
+    if (checked)
+      setcategoryFilters((prev) => new Set(prev).add(categoryFilter));
+    if (!checked)
+      setcategoryFilters((prev) => {
+        const next = new Set(prev);
+        next.delete(categoryFilter);
+        return next;
+      });
+  };
+
+  const filteredProducts =
+    categoryFilters.size === 0
+      ? priceItems
+      : priceItems.filter((p: any) => categoryFilters.has(p.pritType));
+
   return (
     <Layout>
       <LayoutMaster>
@@ -48,7 +67,7 @@ export default function Index() {
           <h1>loading</h1>
         ) : (
           <div className="min-h-screen">
-            <h2 className="text-center my-5 font-bold text-3xl">Regions</h2>
+            <h2 className="text-center my-5 font-bold text-3xl">Price Items</h2>
             <DataTable
               value={priceItems}
               stripedRows
@@ -68,6 +87,29 @@ export default function Index() {
                 body={kebabPriceItems}
               ></Column>
             </DataTable>
+            <div>
+              <div>
+                {categories.map((elm, index) => {
+                  return (
+                    <div className="form-check ms-2" key={index}>
+                      <label className="form-check-label">
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          onChange={(e) => updateFilters(e.target.checked, elm)}
+                        />
+                        {elm}
+                      </label>
+                    </div>
+                  );
+                })}
+              </div>
+              <ul>
+                {filteredProducts.map((node: any) => (
+                  <li key={node.pritId}>{node.pritName}</li>
+                ))}
+              </ul>
+            </div>
           </div>
         )}
       </LayoutMaster>
