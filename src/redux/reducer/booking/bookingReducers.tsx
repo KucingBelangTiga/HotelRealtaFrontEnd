@@ -67,6 +67,14 @@ const VoucherData = (state: any, action: any) => {
     }
 }
 
+const PriceItemsData = (state: any, action: any) => {
+    const {payload} = action
+    return {
+        ...state,
+        bookings: [action.payload,payload]
+    }
+}
+
 const AddBooking = (state:any, action:any) => {
     const {payload} = action
     return {

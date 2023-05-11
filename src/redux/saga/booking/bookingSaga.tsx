@@ -19,7 +19,9 @@ import {
     GetReviewsSuccess,
     GetReviewsFailed,
     GetVoucherListSuccess,
-    GetVoucherListFailed
+    GetVoucherListFailed,
+    GetPriceItemsSuccess,
+    GetPriceItemsFailed
 } from '../../action/booking/bookingActions'
 
 function* handleGetBooking(): any {
@@ -68,6 +70,15 @@ function* handleGetVoucherList(): any {
     }
 }
 
+function* handleGetPriceItems(): any {
+    try {
+        const result = yield call(Booking.GetPriceItems)
+        yield put(GetPriceItemsSuccess(result))
+    } catch (error) {
+        yield put(GetPriceItemsFailed(error))
+    }
+}
+
 function* handleAddBooking(action:any) {
     const {payload} = action
     try {
@@ -85,4 +96,5 @@ export {
     handleGetHotelFacilities,
     handleGetReviews,
     handleGetVoucherList,
+    handleGetPriceItems,
 }

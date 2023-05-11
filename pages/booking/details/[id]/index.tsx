@@ -14,6 +14,9 @@ import Carousel from 'react-bootstrap/Carousel';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import Modal from 'react-bootstrap/Modal';
 import React, {useRef} from 'react';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
 
 
 export default function HotelDetails(){
@@ -21,16 +24,36 @@ export default function HotelDetails(){
     const [facility, setFacility] = useState<any[]>([])
     const [review, setReviews] = useState<any[]>([])
     const [voucher, setVoucher] = useState<any[]>([])
+    const [priceItems, setPriceItems] = useState<any[]>([])
     const [refresh, setRefresh] = useState<any>(false)
     // const [id, setId] = useState()
     // const router = useRouter()
     const [values, setValues] = useState({});
     const [values2, setValues2] = useState({});
+    const [values3, setValues3] = useState({});
     const [smShow, setSmShow] = useState(false);
+    const [show2, setShow2] = useState(false);
+    const [food, setFood] = useState([]);
+    const [service, setService] = useState([]);
+    const [others, setOthers] = useState([]);
+    const [addon, setAddOn] = useState([]);
+    const [fullscreen, setFullscreen] = useState(true);
+    // const [checkedState, setCheckedState] = useState(
+    //     Array(voucher.length).fill(false),
+    //     // console.log(Array(voucher.length).fill(false))
+    // );
+    const [checkedState, setCheckedState] = useState([])
+    const [totalDiscount, setTotal] = useState(0);
 
     const router = useRouter();
 
     const {id} = router.query;
+
+    // console.log([food,service,others])
+
+    useEffect(() => {
+        setCheckedState(Array(voucher.length).fill(false))
+    },[voucher.length])
 
     useEffect(() => {
         const intervalId = setInterval(() => {
@@ -71,6 +94,18 @@ export default function HotelDetails(){
         }, 2000)
         return () => clearInterval(intervalId);
     }, [refresh])
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            Hotel.GetPriceItems().then
+                (data => {
+                    setPriceItems(data)
+                })
+        }, 2000)
+        return () => clearInterval(intervalId);
+    }, [refresh])
+
+    // console.log(priceItems)
 
     const hotelName = (id) => {
         let result = '';
@@ -192,20 +227,16 @@ export default function HotelDetails(){
         const id = e.target.id;
         const value = e.target.value;
         let count = 0
-        setValues2({ ...values2, [id]: {value, count: count+1} });
+        setValues2({ ...values2, [id]: value});
     };
-
-    const inverseState = (id) => {
-        // if(values2[1][id]['count']%2 == 0){
-
-        // }
-    }
 
     const bookSubmitHandler: FormEventHandler = (event) => {
         event.preventDefault();
         event.persist();
         // console.log('push data somewhere :)')
-        console.log([values,values2]);
+        // console.log([values,values2]);
+        // console.log(values);
+        // console.log(values2);
     };
 
     const currencyFormatter = new Intl.NumberFormat('id-ID', {
@@ -238,13 +269,36 @@ export default function HotelDetails(){
         return result
     }
 
-    const getDiscountPrice = () => {
-        let result = [0]
-        for(let i = 0; i < appliedVoucherList().length; i++){
-            result.push(moneyToInt(appliedVoucherList()[i]['spofDiscount']))
-        }
-        return result
-    }
+    const appliedVoucherList2 = (position) => {
+        const updatedCheckedState = checkedState.map((item, index) =>
+            index === position ? !item : item
+        );
+    
+        setCheckedState(updatedCheckedState);
+    
+        const totalPrice = updatedCheckedState.reduce(
+        (sum, currentState, index) => {
+            if (currentState === true) {
+                return sum + moneyToInt(voucher[index].spofDiscount);
+            }
+            return sum;
+        },0);
+        console.log(totalPrice)
+        setTotal(totalPrice);
+    };
+
+    // console.log(totalDiscount)
+
+    // const getDiscountPrice = () => {
+    //     let result = [0]
+    //     for(let i = 0; i < appliedVoucherList().length; i++){
+    //         result.push(moneyToInt(appliedVoucherList()[i]['spofDiscount']))
+    //     }
+    //     // for(let i = 0; i < appliedVoucherList2().length; i++){
+    //     //     result.push(moneyToInt(appliedVoucherList()[i]['spofDiscount']))
+    //     // }
+    //     return result
+    // }
 
     // console.log(getDiscountPrice())
 
@@ -253,10 +307,7 @@ export default function HotelDetails(){
             if(facility[i]['faciHotel']['hotelId'] == id && facility[i]['faciMeasureUnit'] == 'Beds'){
                 if(facility[i]['faciDiscount'] === 'Rp0'){
                     let disc = 0
-                    for(let j = 0; j < getDiscountPrice().length; j++){
-                        disc += getDiscountPrice()[j]
-                    }
-                    let real_price = moneyToInt(facility[i]['faciRatePrice']) + moneyToInt(facility[i]['faciTaxRate']) - disc
+                    let real_price = moneyToInt(facility[i]['faciRatePrice']) + moneyToInt(facility[i]['faciTaxRate']) - totalDiscount + addOnPriceTotal()
                     if(real_price>0){
                         return currencyFormatter.format(real_price)
                     }else{
@@ -283,8 +334,63 @@ export default function HotelDetails(){
         return result
     }
 
+    const priceItemLists = () => {
+        let foodsnack = ['select'];
+        let facilityservice = ['select'];
+        let priceitemsothers = ['select'];
+        for(let i = 0; i<priceItems.length; i++){
+            if(priceItems[i]['pritType'] == 'SERVICE' || priceItems[i]['pritType'] == 'FACILITY'){
+                facilityservice.push(priceItems[i])
+            }else if(priceItems[i]['pritType'] == 'FOOD' || priceItems[i]['pritType'] == 'SOFTDRINK' || priceItems[i]['pritType'] == 'SNACK'){
+                foodsnack.push(priceItems[i]);
+            }else{
+                priceitemsothers.push(priceItems[i]);
+            }
+        }
+        return ([foodsnack, facilityservice, priceitemsothers])
+    }
+
+    const addOnAdded = () => {
+        let result = [];
+        let resultId = [];
+        for(let i = 1; i<addon.length; i++){
+            let a = addon[i].split(' | ');
+            result.push(a[1]);
+            resultId.push(a[0]);
+        }
+        return [result, resultId]
+    }
+
+    const addOnDetail = () => {
+        let result = [];
+        for(let i = 0; i<addOnAdded()[1].length; i++){
+            for(let j = 0; j<priceItems.length; j++){
+                if(priceItems[j]['pritId'] == addOnAdded()[1][i]){
+                    result.push(priceItems[j]);
+                }
+            }
+        }
+        return result
+    }
+
+    const addOnPriceTotal = () => {
+        let result = 0
+        for(let i=0; i<addOnDetail().length; i++){
+            result += moneyToInt(addOnDetail()[i]['pritPrice'])
+        }
+        return result
+    }
+
+    // console.log(priceItemLists());
+
     // console.log(getDiscountPrice());
     // console.log(hotelAminities(1));
+    // console.log(values);
+
+    // console.log(addon)
+    // console.log(addOnAdded());
+    // console.log(addOnDetail());
+    // console.log(addOnPriceTotal());
 
     return(
         <Layout>   
@@ -392,7 +498,9 @@ export default function HotelDetails(){
                                     ).replace(/,/g, '')).join(', ')}</p>
                                 : ''} 
                                 <br /><hr />
-                                <Button variant='success' type='submit'>Book Now</Button>
+                                <Button onClick={
+                                    (values.check_in == undefined || values.check_out == undefined) ? ()=>{alert("Please fill both check in and check out date")} : 
+                                ()=>setShow2(true)} variant='success' type='submit'>Book Now</Button>
                             </Form>
                         </Card>
                     </Col>
@@ -409,9 +517,127 @@ export default function HotelDetails(){
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        {Array.from(voucher).map((_, vouchers) => (
+                        {/* {Array.from(voucher).map((_, vouchers) => (
                             <Form.Check type='checkbox' name={voucher[vouchers].spofId} label={voucher[vouchers].spofName} id={voucher[vouchers].spofId} onChange={onFormChange2} onClick={inverseState(voucher[vouchers].spofId)}/>
-                        ))}
+                        ))} */}
+                        <ul style={{ listStyle:'none',padding:0 }}>
+                        {voucher.map(({spofName, spofDiscount, spofId},index) => {
+                            return(
+                            <li key={index}>
+                                <div className='left-section'>
+                                    <input type="checkbox" id={spofId} name={spofId} value={spofId} checked={checkedState[index]} onChange={()=>appliedVoucherList2(index)} onClick={onFormChange2}/>
+                                    <label htmlFor={spofId}>{spofName}</label>
+                                </div>
+                                <div className='right-section'>{spofDiscount}</div>
+                            </li>
+                            )
+                        })}
+                        </ul>
+                    </Modal.Body>
+                </Modal>
+                <Modal size="sm" show={show2} onHide={() => setShow2(false)} fullscreen={fullscreen} aria-labelledby="example-modal-sizes-title-sm">
+                    <Modal.Header closeButton>
+                        <Modal.Title id="example-modal-sizes-title-sm">Modify Your Booking</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Row>
+                            <Col>
+                                <Card>
+                                    <Card.Header>Booking Information</Card.Header>
+                                    <Form className='p-3'>
+                                        <h2>1. Enter your details</h2>
+                                        <Card.Text>We will use these details to share your booking information</Card.Text>
+                                        <Form.Group className='mb-2'>
+                                            <Form.Label>Full Name</Form.Label>
+                                            <Form.Control></Form.Control>
+                                        </Form.Group>
+                                        <Form.Group className='mb-2'>
+                                            <Form.Label>Email</Form.Label>
+                                            <Form.Control></Form.Control>
+                                        </Form.Group>
+                                        <Form.Group className='mb-2'>
+                                            <Form.Label>Mobile Number</Form.Label>
+                                            <Form.Control></Form.Control>
+                                        </Form.Group>
+                                        <hr />
+                                        <h2>2. Complete your booking</h2>
+                                        <Form.Group>
+                                            <Form.Label className='mr-2'>Food and Snack Add-On:</Form.Label>
+                                            <select
+                                                // onChange={(e) => setFood(e.target.id)}
+                                                onChange={(e) => setFood(e.currentTarget.value)}
+                                                onClick={(e)=> (!addon.includes(e.currentTarget.value))?addon.push(e.currentTarget.value):''}
+                                                defaultValue={food}>
+                                                {priceItemLists()[0].map((option,idx) => (
+                                                    <option id={priceItemLists()[0][idx]['pritId']} key={priceItemLists()[0][idx]['pritId']}>{priceItemLists()[0][idx]['pritId']}<p>{' | '}{priceItemLists()[0][idx]['pritName']}</p></option>
+                                                ))}
+                                            </select>
+                                            {/* <DropdownButton as={ButtonGroup} key='info' id='info' variant='info' title='Food and Snack Add-On' onChange={(e)=>setFood(e.target.value)} defaultValue={food}>
+                                                {Array.from(priceItemLists()[0]).map((_,food)=>(
+                                                    <Dropdown.Item key={priceItems[food]['pritId']}>{priceItems[food]['pritName']}</Dropdown.Item>
+                                                ))}
+                                            </DropdownButton> */}
+                                        </Form.Group><br></br>
+                                        <Form.Group>
+                                            <Form.Label className='mr-2'>Facility and Service Add-On:</Form.Label>
+                                            <select
+                                                onChange={(e) => setService(e.currentTarget.value)}
+                                                onClick={(e)=> (!addon.includes(e.currentTarget.value))?addon.push(e.currentTarget.value):''}
+                                                defaultValue={service}>
+                                                {priceItemLists()[1].map((option,idx) => (
+                                                    <option id={priceItemLists()[1][idx]['pritId']} key={priceItemLists()[1][idx]['pritId']}>{priceItemLists()[1][idx]['pritId']}<p>{' | '}{priceItemLists()[1][idx]['pritName']}</p></option>
+                                                ))}
+                                            </select>
+                                        </Form.Group><br></br>
+                                        <Form.Group>
+                                            <Form.Label className='mr-2'>Other Add-On:</Form.Label>
+                                            <select
+                                                onChange={(e) => setOthers(e.currentTarget.value)}
+                                                onClick={(e)=> (!addon.includes(e.currentTarget.value))?addon.push(e.currentTarget.value):''}
+                                                defaultValue={others}>
+                                                {priceItemLists()[2].map((option,idx) => (
+                                                    <option id={priceItemLists()[2][idx]['pritId']} key={priceItemLists()[2][idx]['pritId']}>{priceItemLists()[2][idx]['pritId']}<p>{' | '}{priceItemLists()[2][idx]['pritName']}</p></option>
+                                                ))}
+                                            </select>
+                                        </Form.Group>
+                                        <Form.Label>Add On Items Added: {addOnAdded()[0].join(', ')}</Form.Label>
+                                        <hr />
+                                        <h2>3. Payment</h2>
+                                        <Form.Group>
+                                            <Form.Label className='mr-2'>Type:</Form.Label>
+                                            <DropdownButton as={ButtonGroup} key='secondary' id='secondary' variant='secondary' title='secondary'>
+                                                <Dropdown.Item eventKey="1">Action</Dropdown.Item>
+                                                <Dropdown.Item eventKey="2">Another action</Dropdown.Item>
+                                                <Dropdown.Item eventKey="3" active>Active Item</Dropdown.Item>
+                                                <Dropdown.Divider />
+                                                <Dropdown.Item eventKey="4">Separated link</Dropdown.Item>
+                                            </DropdownButton>
+                                        </Form.Group>
+                                        <Form.Group>
+                                            <Form.Label>Account Payment</Form.Label>
+                                            <Form.Control></Form.Control>
+                                        </Form.Group>
+                                        <hr />
+                                        <Button variant='success' type='submit'>Proceed Booking</Button>
+                                    </Form>
+                                </Card>
+                            </Col>
+                            <Col xs lg="3">
+                                <Card>
+                                    <Card.Header>Price and Date</Card.Header>
+                                    <Row className='p-3'>
+                                        <Card.Text>Book for: {values.check_in} until {values.check_out}</Card.Text>
+                                        <Card.Text>
+                                            Voucher Applied: {Array.from(appliedVoucherList()).map((_,v)=>(
+                                                appliedVoucherList()[v].spofDescription
+                                            ).replace(/,/g, '')).join(', ')}
+                                        </Card.Text>
+                                        <Card.Text>Total Discount Applied: {currencyFormatter.format(totalDiscount)}</Card.Text>
+                                        <Card.Text>Grand Total (incl. tax): {priceList(id)}</Card.Text>
+                                    </Row>
+                                </Card>
+                            </Col>
+                        </Row>
                     </Modal.Body>
                 </Modal>
         </Layout>

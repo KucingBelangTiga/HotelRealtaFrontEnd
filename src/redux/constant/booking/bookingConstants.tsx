@@ -18,6 +18,10 @@ export const VOUCHER_DATA_REQUEST = 'voucher/data/request'
 export const VOUCHER_DATA_SUCCESS = 'voucher/data/success'
 export const VOUCHER_DATA_FAILED = 'voucher/data/failed'
 
+export const PRICE_ITEMS_DATA_REQUEST = 'price-items/data/request'
+export const PRICE_ITEMS_DATA_SUCCESS = 'price-items/data/success'
+export const PRICE_ITEMS_DATA_FAILED = 'price-items/data/failed'
+
 export const ADD_DATA_REQUEST = 'add/data/request'
 export const ADD_DATA_SUCCESS = 'add/data/success'
 export const ADD_DATA_FAILED = 'add/data/failed'

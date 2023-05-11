@@ -55,6 +55,15 @@ const GetVoucherList = async () => {
     }
 }
 
+const GetPriceItems = async () => {
+    try {
+        const result = await axios.get('http://localhost:3001/hotel/price-items')
+        return result.data
+    } catch (error) {
+        return error
+    }
+}
+
 const findData = async (id: any) => {
     try {
         const result = await axios.get('http://localhost:3001/booking-order/' + id)
@@ -111,5 +120,6 @@ export default {
     GetDataHotel,
     GetFacilitiesHotel,
     GetReviews,
-    GetVoucherList
+    GetVoucherList,
+    GetPriceItems,
 }

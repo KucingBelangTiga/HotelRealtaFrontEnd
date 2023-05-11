@@ -1,6 +1,6 @@
 import { takeEvery, all } from 'redux-saga/effects'
 import * as ActionTypeBooking from '../constant/booking/bookingConstants'
-import { handleAddBooking,handleGetBooking, handleGetHotel, handleGetHotelFacilities, handleGetReviews, handleGetVoucherList} from './booking/bookingSaga'
+import { handleAddBooking,handleGetBooking, handleGetHotel, handleGetHotelFacilities, handleGetPriceItems, handleGetReviews, handleGetVoucherList} from './booking/bookingSaga'
 
 function* watchAll(){
     yield all([
@@ -10,6 +10,7 @@ function* watchAll(){
         takeEvery(ActionTypeBooking.FACILITIES_DATA_REQUEST,handleGetHotelFacilities),
         takeEvery(ActionTypeBooking.FACILITIES_DATA_REQUEST,handleGetReviews),
         takeEvery(ActionTypeBooking.VOUCHER_DATA_REQUEST,handleGetVoucherList),
+        takeEvery(ActionTypeBooking.PRICE_ITEMS_DATA_REQUEST,handleGetPriceItems),
     ])
 }
 
