@@ -14,7 +14,7 @@ import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { Calendar } from 'primereact/calendar';
-import { Dropdown } from 'primereact/dropdown';
+import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
 import { Checkbox } from 'primereact/checkbox';
 import { FileUpload } from 'primereact/fileupload';
 import { Fieldset } from 'primereact/fieldset';
@@ -60,14 +60,28 @@ export default function Add(props: any) {
     setShowModal(false)
   }
 
+  const [selectedEmps, setSelectedEmps] = useState<typeof emps | null>(null);
+
+  const selectedEmpsTemplate = (option: typeof emps, props: any) => {
+    if (option) {
+        return (
+            <div className="flex align-items-center">
+                <div>{option.empUser?.userFullName}</div>
+            </div>
+        );
+    }
+    return <span>{props.placeholder}</span>;
+};
+
   return (
     <>
       <Button icon="pi pi-plus" label="Add" className="p-button-secondary" onClick={() => setShowModal(true)} />
       <Dialog header="Add" visible={showModal} modal className="p-dialog-fullscreen p-dialog-scrollable" style={{ width: '100%', height: '100vh' }} onHide={() => setShowModal(false)}> 
+      <FormikProvider value={formik}>
         <form onSubmit={formik.handleSubmit}>
           <Fieldset legend="General">
-	    <div className="p-fluid">
-		<div className="p-field">
+            <div className="p-fluid">
+            <div className="p-field">
             <label htmlFor="FullName">FullName</label>
             <span className="p-float-label">
               <Dropdown
@@ -75,8 +89,8 @@ export default function Add(props: any) {
                 inputId="FullName"
                 name="empUser.userFullName"
                 value={formik.values.empUserId}
-                onChange={formik.handleChange} options={emps.map((user: any, index: number) => ({
-                  key: index,
+                onChange={formik.handleChange}
+                options={emps.map((user: any) => ({
                   label: user.empUser?.userFullName,
                   value: user.empUser?.userId
                 }))}
@@ -87,13 +101,17 @@ export default function Add(props: any) {
               />
               <label htmlFor="FullName">Select a user.</label>
             </span>
-            {formik.touched.empUserId && formik.errors.empUserId && (
-              <small className="p-error">{formik.errors.empUserId}</small>
-            )}
           </div>
           </div>
           </Fieldset>
-</form>
+          <div className="flex justify-end py-6">
+          <React.Fragment>
+            <Button type="button" label="Cancel" severity="danger" icon="pi pi-times" raised className="mr-2" outlined onClick={hideDialog} />
+            <Button label="Save" icon="pi pi-check" />
+          </React.Fragment>
+          </div>
+        </form>
+        </FormikProvider>
       </Dialog>
     </>
   );
