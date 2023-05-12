@@ -27,8 +27,8 @@ export default function EditPriceItems(props: any) {
     },
     onSubmit: async (values) => {
       dispatch(EditPriceItemsRequest(values));
-      setShowModal(false);
       props.setRefresh(true);
+      setShowModal(false);
     },
   });
 
@@ -45,7 +45,7 @@ export default function EditPriceItems(props: any) {
   return (
     <>
       <button
-        className="bg-darkBlue text-white active:bg-darkBlue font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+        className="bg-emerald-700 text-white active:bg-emerald-700 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
         type="button"
         onClick={editButton}
       >
@@ -59,9 +59,7 @@ export default function EditPriceItems(props: any) {
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 {/*header*/}
                 <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
-                  <h3 className="text-3xl font-semibold">
-                    Modal Title {props.id}
-                  </h3>
+                  <h3 className="text-3xl font-semibold">Edit Price Item</h3>
                   <button
                     className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                     onClick={() => setShowModal(false)}
@@ -171,7 +169,7 @@ export default function EditPriceItems(props: any) {
               </div>
             </div>
           </div>
-          <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+          <div className="opacity-75 fixed inset-0 z-40 bg-black"></div>
         </>
       ) : null}
     </>

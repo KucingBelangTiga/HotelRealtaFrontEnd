@@ -6,6 +6,7 @@ import CityReduce from "./master/cityReducer";
 import PolicyReduce from "./master/policyReducer";
 import PriceItemsReduce from "./master/priceItemsReducer";
 import ServiceTasksReduce from "./master/serviceTasksReducer";
+import CategoryReduce from "./master/categoryReducer";
 
 const rootReducer = combineReducers({
   regionsState: RegionsReduce,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   policyState: PolicyReduce,
   priceItemsState: PriceItemsReduce,
   serviceTasksState: ServiceTasksReduce,
+  categoryState: CategoryReduce,
 });
 
 export default rootReducer;

@@ -30,17 +30,6 @@ export default function Index() {
     setLoading(true);
   }, [dispatch, refresh]);
 
-  // console.log(max);
-  // console.log(serviceTasks);
-
-  // const maxObj = serviceTasks
-  //   ? serviceTasks.reduce((accumulator: any, current: any) => {
-  //       return accumulator.setaId > current.setaId ? accumulator : current;
-  //     })
-  //   : null;
-  // console.log(priceItems);
-  // console.log(maxObj);
-
   const kebabPriceItems = (rowData: any) => {
     return (
       <div>

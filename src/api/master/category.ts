@@ -3,7 +3,7 @@ import config from "../../config/config";
 
 const list = async () => {
   try {
-    const result = await axios.get(`${config.domain}/address/`);
+    const result = await axios.get(`${config.domain}/category-group/`);
     return result.data;
   } catch (error) {
     return await error;
@@ -12,7 +12,7 @@ const list = async () => {
 
 const deleted = async (id: any) => {
   try {
-    const result = await axios.delete(`${config.domain}/address/${id}`);
+    const result = await axios.delete(`${config.domain}/category-group/${id}`);
     return result;
   } catch (error) {
     return await error;
@@ -21,7 +21,10 @@ const deleted = async (id: any) => {
 
 const create = async (payload: any) => {
   try {
-    const result = await axios.post(`${config.domain}/address/`, payload);
+    const result = await axios.post(
+      `${config.domain}/category-group/`,
+      payload
+    );
     return result;
   } catch (error) {
     return await error;
@@ -29,9 +32,22 @@ const create = async (payload: any) => {
 };
 
 const update = async (payload: any) => {
+  const id = parseInt(payload.get("cagroId"));
   try {
     const result = await axios.put(
-      `${config.domain}/address/${payload.addrId}`,
+      `${config.domain}/category-group/${id}`,
+      payload
+    );
+    return result;
+  } catch (error) {
+    return await error;
+  }
+};
+
+const updatePolicy = async (payload: any) => {
+  try {
+    const result = await axios.put(
+      `${config.domain}/category-group/policy/${payload.pocaId}`,
       payload
     );
     return result;
@@ -42,7 +58,7 @@ const update = async (payload: any) => {
 
 const findOne = async (id: any) => {
   try {
-    const result = await axios.get(`${config.domain}/address/${id}`);
+    const result = await axios.get(`${config.domain}/category-group/${id}`);
     return result.data;
   } catch (error) {
     return await error;
@@ -55,6 +71,7 @@ const allApi = {
   create,
   update,
   findOne,
+  updatePolicy,
 };
 
 export default allApi;

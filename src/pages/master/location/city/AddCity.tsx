@@ -1,19 +1,22 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AddPolicyRequest } from "../../../redux/action/master/policyAction";
-import { useFormik, FormikProvider, Field } from "formik";
+import { useDispatch } from "react-redux";
+import { AddCityRequest } from "../../../../redux/action/master/cityAction";
+import { useFormik, FormikProvider } from "formik";
 
-export default function AddPolicy(props: any) {
+export default function AddCity(props: any) {
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
 
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
-      poliName: "",
-      poliDescription: "",
+      addrLine1: "",
+      addrLine2: "",
+      addrPostalCode: "",
+      addrProv: props.province === undefined ? null : props.province.provId,
     },
     onSubmit: async (values) => {
-      dispatch(AddPolicyRequest(values));
+      dispatch(AddCityRequest(values));
       props.setRefresh(true);
       setShowModal(false);
     },
@@ -41,7 +44,7 @@ export default function AddPolicy(props: any) {
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 {/*header*/}
                 <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
-                  <h3 className="text-3xl font-semibold">Add Policy</h3>
+                  <h3 className="text-3xl font-semibold">Add City</h3>
                   <button
                     className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                     onClick={() => setShowModal(false)}
@@ -58,31 +61,60 @@ export default function AddPolicy(props: any) {
                       <div className="py-4 px-8 ">
                         <div className="flex gap-10 ">
                           <label className="py-2 text-black font-bold w-full">
-                            Policy Name
+                            Province Name
+                          </label>
+                          <p className=" w-full py-2 text-black border-slate-900">
+                            {props.province === undefined
+                              ? "[Choose Region]"
+                              : props.province.provName}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="py-4 px-8 ">
+                        <div className="flex gap-10 ">
+                          <label className="text-black py-2 font-bold w-full">
+                            City Name
                           </label>
                           <input
                             className="border rounded w-full py-2 px-3 text-black border-slate-900 "
                             type="text"
-                            name="poliName"
-                            id="poliName"
+                            name="addrLine2"
+                            id="addrLine2"
                             onChange={formik.handleChange}
-                            value={formik.values.poliName}
-                            placeholder="Policy Name"
+                            value={formik.values.addrLine2}
+                            placeholder="City Name"
                           />
                         </div>
                       </div>
                       <div className="py-4 px-8 ">
                         <div className="flex gap-10 ">
                           <label className="text-black py-2 font-bold w-full">
-                            Policy Description
+                            Address
                           </label>
-
-                          <textarea
+                          <input
                             className="border rounded w-full py-2 px-3 text-black border-slate-900 "
-                            name="poliDescription"
-                            id="poliDescription"
+                            type="text"
+                            name="addrLine1"
+                            id="addrLine1"
                             onChange={formik.handleChange}
-                            value={formik.values.poliDescription}
+                            value={formik.values.addrLine1}
+                            placeholder="Address"
+                          />
+                        </div>
+                      </div>
+                      <div className="py-4 px-8 ">
+                        <div className="flex gap-10 ">
+                          <label className="text-black py-2 font-bold w-full">
+                            Postal Code
+                          </label>
+                          <input
+                            className="border rounded w-full py-2 px-3 text-black border-slate-900 "
+                            type="text"
+                            name="addrPostalCode"
+                            id="addrPostalCode"
+                            onChange={formik.handleChange}
+                            value={formik.values.addrPostalCode}
+                            placeholder="Postal Code"
                           />
                         </div>
                       </div>

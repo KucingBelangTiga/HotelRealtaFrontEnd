@@ -6,6 +6,7 @@ import * as ActionCity from "../constant/master/cityConstant";
 import * as ActionPolicy from "../constant/master/policyConstant";
 import * as ActionPriceItems from "../constant/master/priceItemsConstant";
 import * as ActionServiceTasks from "../constant/master/serviceTasksConstant";
+import * as ActionCategory from "../constant/master/categoryConstant";
 
 import {
   handleRegions,
@@ -56,6 +57,14 @@ import {
   editServiceTasks,
   deleteServiceTasks,
 } from "./master/serviceTasksSaga";
+import {
+  handleCategory,
+  handleAddCategory,
+  findCategory,
+  editCategory,
+  editCategoryPolicy,
+  deleteCategory,
+} from "./master/categorySaga";
 
 function* watchAll() {
   yield all([
@@ -103,6 +112,13 @@ function* watchAll() {
     takeEvery(ActionServiceTasks.FIND_SERVICE_TASKS_REQUEST, findServiceTasks),
     takeEvery(ActionServiceTasks.EDIT_SERVICE_TASKS_REQUEST, editServiceTasks),
     takeEvery(ActionServiceTasks.DEL_SERVICE_TASKS_REQUEST, deleteServiceTasks),
+
+    takeEvery(ActionCategory.GET_CATEGORY_REQUEST, handleCategory),
+    takeEvery(ActionCategory.ADD_CATEGORY_REQUEST, handleAddCategory),
+    takeEvery(ActionCategory.FIND_CATEGORY_REQUEST, findCategory),
+    takeEvery(ActionCategory.EDIT_CATEGORY_REQUEST, editCategory),
+    takeEvery(ActionCategory.EDIT_CATEGORY_POLICY_REQUEST, editCategoryPolicy),
+    takeEvery(ActionCategory.DEL_CATEGORY_REQUEST, deleteCategory),
   ]);
 }
 

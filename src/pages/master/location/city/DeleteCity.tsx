@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { DelPolicyRequest } from "../../../redux/action/master/policyAction";
+import { DelCityRequest } from "../../../../redux/action/master/cityAction";
 import { useDispatch } from "react-redux";
 
-export default function DeletePolicy(props: any) {
+export default function DeleteCity(props: any) {
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
 
   const deleteModal = () => {
-    dispatch(DelPolicyRequest(props.id));
+    dispatch(DelCityRequest(props.id));
     props.setRefresh(true);
     setShowModal(false);
   };
@@ -28,7 +28,7 @@ export default function DeletePolicy(props: any) {
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 {/*header*/}
                 <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
-                  <h3 className="text-3xl font-semibold">Delete Policy</h3>
+                  <h3 className="text-3xl font-semibold">Delete City</h3>
                   <button
                     className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                     onClick={() => setShowModal(false)}
@@ -41,7 +41,7 @@ export default function DeletePolicy(props: any) {
                 {/*body*/}
                 <div className="relative p-6 flex-auto">
                   <p className="my-4 text-slate-500 text-lg leading-relaxed">
-                    Are you sure you want to delete policy {props.name}
+                    Are you sure you want to delete city {props.name}
                   </p>
                 </div>
                 {/*footer*/}

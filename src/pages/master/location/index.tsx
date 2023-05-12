@@ -22,6 +22,9 @@ import DeleteCountry from "./countries/DeleteCountry";
 import AddProvince from "./provinces/AddProvince";
 import EditProvince from "./provinces/EditProvince";
 import DeleteProvince from "./provinces/DeleteProvince";
+import AddCity from "./city/AddCity";
+import EditCity from "./city/EditCity";
+import DeleteCity from "./city/DeleteCity";
 
 export default function Index() {
   const dispatch = useDispatch();
@@ -37,6 +40,7 @@ export default function Index() {
 
   const [selectedRegion, setSelectedRegion] = useState(regions[0]);
   const [selectedCountry, setSelectedCountry] = useState(countries[0]);
+  const [selectedProvince, setSelectedProvince] = useState(provinces[0]);
 
   useEffect(() => {
     dispatch(GetRegionsRequest());
@@ -94,6 +98,23 @@ export default function Index() {
     );
   };
 
+  const kebabCity = (rowData: any) => {
+    return (
+      <div>
+        <EditCity
+          id={rowData.addrId}
+          setRefresh={setRefresh}
+          province={selectedProvince}
+        />
+        <DeleteCity
+          id={rowData.addrId}
+          name={rowData.addrLine2}
+          setRefresh={setRefresh}
+        />
+      </div>
+    );
+  };
+
   return (
     <div>
       <Layout>
@@ -115,10 +136,6 @@ export default function Index() {
                 selection={selectedRegion}
                 onSelectionChange={(e) => setSelectedRegion(e.value)}
               >
-                {/* <Column
-                  selectionMode="single"
-                  headerStyle={{ width: "3rem" }}
-                ></Column> */}
                 <Column field="regionCode" header="Code"></Column>
                 <Column field="regionName" header="Name"></Column>
                 <Column
@@ -141,10 +158,6 @@ export default function Index() {
                 selection={selectedCountry}
                 onSelectionChange={(e) => setSelectedCountry(e.value)}
               >
-                {/* <Column
-                  selectionMode="single"
-                  headerStyle={{ width: "3rem" }}
-                ></Column> */}
                 <Column field="countryId" header="Id"></Column>
                 <Column field="countryName" header="Name"></Column>
                 <Column
@@ -169,6 +182,9 @@ export default function Index() {
                 paginator
                 rows={5}
                 first={first}
+                selectionMode="single"
+                selection={selectedProvince}
+                onSelectionChange={(e) => setSelectedProvince(e.value)}
               >
                 <Column field="provId" header="Id"></Column>
                 <Column field="provName" header="Name"></Column>
@@ -197,11 +213,16 @@ export default function Index() {
               >
                 <Column field="addrId" header="Id"></Column>
                 <Column field="addrLine2" header="Name"></Column>
-                {/* <Column
-    field="addrId"
-    header={<Add setRefresh={setRefresh} />}
-    body={kebab}
-  ></Column> */}
+                <Column
+                  field="addrId"
+                  header={
+                    <AddCity
+                      setRefresh={setRefresh}
+                      province={selectedProvince}
+                    />
+                  }
+                  body={kebabCity}
+                ></Column>
               </DataTable>
             </div>
           )}

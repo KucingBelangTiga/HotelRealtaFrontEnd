@@ -32,7 +32,7 @@ const navigation = [
   },
   {
     name: "Category Group",
-    href: "#",
+    href: "category",
     svg: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
