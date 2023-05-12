@@ -8,7 +8,7 @@ export default function DisplayImage({ imageSrc, fallbackImage }: any) {
   }, [imageSrc]);
 
   return (
-    <div>
+    <div className=" flex justify-center items-center">
       <Image
         src={imgSrc}
         alt=""

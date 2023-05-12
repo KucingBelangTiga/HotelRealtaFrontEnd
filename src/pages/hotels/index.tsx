@@ -85,8 +85,8 @@ export default function Index() {
           </svg>
         </button>
         {rowData.hotelId === id && kebabMenu && (
-          <div className="absolute top-10 border-coldBlue text-coldBlue w-96 ">
-            <ul className="bg-white z-40 absolute right-3  border-coldBlue border-solid border-2 rounded-md text-center">
+          <div className="absolute top-10 border-coldBlue text-coldBlue w-96 z-30">
+            <ul className="bg-white  absolute right-3  border-coldBlue border-solid border-2 rounded-md text-center">
               <li>
                 <Edit
                   id={rowData.hotelId}

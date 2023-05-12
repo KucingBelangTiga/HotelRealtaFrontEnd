@@ -34,7 +34,7 @@ const create = async (payload: any) => {
 const update = async (payload: any) => {
   try {
     const result = await axios.put(
-      `${config.domain}/facility-photos/${payload.faciId}`,
+      `${config.domain}/facility-photos/${payload.faphoId}`,
       payload
     );
     return result;

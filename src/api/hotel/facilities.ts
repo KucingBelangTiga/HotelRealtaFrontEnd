@@ -1,11 +1,9 @@
 import axios from "axios";
 import config from "../../config/config";
 
-const list = async (action: any) => {
+const list = async (id: any) => {
   try {
-    const result = await axios.get(
-      `${config.domain}/facilities/?page=${action.page}&id=${action.id}`
-    );
+    const result = await axios.get(`${config.domain}/facilities/all/${id}`);
     return result.data;
   } catch (error) {
     return await error;
