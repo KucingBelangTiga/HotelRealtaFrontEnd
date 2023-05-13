@@ -1,83 +1,71 @@
-import React, { useState } from "react";
-import { DeleteDeptRequest } from "../../../redux/action/hr/departmentAction";
+import React, { useState, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { Button } from 'primereact/button';
+import { Dialog } from 'primereact/dialog';
+import { Toast } from 'primereact/toast'; 
+import { DeleteDeptRequest } from "../../../redux/action/hr/departmentAction";
+import 'primereact/resources/themes/saga-blue/theme.css';
+import 'primereact/resources/primereact.min.css';
+import 'primereact/resources/primereact.css';
 import 'primeicons/primeicons.css';
 
 export default function Delete(props: any) {
-  const [showModal, setShowModal] = useState(false); 
+  const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
+  const toast = useRef<any>(null);
 
-  const deleteModal = () => {
+  const deleteDept = () => {
     dispatch(DeleteDeptRequest(props.id));
     props.setRefresh(true);
     setShowModal(false);
-  };
+    toast.current.show({ severity: 'success', summary: 'Success', life: 3000, detail: 'Department deleted successfully.' });
+    };
+
   return (
     <>
-      {/* <button
-        className="bg-darkBlue text-white active:bg-darkBlue font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-        type="button"
+      <Button
+        icon="pi pi-trash"
+        severity="secondary"
+        label="Delete"
+        className=""
+        style={{ paddingRight: '35px' }}
         onClick={() => setShowModal(true)}
+        text
+      />
+      <Dialog
+        visible={showModal}
+        onHide={() => setShowModal(false)}
+        breakpoints={{ '960px': '75vw' }}
+        style={{ width: '30vw' }}
+        header="Confirm delete"
+        footer={
+          <>
+            <Button
+              icon="pi pi-times"
+              label="No"
+              className="mr-2"
+              raised outlined
+              onClick={() => setShowModal(false)}
+            />
+            <Button
+              label="Yes"
+              icon="pi pi-check"
+              severity="danger"
+              onClick={deleteDept}
+              autoFocus
+            />
+          </>
+        }
       >
-        Delete
-      </button> */}
-      <Button icon="pi pi-trash" rounded outlined severity="danger" aria-label="Delete" tooltip="Delete" tooltipOptions={{ position: 'top' }} className="mr-2" onClick={() => setShowModal(true)} />
-      {showModal ? (
-        <>
-          <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-            <div className="relative w-auto my-6 mx-auto max-w-3xl">
-              {/*content*/}
-              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-                {/*header*/}
-                <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
-                  <h3 className="text-2xl font-semibold">Delete</h3>
-                  <button
-                    className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none pi pi-times"
-                    onClick={() => setShowModal(false)}
-                  >
-                    <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
-                    </span>
-                  </button>
-                </div>
-                {/*body*/}
-                {/* <div className="relative p-6 flex-auto">
-                  <p className="my-4 text-slate-500 text-lg leading-relaxed">
-                    Are you sure want to delete Department {props.name}?
-                  </p>
-                </div> */}
-                <div className="p-6 flex-auto">
-                <p className="my-4 text-slate-500 text-lg leading-relaxed">
-                  Are you sure you want to delete Department `{props.name}` ?
-                </p>
-                </div>
-                {/*footer*/}
-                {/* <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
-                  <button
-                    className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                    type="button"
-                    onClick={() => setShowModal(false)}
-                  >
-                    Close
-                  </button>
-                  <button
-                    className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                    type="button"
-                    onClick={deleteModal}
-                  >
-                    Save Changes
-                  </button>
-                </div> */}
-                <div className="flex justify-center py-6 border-t border-solid border-slate-200">
-                        <Button label="Cancel" severity="danger" raised className="mr-2" onClick={() => setShowModal(false)} />
-                        <Button label="Save" icon="pi pi-check" iconPos="right" onClick={deleteModal} />
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
-        </>
-      ) : null}
+        <div className="p-d-flex p-ai-center">
+          <span className="p-mr-2">
+          <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
+            Are you sure you want to delete Department `{props.name}`?
+          </span>
+        </div>
+      </Dialog>
+
+      <Toast ref={toast} position="top-right" />
     </>
   );
 }

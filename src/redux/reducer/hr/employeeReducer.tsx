@@ -23,15 +23,6 @@ const empReducer = (state = init_state, action: any) => {
             return {...state}
         case ActionType.EDIT_EMP_SUCCESS:
             return EditEmp(state,action)
-        //add dan edit photo gajadi pake, gabung ke add dan edit
-        // case ActionType.ADD_PHOTO_REQUEST:
-        //     return {...state}
-        // case ActionType.ADD_PHOTO_SUCCESS:
-        //     return AddPhoto(state,action)
-        // case ActionType.EDIT_PHOTO_REQUEST:
-        //     return {...state}
-        // case ActionType.EDIT_PHOTO_SUCCESS:
-        //     return EditPhoto(state,action)
         case ActionType.DELETE_EMP_REQUEST:
             return {...state}
         case ActionType.DELETE_EMP_SUCCESS:
@@ -61,7 +52,7 @@ const FindEmp = (state: any, action: any) => {
     const { payload } = action
     return {
         ...state,
-        emp: payload //kalau gagal, tambah action.payload dan/ atau ganti ke emps
+        emp: payload 
     }
 }
 
@@ -69,37 +60,14 @@ const EditEmp = (state:any, action:any) => {
     const {payload} = action 
     return {
         ...state, 
-        // emps:[...state.emps,payload] //kalau gagal, tambah ini
     }
 }
 
-// const AddPhoto = (state:any, action:any) => {
-//     const {payload} = action
-//     return {
-//         ...state,
-//         emps:[...state.emps,payload]
-//     }
-// }
-
-// const EditPhoto = (state:any, action:any) => {
-//     const {payload} = action 
-//     return {
-//         ...state, 
-//         // emps:[...state.emps,payload] //kalau gagal, tambah ini
-//     }
-// }
-
 const DeleteEmp = (state:any, action:any) => {
-    // const { payload } = action
-    // const updatedEmps = state.emps.filter((emps: { id: number }) => emps.id !== payload.id)
-    // return {
-    //     ...state,
-    //     emps: updatedEmps //kalau gagal, ganti jadi: emps:[...state.emps,payload]
-    // }
+    const { payload } = action
     return {
         ...state,
     }
-    //kalau gagal, pake yg dikomentari di atas
 }
 
 export default empReducer

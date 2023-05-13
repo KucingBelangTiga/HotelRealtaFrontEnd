@@ -52,7 +52,7 @@ const FindEdhi = (state: any, action: any) => {
     const { payload } = action
     return {
         ...state,
-        edhi: payload //kalau gagal, tambah action.payload dan/ atau ganti ke edhis
+        edhi: payload
     }
 }
 
@@ -60,21 +60,14 @@ const EditEdhi = (state:any, action:any) => {
     const {payload} = action 
     return {
         ...state, 
-        // edhis:[...state.edhis,payload] //kalau gagal, tambah ini
     }
 }
 
 const DeleteEdhi = (state:any, action:any) => {
-    // const { payload } = action
-    // const updatedEdhis = state.edhis.filter((edhis: { id: number }) => edhis.id !== payload.id)
-    // return {
-    //     ...state,
-    //     edhis: updatedEdhis //kalau gagal, ganti jadi: edhis:[...state.edhis,payload]
-    // }
+    const { payload } = action
     return {
         ...state,
     }
-    //kalau gagal, pake yg dikomentari di atas
 }
 
 export default edhiReducer

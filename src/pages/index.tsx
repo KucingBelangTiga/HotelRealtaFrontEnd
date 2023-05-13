@@ -1,4 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 //index ilham
+
 // import Image from "next/image";
 // import { Inter } from "next/font/google";
 // import Layout from "../components/layout";
@@ -28,7 +30,6 @@
 
 //push to dashboard
 import Layout from "../components/layout";
-import Link from "next/link";
 import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 
@@ -36,8 +37,12 @@ function Index() {
   const router = useRouter();
 
   useEffect(() => {
-    router.push("/dashboard");
-  }, []);
+    const removeDashboardFromURL = () => {
+      const urlWithoutLayout = window.location.href.replace("/dashboard", "/RealtaHotel");
+      window.history.replaceState({}, "", urlWithoutLayout);
+    };
+    router.push("/dashboard").then(removeDashboardFromURL);
+    }, []);
 
   return (
     <Layout>

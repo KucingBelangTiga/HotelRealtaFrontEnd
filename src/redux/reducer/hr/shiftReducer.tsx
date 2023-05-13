@@ -52,7 +52,7 @@ const FindShift = (state: any, action: any) => {
     const { payload } = action
     return {
         ...state,
-        shift: payload //kalau gagal, tambah action.payload dan/ atau ganti ke shifts
+        shift: payload 
     }
 }
 
@@ -60,21 +60,14 @@ const EditShift = (state:any, action:any) => {
     const {payload} = action 
     return {
         ...state, 
-        // shifts:[...state.shifts,payload] //kalau gagal, tambah ini
     }
 }
 
 const DeleteShift = (state:any, action:any) => {
-    // const { payload } = action
-    // const updatedShifts = state.shifts.filter((shifts: { id: number }) => shifts.id !== payload.id)
-    // return {
-    //     ...state,
-    //     shifts: updatedShifts //kalau gagal, ganti jadi: shifts:[...state.shifts,payload]
-    // }
+    const { payload } = action
     return {
         ...state,
     }
-    //kalau gagal, pake yg dikomentari di atas
 }
 
 export default shiftReducer

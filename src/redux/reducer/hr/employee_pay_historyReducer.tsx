@@ -52,7 +52,7 @@ const FindEphi = (state: any, action: any) => {
     const { payload } = action
     return {
         ...state,
-        ephi: payload //kalau gagal, tambah action.payload dan/ atau ganti ke ephis
+        ephi: payload
     }
 }
 
@@ -60,21 +60,13 @@ const EditEphi = (state:any, action:any) => {
     const {payload} = action 
     return {
         ...state, 
-        // ephis:[...state.ephis,payload] //kalau gagal, tambah ini
     }
 }
 
 const DeleteEphi = (state:any, action:any) => {
-    // const { payload } = action
-    // const updatedEphis = state.ephis.filter((ephis: { id: number }) => ephis.id !== payload.id)
-    // return {
-    //     ...state,
-    //     ephis: updatedEphis //kalau gagal, ganti jadi: ephis:[...state.ephis,payload]
-    // }
     return {
         ...state,
     }
-    //kalau gagal, pake yg dikomentari di atas
 }
 
 export default ephiReducer

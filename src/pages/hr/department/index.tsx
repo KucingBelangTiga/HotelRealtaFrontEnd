@@ -5,13 +5,11 @@ import { GetDeptRequest } from "../../../redux/action/hr/departmentAction";
 
 import { DataTable, DataTableFilterMeta } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { FilterMatchMode, FilterOperator } from 'primereact/api';
+import { FilterMatchMode } from 'primereact/api';
 import { InputText } from 'primereact/inputtext';
-
 import { OverlayPanel } from 'primereact/overlaypanel';
-import { Dropdown } from 'primereact/dropdown';
-import { Menubar } from 'primereact/menubar';
 import { Button } from 'primereact/button';
+import { ProgressSpinner } from 'primereact/progressspinner';
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.css";
 import 'primeflex/primeflex.css';
@@ -38,60 +36,52 @@ export default function IndexDept() {
     useEffect(() => {
       dispatch(GetDeptRequest());
       setRefresh(false);
-      setLoading(true);
+      setLoading(true); 
     }, [dispatch, refresh]);
     
-    //asli
-    // const dept = (rowData: any) => {
-    //   return (
-    //     <div>
-    //       <Edit id={rowData.deptId} setRefresh={setRefresh} />
-    //       <Delete
-    //         id={rowData.deptId}
-    //         name={rowData.deptName}
-    //         setRefresh={setRefresh}
-    //       />
-    //     </div>
-    //   );
-    // };
+    useEffect(() => {
+      document.title = "Human Resource - Department"; 
+    }, []);
 
     const Dept = (rowData: any) => {
-      // const deptRef = useRef(null);
       const deptRef = useRef<OverlayPanel>(null)
       return (
         <div>
-          {/* <button type="button" className="p-link">
-            <i className="pi pi-ellipsis-v"></i> */}
             <Button type="button" severity="secondary" icon="pi pi-ellipsis-v" tooltip="Actions Menu" tooltipOptions={{ position: 'top', showDelay: 300 }} onClick={(e) => deptRef.current?.toggle(e)} text />
-            {/* <OverlayPanel appendTo={document.body} trigger="click" position="bottom"> */}
-            <OverlayPanel ref={deptRef} >
+            <OverlayPanel ref={deptRef} className="p-overlaypanel-rounded">
             <div>
-          {rowData && (
+            {rowData && (
             <>
+            <ul > 
+              <li className="-mx-3 -mt-3 -mb-1">
               <Edit id={rowData.deptId} setRefresh={setRefresh} />
+              </li>
+              <li className="-mx-3 -mb-3">
               <Delete
                 id={rowData.deptId}
                 name={rowData.deptName}
                 setRefresh={setRefresh}
               />
+              </li>
+            </ul>
             </>
           )}
-        </div>
+        </div> 
             </OverlayPanel>
-          {/* </button> */}
         </div>
       );
     };    
 
-    const onGlobalFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const value = e.target.value;
-      let _filters = { ...filters };
+  const onGlobalFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    let _filters = { ...filters };
 
-      _filters['global'].value = value;
-
-      setFilters(_filters);
-      setGlobalFilterValue(value);
-  };
+    if ('value' in _filters['global']) {
+        _filters['global'].value = value;
+    }
+    setFilters(_filters);
+    setGlobalFilterValue(value);
+};
 
   const renderHeader = () => {
     return (
@@ -110,18 +100,23 @@ const header = renderHeader();
           {/* <Layout> */}
             <LayoutHr>
               {!loading ? (
-                <h1>loading...</h1>
+                <div className="p-d-flex p-flex-column p-ai-center p-jc-center" style={{ height: '100vh' }}>
+                <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth="4" fill="#16123d" animationDuration="1s" />
+                <h1 className="p-mt-4">Loading...</h1>
+              </div>
               ) : (
                 <div className="min-h-screen">
-                  <h2 className="text-center my-5 font-bold text-3xl">Department</h2>
                   <div className="card">
                   <DataTable
                     value={departments}
                     stripedRows 
-                    tableStyle={{ minWidth: "50rem" }}
+                    tableStyle={{ minWidth: "50rem" }} 
                     className="bg-white text-black"
                     paginator
+                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                     rows={5}
+                    rowsPerPageOptions={[5, 10, 20]}
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                     first={first}
                     removableSort
                     filters={filters}

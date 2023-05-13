@@ -1,10 +1,3 @@
-// import '... @/styles/globals.css'
-// import type { AppProps } from 'next/app'
-
-// export default function App({ Component, pageProps }: AppProps) {
-//   return <Component {...pageProps} />
-// }
-
 import '../../styles/globals.css'
 import type { AppProps } from "next/app";
 import { Provider } from "react-redux";
@@ -18,7 +11,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <Provider store={store}>
       <main className={montserrat.className}>
         <Component {...pageProps} />
-      </main>
+      </main> 
     </Provider>
   );
 }

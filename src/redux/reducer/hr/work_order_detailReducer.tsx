@@ -52,7 +52,7 @@ const FindWode = (state: any, action: any) => {
     const { payload } = action
     return {
         ...state,
-        wode: payload //kalau gagal, tambah action.payload dan/ atau ganti ke wodes
+        wode: payload
     }
 }
 
@@ -60,21 +60,14 @@ const EditWode = (state:any, action:any) => {
     const {payload} = action 
     return {
         ...state, 
-        // wodes:[...state.wodes,payload] //kalau gagal, tambah ini
     }
 }
 
 const DeleteWode = (state:any, action:any) => {
-    // const { payload } = action
-    // const updatedWodes = state.wodes.filter((wodes: { id: number }) => wodes.id !== payload.id)
-    // return {
-    //     ...state,
-    //     wodes: updatedWodes //kalau gagal, ganti jadi: wodes:[...state.wodes,payload]
-    // }
+    const { payload } = action
     return {
         ...state,
     }
-    //kalau gagal, pake yg dikomentari di atas
 }
 
 export default wodeReducer

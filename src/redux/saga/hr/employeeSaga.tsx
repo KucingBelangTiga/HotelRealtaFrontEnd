@@ -41,45 +41,6 @@ function* handleEditEmp(action: any): any {
     }
 }
 
-//add dan edit photo gajadi pake, gabung ke add dan edit
-// function* handleAddPhoto(action: any): any {
-//     const { payload } = action
-//     try {
-//         const result = yield call(Emp.upload, payload)
-//         yield put(AddPhotoSuccess(result.data))
-//     } catch (error) {
-//         yield put(AddPhotoFailed(error))
-//     }
-// }
-// function* handleAddPhoto(action: any): any {
-//     const { payload } = action
-//     try {
-//         const result = yield call({ fn: Emp.upload, context: Emp }, payload.id, payload.file)
-//         yield put(AddPhotoSuccess(result.data))
-//     } catch (error) {
-//         yield put(AddPhotoFailed(error))
-//     }
-// }
-
-// function* handleEditPhoto(action: any): any {
-//     const { payload } = action
-//     try {
-//         const result = yield call(Emp.updatePhoto, payload)
-//         yield put(EditPhotoSuccess(result.data))
-//     } catch (error) {
-//         yield put(EditPhotoFailed(error))
-//     }
-// }
-// function* handleEditPhoto(action: any): any {
-//     const { payload } = action
-//     try {
-//         const result = yield call({ fn: Emp.updatePhoto, context: Emp }, payload.id, payload.file)
-//         yield put(EditPhotoSuccess(result.data))
-//     } catch (error) {
-//         yield put(EditPhotoFailed(error))
-//     }
-// }
-
 function* handleDeleteEmp(action: any): any {
     const { payload } = action
     try {
@@ -95,7 +56,5 @@ export {
     handleFindOneEmp,
     handleAddEmp,
     handleEditEmp,
-    // handleAddPhoto,
-    // handleEditPhoto,
     handleDeleteEmp
 }

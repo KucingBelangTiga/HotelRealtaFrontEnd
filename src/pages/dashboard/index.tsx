@@ -1,8 +1,16 @@
 import Layout from "../../components/layout";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
+import { Inter } from "next/font/google";
 
-export default function index() {
+const inter = Inter({ subsets: ["latin"] });
+
+export default function Index() {
+
+  useEffect(() => {
+    document.title = "RealtaHotel"; 
+  }, []);
+
   return (
     <Layout>
       <aside
@@ -13,7 +21,7 @@ export default function index() {
         <div className="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
           <ul className="space-y-2 font-medium">
           <li>
-              <a
+          <Link
                 href="#"
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
               >
@@ -23,10 +31,7 @@ export default function index() {
                 <circle cx="12" cy="12" r="10"/>
                 </svg>
                 <span className="flex-1 ml-3 whitespace-nowrap">Users</span>
-                {/* <span className="inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-200 rounded-full dark:bg-gray-700 dark:text-gray-300">
-                  Pro
-                </span> */}
-              </a>
+              </Link>
             </li>
             <li>
               <Link
@@ -42,7 +47,7 @@ export default function index() {
               </Link>
             </li>
             <li>
-              <a
+              <Link
                 href="hr"
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
               >
@@ -52,13 +57,10 @@ export default function index() {
                 <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                 </svg>
                 <span className="flex-1 ml-3 whitespace-nowrap">Human Resource</span>
-                {/* <span className="inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-200 rounded-full dark:bg-gray-700 dark:text-gray-300">
-                  Pro
-                </span> */}
-              </a>
+              </Link>
             </li>
             <li>
-              <a
+              <Link
                 href="#"
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
               >
@@ -67,13 +69,10 @@ export default function index() {
                 <polyline points="9 22 9 12 15 12 15 22"></polyline>
                 </svg>
                 <span className="flex-1 ml-3 whitespace-nowrap">Hotel</span>
-                {/* <span className="inline-flex items-center justify-center w-3 h-3 p-3 ml-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">
-                  3
-                </span> */}
-              </a>
+              </Link>
             </li>
             <li>
-              <a
+              <Link
                 href="#"
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
               >
@@ -82,10 +81,10 @@ export default function index() {
                 <path d="M11.5 14v7"/>
                 </svg>
                 <span className="flex-1 ml-3 whitespace-nowrap">Resto</span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a
+              <Link
                 href="#"
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
               >
@@ -93,10 +92,10 @@ export default function index() {
                 <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
                 </svg>
                 <span className="flex-1 ml-3 whitespace-nowrap">Booking</span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a
+              <Link
                 href="#"
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
               >
@@ -105,10 +104,10 @@ export default function index() {
                 <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
                 </svg>
                 <span className="flex-1 ml-3 whitespace-nowrap">Payment</span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a
+              <Link
                 href="#"
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
               >
@@ -117,14 +116,14 @@ export default function index() {
                 <path d="M7 15h0M2 9.5h20"/>
                 </svg>
                 <span className="flex-1 ml-3 whitespace-nowrap">Purchasing</span>
-              </a>
+              </Link>
             </li>
           </ul>
           <hr className="fixed bottom-20 w-full border-gray-200 sm:mx-auto dark:border-gray-700" />
-          <Link href="/dashboard" className="hover:underline" passHref>
+          <Link href="/" className="hover:underline" passHref>
             <span className="fixed bottom-8 left-0 right-0 text-sm text-gray-500 sm:text-center dark:text-gray-400" title="Dashboard">
               &copy; 2023 <a className="hover:underline">
-                Realta Hotels
+                RealtaHotel
               </a>.
             </span>
           </Link>

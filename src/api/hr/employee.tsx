@@ -28,51 +28,6 @@ const createEmp = async (payload: any) => {
     }
 }
 
-// const upload = async (payload: any) => {
-//     try {
-//         const result = await axios.post('http://localhost:3002/employee/upload', payload)
-//         return result
-//     } catch (error) {
-//         return error
-//     }
-// }
-//kalau gagal, samain dgn api add
-//gajadi pake, masuk ke add
-// const upload = async (id: number, file: File) => {
-//     const formData = new FormData();
-//     formData.append('id', id.toString());
-//     formData.append('file', file);
-
-//     try {
-//         const result = await axios.post('http://localhost:3002/employee/upload', formData);
-//         return result;
-//     } catch (error) {
-//         return error;
-//     }
-// }
-
-// const updatePhoto = async (payload: any) => {
-//     try {
-//         const result = await axios.patch(`http://localhost:3002/${payload.id}/photo`, payload.file);
-//         return result;
-//     } catch (error) {
-//         return error;
-//     }
-// }
-//kalau gagal, samain dgn api edit, tetap pakai patch
-//gajadi pake, masuk ke edit
-// const updatePhoto = async (id: number, file: File) => {
-//     const formData = new FormData();
-//     formData.append('file', file);
-
-//     try {
-//         const result = await axios.patch(`http://localhost:3002/employee/${id}/photo`, formData);
-//         return result;
-//     } catch (error) {
-//         return error;
-//     }
-// }
-
 const updateEmp = async (payload: any) => {
     try {
         const result = await axios.put('http://localhost:3002/employee/' + payload.empId, payload)

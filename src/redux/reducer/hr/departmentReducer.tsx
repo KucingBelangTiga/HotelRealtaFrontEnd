@@ -1,8 +1,8 @@
 import * as ActionType from '../../constant/hr/departmentConstant'
 
 const init_state = {
-    departments: [], //banyak
-    department: [],  //spesifik
+    departments: [], 
+    department: [],  
 }
 
 const departmentReducer = (state = init_state, action: any) => {
@@ -52,7 +52,7 @@ const FindDept = (state: any, action: any) => {
     const { payload } = action
     return {
         ...state,
-        department: payload //kalau gagal, tambah action.payload dan/ atau ganti ke departments
+        department: payload 
     }
 }
 
@@ -60,21 +60,14 @@ const EditDept = (state:any, action:any) => {
     const {payload} = action 
     return {
         ...state, 
-        // department:[...state.department,payload] //kalau gagal, tambah ini
     }
 }
 
 const DeleteDept = (state:any, action:any) => {
-    // const { payload } = action
-    // const updatedDepartments = state.departments.filter((departments: { id: number }) => departments.id !== payload.id)
-    // return {
-    //     ...state,
-    //     departments: updatedDepartments //kalau gagal, ganti jadi: departments:[...state.departments,payload]
-    // }
+    const {payload} = action 
     return {
         ...state,
     }
-    //kalau gagal, pake yg dikomentari di atas
 }
 
 export default departmentReducer

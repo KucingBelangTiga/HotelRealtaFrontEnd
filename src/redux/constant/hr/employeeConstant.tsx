@@ -13,14 +13,6 @@ export const FIND_EMP_FAILED = 'emp/find/failed'
 export const EDIT_EMP_REQUEST = 'emp/edit/request'
 export const EDIT_EMP_SUCCESS = 'emp/edit/success'
 export const EDIT_EMP_FAILED = 'emp/edit/failed'
-//add dan edit photo gajadi pake, gabung ke add dan edit
-// export const ADD_PHOTO_REQUEST = 'photo/add/request'
-// export const ADD_PHOTO_SUCCESS = 'photo/add/success'
-// export const ADD_PHOTO_FAILED = 'photo/add/failed'
-
-// export const EDIT_PHOTO_REQUEST = 'photo/edit/request'
-// export const EDIT_PHOTO_SUCCESS = 'photo/edit/success'
-// export const EDIT_PHOTO_FAILED = 'photo/edit/failed'
 
 export const DELETE_EMP_REQUEST = 'emp/delete/request'
 export const DELETE_EMP_SUCCESS = 'emp/delete/success'

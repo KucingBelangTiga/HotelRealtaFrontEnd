@@ -24,7 +24,7 @@ module.exports = {
 
         moderateBlue: "#3282B8",
 
-        lightBlue: "#BBE1FA",
+        lightBlue: "#BBE1FA", 
 
       },
 

@@ -53,7 +53,7 @@ const FindJoro = (state: any, action: any) => {
     const { payload } = action
     return {
         ...state,
-        joro: payload //kalau gagal, tambah action.payload dan/ atau ganti ke joros
+        joro: payload 
     }
 }
 
@@ -61,21 +61,14 @@ const EditJoro = (state:any, action:any) => {
     const {payload} = action 
     return { 
         ...state, 
-        // joros:[...state.joros,payload] //kalau gagal, tambah ini
     }
 }
 
 const DeleteJoro = (state:any, action:any) => {
-    // const { payload } = action
-    // const updatedJoros = state.joros.filter((joros: { id: number }) => joros.id !== payload.id)
-    // return {
-    //     ...state,
-    //     joros: updatedJoros //kalau gagal, ganti jadi: joros:[...state.joros,payload]
-    // }
+    const { payload } = action
     return {
         ...state,
     }
-    //kalau gagal, pake yg dikomentari di atas
 }
 
 export default joroReducer

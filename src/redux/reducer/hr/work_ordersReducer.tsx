@@ -52,7 +52,7 @@ const FindWoro = (state: any, action: any) => {
     const { payload } = action
     return {
         ...state,
-        woro: payload //kalau gagal, tambah action.payload dan/ atau ganti ke woros
+        woro: payload 
     }
 }
 
@@ -60,21 +60,14 @@ const EditWoro = (state:any, action:any) => {
     const {payload} = action 
     return {
         ...state, 
-        // woros:[...state.woros,payload] //kalau gagal, tambah ini
     }
 }
 
 const DeleteWoro = (state:any, action:any) => {
-    // const { payload } = action
-    // const updatedWoros = state.woros.filter((woros: { id: number }) => woros.id !== payload.id)
-    // return {
-    //     ...state,
-    //     woros: updatedWoros //kalau gagal, ganti jadi: woros:[...state.woros,payload]
-    // }
+    const { payload } = action
     return {
         ...state,
     }
-    //kalau gagal, pake yg dikomentari di atas
 }
 
 export default woroReducer
