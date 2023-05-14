@@ -4,7 +4,7 @@ import React from "react";
 const navigation = [
   {
     name: "Dashboard",
-    href: "dashboard",
+    href: "/dashboard",
     svg: (
       <svg
         aria-hidden="true"
@@ -20,7 +20,7 @@ const navigation = [
   },
   {
     name: "Hotel",
-    href: "hotels",
+    href: "/hotels",
     svg: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
