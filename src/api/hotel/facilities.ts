@@ -1,9 +1,9 @@
 import axios from "axios";
 import config from "../../config/config";
 
-const list = async () => {
+const list = async (id: any) => {
   try {
-    const result = await axios.get(`${config.domain}/hotels/`);
+    const result = await axios.get(`${config.domain}/facilities/all/${id}`);
     return result.data;
   } catch (error) {
     return await error;
@@ -12,7 +12,7 @@ const list = async () => {
 
 const deleted = async (id: any) => {
   try {
-    const result = await axios.delete(`${config.domain}/hotels/${id}`);
+    const result = await axios.delete(`${config.domain}/facilities/${id}`);
     return result;
   } catch (error) {
     return await error;
@@ -21,7 +21,7 @@ const deleted = async (id: any) => {
 
 const create = async (payload: any) => {
   try {
-    const result = await axios.post(`${config.domain}/hotels/`, payload);
+    const result = await axios.post(`${config.domain}/facilities/`, payload);
     return result;
   } catch (error) {
     return await error;
@@ -31,7 +31,7 @@ const create = async (payload: any) => {
 const update = async (payload: any) => {
   try {
     const result = await axios.put(
-      `${config.domain}/hotels/${payload.hotelId}`,
+      `${config.domain}/facilities/${payload.faciId}`,
       payload
     );
     return result;
@@ -42,7 +42,7 @@ const update = async (payload: any) => {
 
 const findOne = async (id: any) => {
   try {
-    const result = await axios.get(`${config.domain}/hotels/${id}`);
+    const result = await axios.get(`${config.domain}/facilities/${id}`);
     return result.data;
   } catch (error) {
     return await error;

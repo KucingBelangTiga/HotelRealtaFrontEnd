@@ -1,6 +1,8 @@
 import React from "react";
 
 export default function Pagination(props: any) {
+  console.log(props.items);
+
   return (
     <div>
       {props.totalPages > 1 && (
