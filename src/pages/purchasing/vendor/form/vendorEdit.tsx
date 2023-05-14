@@ -1,16 +1,27 @@
-import React, { useState } from 'react'
-import Modal from '@/src/components/layout/Modal'
+import React from 'react'
+import { EditVendorRequest } from '@/src/redux/action/purchasing/vendorAction'
+import { useDispatch } from 'react-redux'
+import { FormikProvider, useFormik } from 'formik'
 
-const VendorForm = (props:any) => {
-
-    const [isShowModal, setIsShowModal] = useState(false)
-
-    const handleCloseModal = () => {
-        setIsShowModal(false)
-    }
+const EditVendor = (props: any) => {
+    const dispatch = useDispatch()
+    const formik = useFormik({
+        initialValues: {
+            vendorId: props.vendorId,
+            vendorName:props.vendorName,
+            vendorPriority:props.vendorPriority,
+            vendorActive:props.vendorActive,
+            vendorWeburl:props.vendorWeburl
+        },
+        onSubmit: async (values) => {
+            dispatch(EditVendorRequest(values))
+            window.location.reload()
+        }
+    })
     return (
         <div>
-            <Modal title={props.title}>
+            <FormikProvider value={formik}>
+                <form onSubmit={formik.handleSubmit}>
                 <div className="mb-5">
                     <label
                         htmlFor="vendorName"
@@ -22,8 +33,8 @@ const VendorForm = (props:any) => {
                         type="text"
                         name="vendorName"
                         id="vendorName"
-                        value={props.vendorName}
-                        onChange={props.setVendorName}
+                        value={formik.values.vendorName}
+                        onChange={formik.handleChange}
                         className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                     />
                 </div>
@@ -34,7 +45,7 @@ const VendorForm = (props:any) => {
                     >
                         Vendor Status
                     </label>
-                    <select name="vendorActive" id="vendorActive" className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" onChange={props.setVendorActive}>
+                    <select name="vendorActive" id="vendorActive" className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" onChange={formik.handleChange}>
                         <option>-Choose-</option>
                         <option value={1}>Active</option>
                         <option value={0}>InActive</option>
@@ -51,12 +62,11 @@ const VendorForm = (props:any) => {
                         type="text"
                         name="vendorWeburl"
                         id="vendorWeburl"
-                        value={props.vendorWeburl}
-                        onChange={props.setVendorWeburl}
+                        value={formik.values.vendorWeburl}
+                        onChange={formik.handleChange}
                         className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                     />
                 </div>
-                {props.vendorRegisterDate}
                 <div className="mb-5">
                     <label
                         htmlFor="vendorPriority"
@@ -64,23 +74,19 @@ const VendorForm = (props:any) => {
                     >
                         Priority
                     </label>
-                    <select name="vendorPriority" id="vendorPriority" className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" onChange={props.setVendorPriority}>
+                    <select name="vendorPriority" id="vendorPriority" className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" onChange={formik.handleChange}>
                         <option>-Choose-</option>
-                        <option value='1'>Highest</option>
-                        <option value='0'>Lowest</option>
+                        <option value={1}>Highest</option>
+                        <option value={0}>Lowest</option>
                     </select>
                 </div>
-                <div>
-                    {props.button}
-                    <button
-                        className="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-base font-semibold text-white outline-none" onClick={handleCloseModal}
-                    >
-                        Cancel
+                    <button type="submit" className="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-base font-semibold text-white outline-none">
+                        Submit
                     </button>
-                </div>
-            </Modal>
-        </div>
+                </form>
+            </FormikProvider>
+        </div >
     )
 }
 
-export default VendorForm
+export default EditVendor

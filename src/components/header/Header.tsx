@@ -6,7 +6,7 @@ const navigate = [
     {name:'Dashboard', href:'/', current: false},
     {name:'Vendor', href:'/purchasing/vendor', current: false},
     {name:'Stock', href:'/purchasing/stock', current: false},
-    {name:'Purchasing Order', href:'purchasing/purchasingOrder', current: false}
+    {name:'Purchasing Order', href:'/purchasing/purchasingOrder', current: false}
 ]
 
 export default function Header() {
