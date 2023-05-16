@@ -17,7 +17,7 @@ import React, {useRef} from 'react';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
-
+import Link from 'next/link'
 
 export default function HotelDetails(){
     const [hotel, setHotel] = useState<any[]>([])
@@ -25,6 +25,7 @@ export default function HotelDetails(){
     const [review, setReviews] = useState<any[]>([])
     const [voucher, setVoucher] = useState<any[]>([])
     const [priceItems, setPriceItems] = useState<any[]>([])
+    const [paymentMethod, setPaymentMethod] = useState<any[]>([])
     const [refresh, setRefresh] = useState<any>(false)
     // const [id, setId] = useState()
     // const router = useRouter()
@@ -37,7 +38,9 @@ export default function HotelDetails(){
     const [service, setService] = useState([]);
     const [others, setOthers] = useState([]);
     const [addon, setAddOn] = useState([]);
+    const [selectedpayment, setSelectedPayment] = useState([]);
     const [fullscreen, setFullscreen] = useState(true);
+    const [formvalues, setFormValues] = useState({});
     // const [checkedState, setCheckedState] = useState(
     //     Array(voucher.length).fill(false),
     //     // console.log(Array(voucher.length).fill(false))
@@ -105,7 +108,17 @@ export default function HotelDetails(){
         return () => clearInterval(intervalId);
     }, [refresh])
 
-    // console.log(priceItems)
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            Hotel.GetPaymentMethods().then
+                (data => {
+                    setPaymentMethod(data)
+                })
+        }, 2000)
+        return () => clearInterval(intervalId);
+    }, [refresh])
+
+    // console.log(paymentMethod)
 
     const hotelName = (id) => {
         let result = '';
@@ -230,6 +243,12 @@ export default function HotelDetails(){
         setValues2({ ...values2, [id]: value});
     };
 
+    const onDetailBookingFormChange = (e, updatedAt) => {
+        const name = e.target.name;
+        const value = e.target.value;
+        setFormValues({ ...formvalues, [name]: value });
+    };
+
     const bookSubmitHandler: FormEventHandler = (event) => {
         event.preventDefault();
         event.persist();
@@ -246,14 +265,14 @@ export default function HotelDetails(){
 
     const appliedVoucherList = () => {
         let vlid = []
-        for(var prop in values2){
-            vlid.push({'spofId': prop});
+        for(let i = 0; i < values3.length; i++) {
+            vlid.push({'spofId': values3[i]});
         }
         let results = voucher.filter(({ spofId: id1 }) => vlid.some(({ spofId: id2 }) => id2 == id1));
         return results
     }
 
-    // console.log(voucher);
+    // console.log(values2);
 
     const moneyToInt = (money) => {
         let without_rp = money.toString().slice(2)
@@ -269,25 +288,36 @@ export default function HotelDetails(){
         return result
     }
 
+
     const appliedVoucherList2 = (position) => {
         const updatedCheckedState = checkedState.map((item, index) =>
             index === position ? !item : item
         );
     
         setCheckedState(updatedCheckedState);
-    
+
+        // for(let i = 0; i < updatedCheckedState.length; i++) {
+        //     if(updatedCheckedState[i] === true){
+
+        //     }
+        // }
+
+        let a=[]
         const totalPrice = updatedCheckedState.reduce(
         (sum, currentState, index) => {
             if (currentState === true) {
+                a.push(voucher[index].spofId)
                 return sum + moneyToInt(voucher[index].spofDiscount);
+            } else if (currentState === false) {
+                a.slice(index, index+1)
             }
             return sum;
         },0);
-        console.log(totalPrice)
+        setValues3(a)
         setTotal(totalPrice);
     };
 
-    // console.log(totalDiscount)
+    // console.log(values3)
 
     // const getDiscountPrice = () => {
     //     let result = [0]
@@ -381,16 +411,61 @@ export default function HotelDetails(){
         return result
     }
 
-    // console.log(priceItemLists());
+    const paymentMethodSeparator = () => {
+        let bank = []
+        let gateway = []
+        for(let i = 0; i < paymentMethod.length; i++){
+            if(paymentMethod[i]['paymentGateway'] == null){
+                bank.push(paymentMethod[i]);
+            }else if(paymentMethod[i]['bank'] == null){
+                gateway.push(paymentMethod[i]);
+            }
+        }
+        return [bank, gateway];
+    }
 
+    const GatherAllData = () => {
+        return (
+            {
+                "fullname": formvalues['fullname'],
+                "email": formvalues['email'],
+                "phone": formvalues['phone'],
+                "accountnumber": formvalues['accountnumber'],
+                "check_in": values.check_in,
+                "check_out": values.check_out,
+                "voucher_applied": values3,
+                "total_discount": currencyFormatter.format(totalDiscount),
+                "payment_method": selectedpayment,
+                "add_on_id": addOnAdded()[1],
+                "add_on_name": addOnAdded()[0],
+                "grand_total": priceList(id)
+            }
+        )
+    }
+
+    const passData = () => {
+        router.push({
+            pathname: '/booking/checkout',
+            query: GatherAllData()
+        }, '/booking/checkout')
+    }
+
+    // export function passData() {
+    //     return GatherAllData()
+    // }
+
+    // console.log(priceItemLists());
     // console.log(getDiscountPrice());
     // console.log(hotelAminities(1));
     // console.log(values);
-
     // console.log(addon)
     // console.log(addOnAdded());
     // console.log(addOnDetail());
     // console.log(addOnPriceTotal());
+    // console.log(paymentMethodSeparator());
+    // console.log(appliedVoucherList());
+    // console.log(GatherAllData())
+    // console.log(appliedVoucherList())
 
     return(
         <Layout>   
@@ -549,15 +624,15 @@ export default function HotelDetails(){
                                         <Card.Text>We will use these details to share your booking information</Card.Text>
                                         <Form.Group className='mb-2'>
                                             <Form.Label>Full Name</Form.Label>
-                                            <Form.Control></Form.Control>
+                                            <Form.Control type="text" placeholder="Full Name" name='fullname' onChange={onDetailBookingFormChange}></Form.Control>
                                         </Form.Group>
                                         <Form.Group className='mb-2'>
                                             <Form.Label>Email</Form.Label>
-                                            <Form.Control></Form.Control>
+                                            <Form.Control type="text" placeholder="E-Mail" name='email' onChange={onDetailBookingFormChange}></Form.Control>
                                         </Form.Group>
                                         <Form.Group className='mb-2'>
                                             <Form.Label>Mobile Number</Form.Label>
-                                            <Form.Control></Form.Control>
+                                            <Form.Control  type="number" placeholder="Mobile or Phone Number" name='phone' onChange={onDetailBookingFormChange}></Form.Control>
                                         </Form.Group>
                                         <hr />
                                         <h2>2. Complete your booking</h2>
@@ -604,21 +679,36 @@ export default function HotelDetails(){
                                         <hr />
                                         <h2>3. Payment</h2>
                                         <Form.Group>
-                                            <Form.Label className='mr-2'>Type:</Form.Label>
-                                            <DropdownButton as={ButtonGroup} key='secondary' id='secondary' variant='secondary' title='secondary'>
-                                                <Dropdown.Item eventKey="1">Action</Dropdown.Item>
-                                                <Dropdown.Item eventKey="2">Another action</Dropdown.Item>
-                                                <Dropdown.Item eventKey="3" active>Active Item</Dropdown.Item>
-                                                <Dropdown.Divider />
-                                                <Dropdown.Item eventKey="4">Separated link</Dropdown.Item>
-                                            </DropdownButton>
+                                            <Form.Label className='mr-2'>Bank:</Form.Label>
+                                            <select
+                                                onClick={(e) => setSelectedPayment(e.target.value)}
+                                                defaultValue={others}>
+                                                {paymentMethodSeparator()[0].map((option,idx) => (
+                                                    <option id={paymentMethodSeparator()[0][idx]['bank']['bankEntityId']} key={paymentMethodSeparator()[0][idx]['bank']['bankEntityId']}>{paymentMethodSeparator()[0][idx]['bank']['bankCode']}<p>{' | '}{paymentMethodSeparator()[0][idx]['bank']['bankName']}</p></option>
+                                                ))}
+                                            </select>
                                         </Form.Group>
                                         <Form.Group>
+                                            <Form.Label className='mr-2'>E-Money:</Form.Label>
+                                            <select
+                                                onClick={(e) => setSelectedPayment(e.target.value)}
+                                                defaultValue={others}>
+                                                {paymentMethodSeparator()[1].map((option,idx) => (
+                                                    <option id={paymentMethodSeparator()[1][idx]['paymentGateway']['pagaEntityId']} key={paymentMethodSeparator()[1][idx]['paymentGateway']['pagaEntityId']}>{paymentMethodSeparator()[1][idx]['paymentGateway']['pagaEntityId']}<p>{' | '}{paymentMethodSeparator()[1][idx]['paymentGateway']['pagaName']}</p></option>
+                                                ))}
+                                            </select>
+                                        </Form.Group>
+                                        <Form.Label>Selected Payment Method: {selectedpayment}</Form.Label>
+                                        <Form.Group>
                                             <Form.Label>Account Payment</Form.Label>
-                                            <Form.Control></Form.Control>
+                                            <Form.Control  type="number" placeholder="Account Payment Number" name='accountnumber' onChange={onDetailBookingFormChange}></Form.Control>
                                         </Form.Group>
                                         <hr />
-                                        <Button variant='success' type='submit'>Proceed Booking</Button>
+                                        <Button variant='success' 
+                                        // href={`/booking/checkout/${GatherAllData()}`}
+                                        onClick={()=>passData()}
+                                        >Proceed</Button>
+                
                                     </Form>
                                 </Card>
                             </Col>
@@ -643,4 +733,9 @@ export default function HotelDetails(){
         </Layout>
     );
 }
+
+
+
+
+
 

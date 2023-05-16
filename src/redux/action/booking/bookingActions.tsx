@@ -84,6 +84,20 @@ export const GetPriceItemsFailed = (payload: any) => ({
     payload
 })
 
+export const GetPaymentMethodsRequest = (payload: any) => ({
+    type: ActionBooking.PAYMENT_DATA_REQUEST
+})
+
+export const GetPaymentMethodsSuccess = (payload: any) => ({
+    type: ActionBooking.PAYMENT_DATA_SUCCESS,
+    payload
+})
+
+export const GetPaymentMethodsFailed = (payload: any) => ({
+    type: ActionBooking.PAYMENT_DATA_FAILED, 
+    payload
+})
+
 export const AddBookingRequest = (payload: any) => ({
     type: ActionBooking.ADD_DATA_REQUEST,
     payload

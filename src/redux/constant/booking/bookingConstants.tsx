@@ -22,6 +22,10 @@ export const PRICE_ITEMS_DATA_REQUEST = 'price-items/data/request'
 export const PRICE_ITEMS_DATA_SUCCESS = 'price-items/data/success'
 export const PRICE_ITEMS_DATA_FAILED = 'price-items/data/failed'
 
+export const PAYMENT_DATA_REQUEST = 'payment/data/request'
+export const PAYMENT_DATA_SUCCESS = 'payment/data/success'
+export const PAYMENT_DATA_FAILED = 'payment/data/failed'
+
 export const ADD_DATA_REQUEST = 'add/data/request'
 export const ADD_DATA_SUCCESS = 'add/data/success'
 export const ADD_DATA_FAILED = 'add/data/failed'

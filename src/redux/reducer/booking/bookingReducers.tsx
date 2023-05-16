@@ -75,6 +75,14 @@ const PriceItemsData = (state: any, action: any) => {
     }
 }
 
+const PaymentMethods = (state: any, action: any) => {
+    const {payload} = action
+    return {
+        ...state,
+        bookings: [action.payload,payload]
+    }
+}
+
 const AddBooking = (state:any, action:any) => {
     const {payload} = action
     return {

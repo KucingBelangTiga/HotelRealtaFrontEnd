@@ -10,6 +10,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Form from 'react-bootstrap/Form';
 import Link from 'next/link';
 import HotelDetails from './details/[id]';
+// import HotelCheckout from './checkout';
 import { useRouter } from 'next/router'
 
 function Booking() {
@@ -310,7 +311,7 @@ function Booking() {
                                 </Card.Text>
                                 <Button href={`/booking/details/${filteredHotel[hotelItem]['hotelId']}`} variant='info'>Details</Button>
                                 {' '}
-                                <Button variant="primary">Book Now</Button>{' '}
+                                {/* <Button variant="primary">Book Now</Button>{' '} */}
                                 </Card.Body>
                             </Card>
                             </Col>

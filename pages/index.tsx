@@ -6,6 +6,7 @@ import Layout from '@/src/components/layout'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import HotelList from './booking'
 import HotelDetails from './booking/details/[id]'
+import HotelCheckout from './booking/checkout'
 
 const inter = Inter({ subsets: ['latin'] })
 

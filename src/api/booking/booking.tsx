@@ -64,6 +64,15 @@ const GetPriceItems = async () => {
     }
 }
 
+const GetPaymentMethods = async () => {
+    try {
+        const result = await axios.get('http://localhost:3001/hotel/payment-methods')
+        return result.data
+    } catch (error) {
+        return error
+    }
+}
+
 const findData = async (id: any) => {
     try {
         const result = await axios.get('http://localhost:3001/booking-order/' + id)
@@ -122,4 +131,5 @@ export default {
     GetReviews,
     GetVoucherList,
     GetPriceItems,
+    GetPaymentMethods,
 }
