@@ -424,6 +424,11 @@ export default function HotelDetails(){
         return [bank, gateway];
     }
 
+    let hotelSelected = (id) => {
+        return hotel[id-1]
+    }
+
+    let currentDate = new Date();
     const GatherAllData = () => {
         return (
             {
@@ -433,15 +438,23 @@ export default function HotelDetails(){
                 "accountnumber": formvalues['accountnumber'],
                 "check_in": values.check_in,
                 "check_out": values.check_out,
-                "voucher_applied": values3,
+                "voucher_applied_id": values3,
+                "voucher_applied": Array.from(appliedVoucherList()).map((_,v)=>(
+                    appliedVoucherList()[v].spofDescription
+                ).replace(/,/g, '')).join(', '),
                 "total_discount": currencyFormatter.format(totalDiscount),
                 "payment_method": selectedpayment,
                 "add_on_id": addOnAdded()[1],
                 "add_on_name": addOnAdded()[0],
-                "grand_total": priceList(id)
+                "grand_total": priceList(id),
+                "booking_order_number": `BO#${currentDate.getFullYear()}${currentDate.getMonth()+1}${currentDate.getDate()}-${currentDate.getHours()}${currentDate.getMinutes()}${currentDate.getSeconds()}${currentDate.getMilliseconds()}`,
+                "transaction_order_number": `TRX#${currentDate.getFullYear()}${currentDate.getMonth()+1}${currentDate.getDate()}-${currentDate.getHours()}${currentDate.getMinutes()}${currentDate.getSeconds()}${currentDate.getMilliseconds()}`,
+                "hotel_selected": hotelName(id)
             }
         )
     }
+
+    // console.log(addOnAdded()[1])
 
     const passData = () => {
         router.push({
@@ -622,6 +635,9 @@ export default function HotelDetails(){
                                     <Form className='p-3'>
                                         <h2>1. Enter your details</h2>
                                         <Card.Text>We will use these details to share your booking information</Card.Text>
+                                        {/* <Form.Group className=''>
+                                            <Form.Control type="hidden" name='hotel_name' onChange={onDetailBookingFormChange}>{hotel[id]['hotelName']}</Form.Control>
+                                        </Form.Group> */}
                                         <Form.Group className='mb-2'>
                                             <Form.Label>Full Name</Form.Label>
                                             <Form.Control type="text" placeholder="Full Name" name='fullname' onChange={onDetailBookingFormChange}></Form.Control>
