@@ -5,9 +5,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { AddPaymentTransactionRequest } from "../../../redux/action/payment/paymentTransactionAction";
 import { GetBankRequest, FindBankRequest } from "../../../redux/action/payment/bankAction";
 import { AutoComplete, AutoCompleteCompleteEvent } from "primereact/autocomplete";
-import { Toast } from "primereact/toast";
+// import { Toast } from "primereact/toast";
 import LayoutPayment from "../layout";
 import { GetUserAccountFailed, GetUserAccountRequest } from "@/src/redux/action/payment/userAccountAction";
+import "primereact/resources/themes/lara-light-indigo/theme.css";
+import "primereact/resources/primereact.css";
+import { GetPaymentGatewayRequest } from "@/src/redux/action/payment/paymentGatewayAction";
 
 interface Bank {
   bankEntityId: number;
@@ -15,16 +18,21 @@ interface Bank {
   bankName: string;
 }
 
+interface PaymentGateway {
+  pagaEntityId: number;
+  pagaCode: string;
+  pagaName: string;
+}
+
 export default function Index() {
   const dispatch = useDispatch();
   const { banks } = useSelector((state: any) => state.bankState);
+  const { paymentGateways } = useSelector((state: any) => state.paymentGatewayState);
   const { userAccounts } = useSelector((state: any) => state.userAccountState);
   const [selectedBankSource, setSelectedBankSource] = useState<Bank>(banks[0]);
-  const [selectedBankTarget, setSelectedBankTarget] = useState<Bank>(banks[0]);
+  const [selectedPaymentGatewayTarget, setSelectedPaymentGatewayTarget] = useState<PaymentGateway>(paymentGateways[0]);
   const [itemSource, setItemSource] = useState<Bank[]>([]);
-  const [itemTarget, setItemTarget] = useState<Bank[]>([]);
-  const [userAccountSource, setUserAccountSource] = useState<any[]>([]);
-  const [userAccountTarget, setUserAccountTarget] = useState<any[]>([]);
+  const [itemTarget, setItemTarget] = useState<PaymentGateway[]>([]);
   const [currentSaldoSource, setCurrentSaldoSource] = useState<any[]>([]);
   const [currentSaldoTarget, setCurrentSaldoTarget] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
@@ -32,15 +40,15 @@ export default function Index() {
   const toast = useRef(null);
 
   useEffect(() => {
-    // dispatch(FindBankRequest(payload.id));
+    dispatch(GetBankRequest());
+    dispatch(GetPaymentGatewayRequest());
     dispatch(GetUserAccountRequest());
     setCurrentSaldoSource(userAccounts);
     setCurrentSaldoTarget(userAccounts);
-    setUserAccountSource(userAccounts);
-    setUserAccountTarget(userAccounts);
     console.log("saldosearch", userAccounts);
   }, [dispatch]);
 
+  console.log("Data Bank", banks);
   const formik = useFormik({
     initialValues: {
       bankEntitySource: "",
@@ -52,7 +60,7 @@ export default function Index() {
     onSubmit: async (values) => {
       let payload = new FormData();
       payload.append("bankEntitySource", String(selectedBankSource.bankEntityId));
-      payload.append("bankEntityTarget", String(selectedBankTarget.bankEntityId));
+      // payload.append("bankEntityTarget", String(selectedBankTarget.bankEntityId));
       payload.append("patrSourceId", values.patrSourceId);
       payload.append("patrDebet", values.patrDebet);
       dispatch(AddPaymentTransactionRequest(payload));
@@ -76,15 +84,15 @@ export default function Index() {
 
   const SearchTarget = (event: AutoCompleteCompleteEvent) => {
     setTimeout(() => {
-      let _filteredBankTarget;
+      let _filteredPagaTarget;
       if (!event.query.trim().length) {
-        _filteredBankTarget = [...banks];
+        _filteredPagaTarget = [...paymentGateways];
       } else {
-        _filteredBankTarget = banks.filter((item: any) => {
-          return item.bankName.toLowerCase().startsWith(event.query.toLowerCase());
+        _filteredPagaTarget = paymentGateways.filter((item: any) => {
+          return item.pagaName.toLowerCase().startsWith(event.query.toLowerCase());
         });
       }
-      setItemTarget(_filteredBankTarget);
+      setItemTarget(_filteredPagaTarget);
     }, 250);
   };
 
@@ -99,7 +107,7 @@ export default function Index() {
   const itemTemplateTarget = (item: any) => {
     return (
       <div className="flex align-items-center">
-        <div>{item.bankName}</div>
+        <div>{item.pagaName}</div>
       </div>
     );
   };
@@ -115,7 +123,7 @@ export default function Index() {
                   <h1 className="text-center my-4 font-bold text-3xl">Source</h1>
                   <div className="left-0 gap-6 flex pl-1 pointer-events-none">
                     <h1 className="h-16 my-4 font-bold text-xl mr-4">Source Name</h1>
-                    <Toast ref={toast} />
+                    {/* <Toast ref={toast} /> */}
                     <AutoComplete
                       id="bankEntityId"
                       name="bankEntityId"
@@ -133,8 +141,8 @@ export default function Index() {
                       <option value="" selected disabled hidden className="text-black">
                         Choose Account
                       </option>
-                      {userAccountSource &&
-                        userAccountSource.map((item: any) => {
+                      {userAccounts &&
+                        userAccounts.map((item: any) => {
                           return (
                             <>
                               <option value={item.usacAccountNumber} key={item.usacEntityId}>
@@ -177,19 +185,19 @@ export default function Index() {
                   <h1 className="text-center my-4 font-bold text-3xl">Target</h1>
                   <div className="left-0 gap-14 flex pl-1 pointer-events-none">
                     <h1 className="my-4 font-bold text-xl mr-4">Target</h1>
-                    <Toast ref={toast} />
+                    {/* <Toast ref={toast} /> */}
                     <AutoComplete
                       id="bankEntityId"
                       name="bankEntityId"
-                      field="bankName"
+                      field="pagaName"
                       multiple
-                      value={selectedBankTarget}
+                      value={selectedPaymentGatewayTarget}
                       suggestions={itemTarget}
                       completeMethod={SearchTarget}
-                      onChange={(e: any) => setSelectedBankTarget(e.value)}
+                      onChange={(e: any) => setSelectedPaymentGatewayTarget(e.value)}
                       itemTemplate={itemTemplateTarget}
-                      className="h-16 mt-[18px]"
-                      placeholder="Search Bank"
+                      // className="h-16 mt-[18px]"
+                      // placeholder="Search Bank"
                     />
                   </div>
                   <div className="w-1/2 flex gap-28 mt-10">
@@ -198,8 +206,8 @@ export default function Index() {
                       <option value="" selected disabled hidden className="text-black">
                         Choose Account
                       </option>
-                      {userAccountTarget &&
-                        userAccountTarget.map((item: any) => {
+                      {userAccounts &&
+                        userAccounts.map((item: any) => {
                           return (
                             <>
                               <option value={item.usacAccountNumber} key={item.usacEntityId}>
