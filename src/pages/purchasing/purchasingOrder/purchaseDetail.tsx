@@ -14,6 +14,7 @@ import EditPurchasingDetail from './form/podetEdit'
 
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.css";
+import LayoutMaster from '../layoutMaster'
 
 const PurchaseDetail = () => {
     const { purchaseDetails } = useSelector((state: any) => state.podetState)
@@ -36,6 +37,7 @@ const PurchaseDetail = () => {
     return (
         <div>
             <Layout>
+                <LayoutMaster>
                 <DataTable
                     value={purchaseDetails}
                     stripedRows
@@ -88,6 +90,7 @@ const PurchaseDetail = () => {
                 <Dialog header={isEdit ? "Edit" : "Create"} visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
                     {isEdit ? <EditPurchasingDetail podeId={podeId} podePoheId={poheId} podeOrderQty={podeOrderQty} podeReceivedQty={podeReceivedQty} podeRejectedQty={podeRejectedQty} stockId={stockId} /> : <AddPurchasingDetail podePoheId={poheId} />}
                 </Dialog>
+                </LayoutMaster>
             </Layout>
         </div>
     )

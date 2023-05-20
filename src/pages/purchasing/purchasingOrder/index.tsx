@@ -10,9 +10,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Dialog } from 'primereact/dialog'
 import { InputText } from 'primereact/inputtext'
 import EditPurchasingHeader from './form/poheEdit'
+import { Button } from 'primereact/button'
 
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.css";
+import AddPurchasingHeader from './form/poheAdd'
+import LayoutMaster from '../layoutMaster'
 
 const Index = () => {
     const { pohes } = useSelector((state: any) => state.poheState)
@@ -20,6 +23,7 @@ const Index = () => {
     const [poheId, setPoheId] = useState(0);
     const [poheStatus, setPoheStatus] = useState(0);
     const [globalFilter, setGlobalFilter] = useState('')
+    const [isEdit, setIsEdit] = useState(false)
     const dispatch = useDispatch()
     const router = useRouter()
     useEffect(() => { dispatch(GetPoheRequest()) }, [dispatch])
@@ -35,6 +39,7 @@ const Index = () => {
     return (
         <div>
             <Layout>
+                <LayoutMaster>
                 <InputText className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50" type='search' placeholder='Search PO Number or Vendor...' onInput={(e: any) => setGlobalFilter(e.target.value)}></InputText>
                 <DataTable
                     globalFilter={globalFilter}
@@ -56,11 +61,16 @@ const Index = () => {
                             <SplitButton label="Details" onClick={() => {
                                 localStorage.setItem('poheNumber', rowData.pohe_number);
                                 localStorage.setItem('poheId', rowData.pohe_id);
+                                localStorage.setItem('poheDate', rowData.pohe_order_date);
+                                localStorage.setItem('poheStatus', rowData.pohe_status);
+                                localStorage.setItem('poheSubtotal', rowData.pohe_subtotal);
+                                localStorage.setItem('poheTax', rowData.pohe_tax);
                                 router.push(`purchasingOrder/purchaseDetail?poheNumber=${rowData.pohe_number}&poheId=${rowData.pohe_id}`)
                             }} model={[
                                 {
                                     label: 'Update',
                                     command: () => {
+                                        setIsEdit(true)
                                         setVisible(true)
                                         setPoheId(rowData.pohe_id)
                                         setPoheStatus(rowData.pohe_status)
@@ -79,11 +89,19 @@ const Index = () => {
                                 }
                             ]} />
                         </div>
-                    )} header='Action'></Column>
+                    )} header={() => (
+                        <div>
+                            <Button label="Add" onClick={() => {
+                                setIsEdit(false)
+                                setVisible(true)
+                            }} />
+                        </div>
+                    )}></Column>
                 </DataTable>
                 <Dialog header='Switch Status' visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
-                    <EditPurchasingHeader poheId={poheId} poheStatus={poheStatus} />
+                    {isEdit ? <EditPurchasingHeader poheId={poheId} poheStatus={poheStatus}/> : <AddPurchasingHeader poheId={pohes.length+1}></AddPurchasingHeader>}
                 </Dialog>
+                </LayoutMaster>
             </Layout>
         </div>
     )

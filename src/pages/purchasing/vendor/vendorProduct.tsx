@@ -15,6 +15,7 @@ import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.css";
 import AddVepro from './form/veproAdd'
 import EditVepro from './form/veproEdit'
+import LayoutMaster from '../layoutMaster'
 
 const Index = () => {
     const [visible, setVisible] = useState(false);
@@ -38,6 +39,7 @@ const Index = () => {
     return (
         <div>
             <Layout>
+                <LayoutMaster>
                 <InputText className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50" type='search' placeholder='Search Vendor Name...' onInput={(e: any) => setGlobalFilter(e.target.value)}></InputText>
                 <DataTable
                     globalFilter={globalFilter}
@@ -88,6 +90,7 @@ const Index = () => {
                 <Dialog header={isEdit ? 'Edit' : 'Create'} visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
                     {isEdit ? <EditVepro veproId={veproId}  veproQtyRemaining={veproQtyRemaining} veproQtyStocked={veproQtyStocked} veproPrice={veproPrice} /> : <AddVepro vendorId={vendorId} veproId={vendorProducts.length+1} />}
                 </Dialog>
+                </LayoutMaster>
             </Layout>
         </div>
     )

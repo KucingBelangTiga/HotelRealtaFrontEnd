@@ -13,6 +13,7 @@ import EditStockDetail from './form/stodEdit'
 
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.css";
+import LayoutMaster from '../layoutMaster'
 
 const StockDetail = () => {
     const { stockDetails } = useSelector((state: any) => state.stockDetailState)
@@ -41,6 +42,7 @@ const StockDetail = () => {
     return (
         <div>
             <Layout>
+                <LayoutMaster>
                 <InputText className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50" type='search' placeholder='Search Stock Name...' onInput={(e: any) => setGlobalFilter(e.target.value)}></InputText>
                 <DataTable
                     globalFilter={globalFilter}
@@ -84,6 +86,7 @@ const StockDetail = () => {
                 <Dialog header='Switch Status' visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
                     <EditStockDetail stodId={stodId} stodStatus={stodStatus} faciId={faciId} stockId={stockId} ></EditStockDetail>
                 </Dialog>
+                </LayoutMaster>
             </Layout>
         </div>
     )

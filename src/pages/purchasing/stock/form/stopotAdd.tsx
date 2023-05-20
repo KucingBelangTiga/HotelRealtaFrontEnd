@@ -66,7 +66,7 @@ const AddStopot = (props: any) => {
         <div className="flex items-center justify-center px-2">
             {stockPhotos.map((item: any) => (
                 <div key={item.sp_spho_id} className={`max-w-sm overflow-hidden rounded-xl shadow-md duration-200 m-2 ${item.sp_spho_primary === 1 ? 'w-64 h-64 bg-white' : 'w-32 h-32 bg-gray-200'}`}>
-                    <img src={`http://localhost:3002/purchasing/stock/image/${item.sp_spho_photo_filename}`} alt="Image" className="h-auto" />
+                    {item.sp_spho_primary === 0 ? <img src={`http://localhost:3002/purchasing/stock/image/${item.sp_spho_photo_filename}`} alt="Image" style={{ width: 300, height: 90 }} /> : <img src={`http://localhost:3002/purchasing/stock/image/${item.sp_spho_photo_filename}`} alt="Image" style={{ width: 300, height: 180 }} />}
                     {item.sp_spho_primary === 0 ?
                         <div className="flex justify-between p-3">
                             <button onClick={() => handleDelete(item.sp_spho_id)} className="pi pi-times mr-2" />

@@ -6,6 +6,7 @@ import * as StodetType from '../constant/purchasing/stockDetailConstant'
 import * as PoheType from '../constant/purchasing/purchaseHeaderConstant'
 import * as PodetType from '../constant/purchasing/purchaseDetailConstant'
 import * as StopotType from '../constant/purchasing/stockPhotoConstant'
+import * as GalleryType from '../constant/purchasing/galleryConstant'
 import { handleVendor, DeleteVendor, EditVendor, createVendor } from "./purchasing/vendorSaga";
 import { handleVendorProduct, DeleteVendorProduct, EditVendorProduct, createVendorProduct } from './purchasing/vendorProductSaga'
 import { handleStock, DeleteStock, EditStock, createStock } from "./purchasing/stockSaga";
@@ -13,6 +14,7 @@ import { handleStodet, DeleteStodet, EditStodet, createStodet } from "./purchasi
 import { handlePohe, DeletePohe, EditPohe, createPohe } from "./purchasing/poheSaga";
 import { handlePodet, DeletePodet, EditPodet, createPodet } from './purchasing/podetSaga'
 import { handleStockPhoto, DeleteStockPhoto, EditStockPhoto, createStockPhoto } from './purchasing/stockPhotoSaga'
+import { handleGallery } from './purchasing/gallerySaga'
 
 function* watchAll() {
     yield all([
@@ -43,7 +45,8 @@ function* watchAll() {
         takeEvery(StopotType.GET_STOPOT_REQUEST, handleStockPhoto),
         takeEvery(StopotType.ADD_STOPOT_REQUEST, createStockPhoto),
         takeEvery(StopotType.EDIT_STOPOT_REQUEST, EditStockPhoto),
-        takeEvery(StopotType.DEL_STOPOT_REQUEST, DeleteStockPhoto)
+        takeEvery(StopotType.DEL_STOPOT_REQUEST, DeleteStockPhoto),
+        takeEvery(GalleryType.GET_GALLERY_REQUEST, handleGallery)
     ])
 }
 

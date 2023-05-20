@@ -15,6 +15,7 @@ import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.css";
 import AddVendor from './form/vendorAdd'
 import EditVendor from './form/vendorEdit'
+import LayoutMaster from '../layoutMaster'
 
 const Index = () => {
     const { vendors } = useSelector((state: any) => state.vendorState)
@@ -34,6 +35,7 @@ const Index = () => {
     return (
         <div>
             <Layout>
+                <LayoutMaster>
                 <InputText className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50" type='search' placeholder='Search Vendor Name...' onInput={(e: any) => setGlobalFilter(e.target.value)}></InputText>
                 <DataTable
                     globalFilter={globalFilter}
@@ -93,6 +95,7 @@ const Index = () => {
                 <Dialog header={isEdit ? 'Edit' : 'Create'} visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
                     {isEdit ? <EditVendor vendorId={vendorId} vendorName={vendorName} vendorActive={vendorActive} vendorPriority={vendorPriority} vendorWeburl={vendorWeburl} /> : <AddVendor vendorId={vendors.length + 1} />}
                 </Dialog>
+                </LayoutMaster>
             </Layout>
         </div>
     )

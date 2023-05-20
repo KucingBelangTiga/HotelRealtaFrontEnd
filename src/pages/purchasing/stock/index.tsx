@@ -16,6 +16,7 @@ import AddStopot from './form/stopotAdd'
 
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.css";
+import LayoutMaster from '../layoutMaster'
 
 const Index = () => {
     const { stocks } = useSelector((state: any) => state.stockState)
@@ -40,6 +41,7 @@ const Index = () => {
     return (
         <div>
             <Layout>
+                <LayoutMaster>
                 <InputText className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50" type='search' placeholder='Search Stock Name...' onInput={(e: any) => setGlobalFilter(e.target.value)}></InputText>
                 <DataTable
                     globalFilter={globalFilter}
@@ -114,6 +116,7 @@ const Index = () => {
                 <Dialog header='Photo' visible={showPhoto} style={{ width: '50vw' }} onHide={() => setShowPhoto(false)}>
                         <AddStopot stockId={stockId}></AddStopot>
                 </Dialog>
+                </LayoutMaster>
             </Layout>
         </div>
     )
