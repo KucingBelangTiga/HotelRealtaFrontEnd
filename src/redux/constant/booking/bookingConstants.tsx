@@ -2,6 +2,10 @@ export const GET_DATA_REQUEST = 'get/data/request'
 export const GET_DATA_SUCCESS = 'get/data/success'
 export const GET_DATA_FAILED = 'get/data/failed'
 
+export const GET_DATA_DETAIL_REQUEST = 'get/data/detail/request'
+export const GET_DATA_DETAIL_SUCCESS = 'get/data/detail/success'
+export const GET_DATA_DETAIL_FAILED = 'get/data/detail/failed'
+
 export const HOTEL_DATA_REQUEST = 'hotel/data/request'
 export const HOTEL_DATA_SUCCESS = 'hotel/data/success'
 export const HOTEL_DATA_FAILED = 'hotel/data/failed'
@@ -25,6 +29,18 @@ export const PRICE_ITEMS_DATA_FAILED = 'price-items/data/failed'
 export const PAYMENT_DATA_REQUEST = 'payment/data/request'
 export const PAYMENT_DATA_SUCCESS = 'payment/data/success'
 export const PAYMENT_DATA_FAILED = 'payment/data/failed'
+
+export const ADD_DATA_DETAIL_REQUEST = 'add/detail/data/request'
+export const ADD_DATA_DETAIL_SUCCESS = 'add/detail/data/success'
+export const ADD_DATA_DETAIL_FAILED = 'add/detail/data/failed'
+
+export const ADD_DATA_DETAIL_EXTRA_REQUEST = 'add/detail/extra/data/request'
+export const ADD_DATA_DETAIL_EXTRA_SUCCESS = 'add/detail/extra/data/success'
+export const ADD_DATA_DETAIL_EXTRA_FAILED = 'add/detail/extra/data/failed'
+
+export const ADD_SPECIAL_OFFER_COUPONS_REQUEST = 'add/voucher/request'
+export const ADD_SPECIAL_OFFER_COUPONS_SUCCESS = 'add/voucher/success'
+export const ADD_SPECIAL_OFFER_COUPONS_FAILED = 'add/voucher/failed'
 
 export const ADD_DATA_REQUEST = 'add/data/request'
 export const ADD_DATA_SUCCESS = 'add/data/success'

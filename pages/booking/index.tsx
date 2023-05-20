@@ -14,7 +14,6 @@ import HotelDetails from './details/[id]';
 import { useRouter } from 'next/router'
 
 function Booking() {
-
     const [hotel, setHotel] = useState<any[]>([])
     const [facility, setFacility] = useState<any[]>([])
     const [review, setReviews] = useState<any[]>([])

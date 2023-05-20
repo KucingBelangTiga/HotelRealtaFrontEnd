@@ -9,6 +9,15 @@ const GetData = async () => {
     }
 }
 
+const GetDataDetail = async () => {
+    try {
+        const result = await axios.get('http://localhost:3001/booking-order-detail/')
+        return result.data
+    } catch (error) {
+        return error
+    }
+}
+
 const GetDataHotel = async () => {
     try {
         const result = await axios.get('http://localhost:3001/hotel/')
@@ -91,6 +100,33 @@ const Create = async (payload: any) => {
     }
 }
 
+const CreateDetail = async (payload: any) => {
+    try {
+        const result = await axios.post('http://localhost:3001/booking-order-detail/', payload)
+        return result
+    } catch (error) {
+        return error
+    }
+}
+
+const CreateDetailExtra = async (payload: any) => {
+    try {
+        const result = await axios.post('http://localhost:3001/booking-order-detail-extra/', payload)
+        return result
+    } catch (error) {
+        return error
+    }
+}
+
+const CreateSpecialOfferCoupons = async (payload: any) => {
+    try {
+        const result = await axios.post('http://localhost:3001/special-offer-coupons/', payload)
+        return result
+    } catch (error) {
+        return error
+    }
+}
+
 const Delete = async (payload: any) => {
     try {
         console.log(payload)
@@ -132,4 +168,8 @@ export default {
     GetVoucherList,
     GetPriceItems,
     GetPaymentMethods,
+    CreateDetail,
+    CreateDetailExtra,
+    GetDataDetail,
+    CreateSpecialOfferCoupons,
 }

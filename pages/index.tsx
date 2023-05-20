@@ -8,6 +8,7 @@ import HotelList from './booking'
 import HotelDetails from './booking/details/[id]'
 import HotelCheckout from './booking/checkout'
 
+
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {

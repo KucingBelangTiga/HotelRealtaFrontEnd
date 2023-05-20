@@ -37,6 +37,61 @@ export default function HotelCheckout(){
     const {accountnumber,add_on_id,add_on_name,check_in,check_out,email,fullname,grand_total,payment_method,phone,total_discount,voucher_applied, booking_order_number, transaction_order_number, hotel_selected, voucher_applied_id} = router.query;
 
     const payment = payment_method.split('|');
+
+    // console.log([addonname])
+    let addonname = [add_on_name]
+    let addonid = [add_on_id]
+    let voucherapplied = [voucher_applied]
+    let voucherappliedid = [voucher_applied_id]
+
+    const addOnName = () => {
+        if(addonname.length == 1){
+            return [addonname,''].join(',')
+        }else if(addonname.length < 1){
+            return ''
+        }else if(addonname.length >= 2){
+            return addonname.join(',')
+        }
+    }
+
+    const addOnId = () => {
+        if(addonid.length == 1){
+            return [addonid,''].join(',')
+        }else if(addonid.length < 1){
+            return ''
+        }else{
+            return addonid.join(',')
+        }
+    }
+
+    const voucherAppliedName = () => {
+        if(voucherapplied.length == 1){
+            return [voucherapplied,'']
+        }else if(voucherapplied.length < 1){
+            return ''
+        }else{
+            return voucherapplied.join(',')
+        }
+    }
+
+    const voucherAppliedId = () => {
+        if(voucherappliedid.length == 1){
+            return [voucherappliedid,''].join(',')
+        }else if(voucherappliedid.length < 1){
+            return ''
+        }else{
+            return voucherappliedid.join(',')
+        }
+    }
+
+    const moneyToInt2 = (money = 0) => {
+        let without_rp = money.toString().slice(3)
+        let remove_dot = without_rp.split('.').join('').slice(0,without_rp.length-3)
+        let result = parseInt(remove_dot)
+        return result
+    }
+
+    // console.log(addonname)
     
     return(
         <Layout>
@@ -50,10 +105,10 @@ export default function HotelCheckout(){
                     <p>Full Name: {fullname}</p>
                     <p>Phone Number: {phone}</p>
                     <p>Hotel Selected: {hotel_selected}</p>
-                    <p>Add On: {add_on_name.join(',')} (id: {add_on_id.join(',')})</p>
+                    <p>Add On: {addOnName()} (id: {addOnId()})</p>
                     <p>Total Payment: {grand_total}</p>
                     <p>Total Discount Applied: {total_discount}</p>
-                    <p>Voucher Applied: {voucher_applied} (id: {voucher_applied_id.join(',')})</p>
+                    <p>Voucher Applied: {voucherAppliedName()} (id: {voucherAppliedId()})</p>
                 </Row>
             </Container>
         </Layout>

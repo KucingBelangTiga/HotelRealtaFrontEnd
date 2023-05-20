@@ -14,6 +14,20 @@ export const GetBookingFailed = (payload: any) => ({
     payload
 })
 
+export const GetBookingDetailRequest = () => ({
+    type: ActionBooking.GET_DATA_DETAIL_REQUEST
+})
+
+export const GetBookingDetailSuccess = (payload: any) => ({
+    type: ActionBooking.GET_DATA_DETAIL_SUCCESS,
+    payload
+})
+
+export const GetBookingDetailFailed = (payload: any) => ({
+    type: ActionBooking.GET_DATA_DETAIL_FAILED,
+    payload
+})
+
 export const GetHotelRequest = () => ({
     type: ActionBooking.HOTEL_DATA_REQUEST
 })
@@ -109,7 +123,52 @@ export const AddBookingSuccess = (payload: any) => ({
 })
 
 export const AddBookingFailed = (payload: any) => ({
-    type: ActionBooking.ADD_DATA_FAILED,
+    type: ActionBooking.ADD_DATA_DETAIL_FAILED,
+    payload
+})
+
+export const AddBookingDetailRequest = (payload: any) => ({
+    type: ActionBooking.ADD_DATA_DETAIL_REQUEST,
+    payload
+})
+
+export const AddBookingDetailSuccess = (payload: any) => ({
+    type: ActionBooking.ADD_DATA_DETAIL_SUCCESS,
+    payload
+})
+
+export const AddBookingDetailFailed = (payload: any) => ({
+    type: ActionBooking.ADD_DATA_DETAIL_FAILED,
+    payload
+})
+
+export const AddBookingDetailExtraRequest = (payload: any) => ({
+    type: ActionBooking.ADD_DATA_DETAIL_EXTRA_REQUEST,
+    payload
+})
+
+export const AddBookingDetailExtraSuccess = (payload: any) => ({
+    type: ActionBooking.ADD_DATA_DETAIL_EXTRA_SUCCESS,
+    payload
+})
+
+export const AddBookingDetailExtraFailed = (payload: any) => ({
+    type: ActionBooking.ADD_DATA_DETAIL_EXTRA_FAILED,
+    payload
+})
+
+export const AddSpecialVoucherCouponsRequest = (payload: any) => ({
+    type: ActionBooking.ADD_SPECIAL_OFFER_COUPONS_REQUEST,
+    payload
+})
+
+export const AddSpecialVoucherCouponsSuccess = (payload: any) => ({
+    type: ActionBooking.ADD_SPECIAL_OFFER_COUPONS_SUCCESS,
+    payload
+})
+
+export const AddSpecialVoucherCouponsFailed = (payload: any) => ({
+    type: ActionBooking.ADD_SPECIAL_OFFER_COUPONS_FAILED,
     payload
 })
 

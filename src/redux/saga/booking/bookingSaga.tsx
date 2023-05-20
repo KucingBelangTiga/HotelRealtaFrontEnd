@@ -23,7 +23,15 @@ import {
     GetPriceItemsSuccess,
     GetPriceItemsFailed,
     GetPaymentMethodsSuccess,
-    GetPaymentMethodsFailed
+    GetPaymentMethodsFailed,
+    AddBookingDetailSuccess,
+    AddBookingDetailFailed,
+    AddBookingDetailExtraSuccess,
+    AddBookingDetailExtraFailed,
+    GetBookingDetailSuccess,
+    GetBookingDetailFailed,
+    AddSpecialVoucherCouponsSuccess,
+    AddSpecialVoucherCouponsFailed
 } from '../../action/booking/bookingActions'
 
 function* handleGetBooking(): any {
@@ -32,6 +40,15 @@ function* handleGetBooking(): any {
         yield put(GetBookingSuccess(result))
     } catch (error) {
         yield put(GetBookingFailed(error))
+    }
+}
+
+function* handleGetBookingDetail(): any {
+    try {
+        const result = yield call(Booking.GetDataDetail)
+        yield put(GetBookingDetailSuccess(result))
+    } catch (error) {
+        yield put(GetBookingDetailFailed(error))
     }
 }
 
@@ -100,6 +117,36 @@ function* handleAddBooking(action:any) {
     }
 }
 
+function* handleAddBookingDetail(action:any) {
+    const {payload} = action
+    try {
+        const result = yield call(Booking.CreateDetail,payload)
+        yield put(AddBookingDetailSuccess(result.data))
+    } catch (error) {
+        yield put(AddBookingDetailFailed(error))
+    }
+}
+
+function* handleAddBookingDetailExtra(action:any) {
+    const {payload} = action
+    try {
+        const result = yield call(Booking.CreateDetailExtra,payload)
+        yield put(AddBookingDetailExtraSuccess(result.data))
+    } catch (error) {
+        yield put(AddBookingDetailExtraFailed(error))
+    }
+}
+
+function* handleAddSpecialOfferCoupons(action:any) {
+    const {payload} = action
+    try {
+        const result = yield call(Booking.CreateSpecialOfferCoupons,payload)
+        yield put(AddSpecialVoucherCouponsSuccess(result.data))
+    } catch (error) {
+        yield put(AddSpecialVoucherCouponsFailed(error))
+    }
+}
+
 export {
     handleGetBooking,
     handleAddBooking,
@@ -109,4 +156,9 @@ export {
     handleGetVoucherList,
     handleGetPriceItems,
     handleGetPaymentMethod,
+    handleAddBookingDetail,
+    handleAddBookingDetailExtra,
+    handleGetBookingDetail,
+    handleAddSpecialOfferCoupons,
+    
 }

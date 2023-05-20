@@ -18,6 +18,10 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Link from 'next/link'
+import { useFormik, FormikProvider } from "formik";
+import { AddBookingDetailExtraRequest, AddBookingDetailRequest, AddBookingRequest, AddSpecialVoucherCouponsRequest, GetBookingRequest } from '@/src/redux/action/booking/bookingActions';
+import { useDispatch } from "react-redux";
+import Table from 'react-bootstrap/Table';
 
 export default function HotelDetails(){
     const [hotel, setHotel] = useState<any[]>([])
@@ -27,8 +31,6 @@ export default function HotelDetails(){
     const [priceItems, setPriceItems] = useState<any[]>([])
     const [paymentMethod, setPaymentMethod] = useState<any[]>([])
     const [refresh, setRefresh] = useState<any>(false)
-    // const [id, setId] = useState()
-    // const router = useRouter()
     const [values, setValues] = useState({});
     const [values2, setValues2] = useState({});
     const [values3, setValues3] = useState({});
@@ -41,62 +43,62 @@ export default function HotelDetails(){
     const [selectedpayment, setSelectedPayment] = useState([]);
     const [fullscreen, setFullscreen] = useState(true);
     const [formvalues, setFormValues] = useState({});
-    // const [checkedState, setCheckedState] = useState(
-    //     Array(voucher.length).fill(false),
-    //     // console.log(Array(voucher.length).fill(false))
-    // );
     const [checkedState, setCheckedState] = useState([])
     const [totalDiscount, setTotal] = useState(0);
+    const [bookingList, setBookingList] = useState([]);
+    const [bookingListDetail, setBookingListDetail] = useState([]);
+
+    const dispatch = useDispatch();
 
     const router = useRouter();
 
     const {id} = router.query;
 
-    // console.log([food,service,others])
+    let currentDate = new Date();
 
     useEffect(() => {
         setCheckedState(Array(voucher.length).fill(false))
     },[voucher.length])
 
     useEffect(() => {
-        const intervalId = setInterval(() => {
+        // const intervalId = setInterval(() => {
             Hotel.GetDataHotel().then
                 (data => {
                     setHotel(data)
                 })
-        }, 2000)
-        return () => clearInterval(intervalId);
-    }, [refresh])
+        // }, 2000)
+        // return () => clearInterval(intervalId);
+    }, [])
 
     useEffect(() => {
-        const intervalId = setInterval(() => {
+        // const intervalId = setInterval(() => {
             Hotel.GetFacilitiesHotel().then
                 (data => {
                     setFacility(data)
                 })
-        }, 2000)
-        return () => clearInterval(intervalId);
-    }, [refresh])
+        // }, 2000)
+        // return () => clearInterval(intervalId);
+    }, [])
 
     useEffect(() => {
-        const intervalId = setInterval(() => {
+        // const intervalId = setInterval(() => {
             Hotel.GetReviews().then
                 (data => {
                     setReviews(data)
                 })
-        }, 2000)
-        return () => clearInterval(intervalId);
-    }, [refresh])
+        // }, 2000)
+        // return () => clearInterval(intervalId);
+    }, [])
 
     useEffect(() => {
-        const intervalId = setInterval(() => {
+        // const intervalId = setInterval(() => {
             Hotel.GetVoucherList().then
                 (data => {
                     setVoucher(data)
                 })
-        }, 2000)
-        return () => clearInterval(intervalId);
-    }, [refresh])
+        // }, 2000)
+        // return () => clearInterval(intervalId);
+    }, [])
 
     useEffect(() => {
         const intervalId = setInterval(() => {
@@ -106,19 +108,31 @@ export default function HotelDetails(){
                 })
         }, 2000)
         return () => clearInterval(intervalId);
-    }, [refresh])
+    }, [])
 
     useEffect(() => {
-        const intervalId = setInterval(() => {
+        // const intervalId = setInterval(() => {
             Hotel.GetPaymentMethods().then
                 (data => {
                     setPaymentMethod(data)
                 })
-        }, 2000)
-        return () => clearInterval(intervalId);
-    }, [refresh])
+        // }, 2000)
+        // return () => clearInterval(intervalId);
+    }, [])
 
-    // console.log(paymentMethod)
+    useEffect(()=>{
+        Hotel.GetData().then
+        (data => {
+            setBookingList(data)
+        })
+    },[])
+
+    useEffect(()=>{
+        Hotel.GetDataDetail().then
+        (data => {
+            setBookingListDetail(data)
+        })
+    },[])
 
     const hotelName = (id) => {
         let result = '';
@@ -252,10 +266,6 @@ export default function HotelDetails(){
     const bookSubmitHandler: FormEventHandler = (event) => {
         event.preventDefault();
         event.persist();
-        // console.log('push data somewhere :)')
-        // console.log([values,values2]);
-        // console.log(values);
-        // console.log(values2);
     };
 
     const currencyFormatter = new Intl.NumberFormat('id-ID', {
@@ -271,8 +281,6 @@ export default function HotelDetails(){
         let results = voucher.filter(({ spofId: id1 }) => vlid.some(({ spofId: id2 }) => id2 == id1));
         return results
     }
-
-    // console.log(values2);
 
     const moneyToInt = (money) => {
         let without_rp = money.toString().slice(2)
@@ -296,12 +304,6 @@ export default function HotelDetails(){
     
         setCheckedState(updatedCheckedState);
 
-        // for(let i = 0; i < updatedCheckedState.length; i++) {
-        //     if(updatedCheckedState[i] === true){
-
-        //     }
-        // }
-
         let a=[]
         const totalPrice = updatedCheckedState.reduce(
         (sum, currentState, index) => {
@@ -316,21 +318,6 @@ export default function HotelDetails(){
         setValues3(a)
         setTotal(totalPrice);
     };
-
-    // console.log(values3)
-
-    // const getDiscountPrice = () => {
-    //     let result = [0]
-    //     for(let i = 0; i < appliedVoucherList().length; i++){
-    //         result.push(moneyToInt(appliedVoucherList()[i]['spofDiscount']))
-    //     }
-    //     // for(let i = 0; i < appliedVoucherList2().length; i++){
-    //     //     result.push(moneyToInt(appliedVoucherList()[i]['spofDiscount']))
-    //     // }
-    //     return result
-    // }
-
-    // console.log(getDiscountPrice())
 
     const priceList = (id) => {
         for(let i = 0; i<facility.length; i++){
@@ -428,7 +415,6 @@ export default function HotelDetails(){
         return hotel[id-1]
     }
 
-    let currentDate = new Date();
     const GatherAllData = () => {
         return (
             {
@@ -454,31 +440,148 @@ export default function HotelDetails(){
         )
     }
 
-    // console.log(addOnAdded()[1])
+    let selectedPayment = ()=>selectedpayment.split('|')[0]
+
+    const finalActionToAddBooking = () => {
+        let payload = {
+                    // boorId: 21,
+                    boorOrderNumber: GatherAllData().booking_order_number,
+                    boorOrderDate: `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-${currentDate.getDate()} ${currentDate.getHours()}:${currentDate.getMinutes()}:${currentDate.getSeconds()}`,
+                    boorArrivalDate: GatherAllData().check_in,
+                    boorTotalRoom: 1,
+                    boorTotalGuest: 2,
+                    boorDiscount: moneyToInt2(GatherAllData().total_discount),
+                    boorTotalTax: ((moneyToInt2(priceList(id))*10)/100),
+                    boorTotalAmount: moneyToInt2(priceList(id)),
+                    boorDownPayment: 0,
+                    boorPayType: (selectedPayment().length === 4 ? "PG" : "C"),
+                    boorIsPaid: "P",
+                    boorType: "Individual",
+                    boorCardnumber: `${(GatherAllData().accountnumber).toString()}`,
+                    boorMemberType: "-",
+                    boorStatus: "BOOKING",
+                    boorUserId: 1,
+                    boorHotel: parseInt(id),
+                };
+        dispatch(AddBookingRequest(payload))
+    }
+
+    const getFaciDataFromHotelRelation = () => {
+        for(let i = 0; i < facility.length; i++) {
+            if(facility[i]['faciHotel']['hotelId'] == id && facility[i]['faciMeasureUnit'] == 'Beds'){
+                return {
+                    'faciId': facility[i]['faciId'],
+                    'faciMaxNumber': facility[i]['faciMaxNumber'],
+                    'faciRatePrice': moneyToInt(facility[i]['faciRatePrice']),
+                    'faciDiscount': moneyToInt(facility[i]['faciDiscount']),
+                    'faciTaxRate': moneyToInt(facility[i]['faciTaxRate']),
+                    'faciExtra': addOnPriceTotal(),
+                    'faciSubtotal': moneyToInt(facility[i]['faciRatePrice'])+addOnPriceTotal()-moneyToInt(facility[i]['faciDiscount'])+moneyToInt(facility[i]['faciTaxRate'])
+                };
+            }
+        }
+    }
+
+    const finalActionToAddBookingDetail = () => {
+        let payload = {
+            borderBoorId: bookingList[bookingList.length - 1],
+            // bordeId: number,
+            bordeCheckin: values.check_in,
+            bordeCheckout: values.check_out,
+            bordeAdults: getFaciDataFromHotelRelation()?.faciMaxNumber,
+            bordeKids: 0,
+            bordePrice: getFaciDataFromHotelRelation()?.faciRatePrice,
+            bordeExtra: getFaciDataFromHotelRelation()?.faciExtra,
+            bordeDiscount: getFaciDataFromHotelRelation()?.faciDiscount,
+            bordeTax: getFaciDataFromHotelRelation()?.faciTaxRate,
+            bordeSubtotal: getFaciDataFromHotelRelation()?.faciSubtotal,
+            bordeFaci: getFaciDataFromHotelRelation()?.faciId,
+        }
+        dispatch(AddBookingDetailRequest(payload))
+    }
+    
+    const finalActionToAddBookingDetailExtra = () => {
+        let boex_qty = 1
+        for(let i = 0; i < addOnAdded()[1].length; i++) {
+            if(addOnAdded()[1][i] == addOnDetail()[i]['pritId']){
+                let payload = {
+                    // boexId: number,
+                    boexPrice: moneyToInt(addOnDetail()[i]['pritPrice']),
+                    boexQty: boex_qty,
+                    boexSubtotal: moneyToInt(addOnDetail()[i]['pritPrice'])*boex_qty,
+                    boexMeasureUnit: (addOnDetail()[i]['pritType'] == 'FACILITY') ? 'People' : 'Unit',
+                    boexPrit: addOnDetail()[i]['pritId'],
+                    boexBorde: bookingListDetail[bookingListDetail.length - 1],
+                }
+                dispatch(AddBookingDetailExtraRequest(payload))
+            }
+        }
+    }
+
+    // console.log(voucher)
+
+    const finalActionToAddSpecialOfferCoupons = () => {
+        for(let i = 0; i < values3.length; i++) {
+            for(let j = 0; j < voucher.length; j++) {
+                if(voucher[j]['spofId'] == values3[i]){
+                    let payload = {
+                        // socoId: socoId,
+                        socoSpof: values3[i],
+                        socoBorde: bookingListDetail[bookingListDetail.length - 1],
+                    }
+                    dispatch(AddSpecialVoucherCouponsRequest(payload))
+                }
+            }
+        }
+    }
+
+    function sleep(milliseconds) {
+        const date = Date.now();
+        let currentDate = null;
+        do {
+            currentDate = Date.now();
+        } while (currentDate - date < milliseconds);
+    }
 
     const passData = () => {
+        finalActionToAddBooking()
+        sleep(1000)
+        finalActionToAddBookingDetail()
+        sleep(1000)
+        finalActionToAddBookingDetailExtra()
+        sleep(1000)
+        finalActionToAddSpecialOfferCoupons()
+
+        // console.log(GatherAllData().add_on_id)
+
+        sleep(1000)
+
         router.push({
             pathname: '/booking/checkout',
             query: GatherAllData()
         }, '/booking/checkout')
     }
 
-    // export function passData() {
-    //     return GatherAllData()
-    // }
+    const deleteAddOn = (id,name) => {
+        // console.log(id,name)
+        for(let i = 0; i < addon.length; i++) {
+            if(addon[i].includes(id) && addon[i].includes(name)){
+                addon.splice(i,1);
+            }
+        }
+    }
 
-    // console.log(priceItemLists());
-    // console.log(getDiscountPrice());
-    // console.log(hotelAminities(1));
-    // console.log(values);
-    // console.log(addon)
-    // console.log(addOnAdded());
-    // console.log(addOnDetail());
-    // console.log(addOnPriceTotal());
-    // console.log(paymentMethodSeparator());
-    // console.log(appliedVoucherList());
-    // console.log(GatherAllData())
-    // console.log(appliedVoucherList())
+    const hotelReviewDisplay = (id) => {
+        let result = []
+        for(let i = 0; i < review.length; i++){
+            if(review[i]['horeHotel']['hotelId'] == id){
+                result.push(review[i])
+            }
+        }
+        return result
+    }
+
+    // console.log(hotelReviewDisplay(id))
 
     return(
         <Layout>   
@@ -538,14 +641,27 @@ export default function HotelDetails(){
                                 </Row>
                                 <Row>
                                     <h3>Rating & Reviews</h3>
-                                    <Col style={{ textAlign:'center'}}>
-                                        <span><img src={hotelReviewStar(id)[0]} alt="" style={{ maxHeigh:20, maxWidth:20, display:'inline' }}/></span>
-                                        <span><img src={hotelReviewStar(id)[1]} alt="" style={{ maxHeigh:20, maxWidth:20, display:'inline' }}/></span>
-                                        <span><img src={hotelReviewStar(id)[2]} alt="" style={{ maxHeigh:20, maxWidth:20, display:'inline' }}/></span>
-                                        <span><img src={hotelReviewStar(id)[3]} alt="" style={{ maxHeigh:20, maxWidth:20, display:'inline' }}/></span>
-                                        <span><img src={hotelReviewStar(id)[4]} alt="" style={{ maxHeigh:20, maxWidth:20, display:'inline' }}/></span>
-                                        <p>{hotelReviewCount(id)}</p>
-                                        <p></p>
+                                    <Col>
+                                        <Row>
+                                            <Col style={{ textAlign:'center'}}>
+                                                <span><img src={hotelReviewStar(id)[0]} alt="" style={{ maxHeigh:20, maxWidth:20, display:'inline' }}/></span>
+                                                <span><img src={hotelReviewStar(id)[1]} alt="" style={{ maxHeigh:20, maxWidth:20, display:'inline' }}/></span>
+                                                <span><img src={hotelReviewStar(id)[2]} alt="" style={{ maxHeigh:20, maxWidth:20, display:'inline' }}/></span>
+                                                <span><img src={hotelReviewStar(id)[3]} alt="" style={{ maxHeigh:20, maxWidth:20, display:'inline' }}/></span>
+                                                <span><img src={hotelReviewStar(id)[4]} alt="" style={{ maxHeigh:20, maxWidth:20, display:'inline' }}/></span>
+                                                <p>{hotelReviewCount(id)}</p>
+                                                <p></p>
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            {Array.from(hotelReviewDisplay(id)).map((_,data)=>(
+                                                <Col style={{ borderRadius:10, backgroundColor:'lightgray', margin:10 }} key={hotelReviewDisplay(id)[data]['horeId']}>
+                                                    <p>User ID: {hotelReviewDisplay(id)[data]['horeUserId']}</p>
+                                                    <p>User Rating: {hotelReviewDisplay(id)[data]['horeRating']}</p>
+                                                    <p>User Review: {hotelReviewDisplay(id)[data]['horeUserReview']}</p>
+                                                </Col>
+                                            ))}
+                                        </Row>
                                     </Col>
                                     <Col>
                                         <ProgressBar now={hotelReviewPercent(id)[0]} style={{ maxWidth:300 }} label="1 Star"/>
@@ -558,7 +674,6 @@ export default function HotelDetails(){
                                         <br />
                                         <ProgressBar now={hotelReviewPercent(id)[4]} style={{ maxWidth:300 }} label='5 Star'/>
                                         <br />
-                                        {/* <span><img src='/starorange2.png' alt="" style={{ maxHeigh:20, maxWidth:20, display:'inline' }}/></span> */}
                                     </Col>
                                 </Row>
                             </Row>
@@ -656,8 +771,8 @@ export default function HotelDetails(){
                                             <Form.Label className='mr-2'>Food and Snack Add-On:</Form.Label>
                                             <select
                                                 // onChange={(e) => setFood(e.target.id)}
-                                                onChange={(e) => setFood(e.currentTarget.value)}
-                                                onClick={(e)=> (!addon.includes(e.currentTarget.value))?addon.push(e.currentTarget.value):''}
+                                                // onChange={}
+                                                onClick={(e)=> ((!addon.includes(e.currentTarget.value))?addon.push(e.currentTarget.value):'', setFood(e.currentTarget.value))}
                                                 defaultValue={food}>
                                                 {priceItemLists()[0].map((option,idx) => (
                                                     <option id={priceItemLists()[0][idx]['pritId']} key={priceItemLists()[0][idx]['pritId']}>{priceItemLists()[0][idx]['pritId']}<p>{' | '}{priceItemLists()[0][idx]['pritName']}</p></option>
@@ -672,8 +787,8 @@ export default function HotelDetails(){
                                         <Form.Group>
                                             <Form.Label className='mr-2'>Facility and Service Add-On:</Form.Label>
                                             <select
-                                                onChange={(e) => setService(e.currentTarget.value)}
-                                                onClick={(e)=> (!addon.includes(e.currentTarget.value))?addon.push(e.currentTarget.value):''}
+                                                // onChange={}
+                                                onClick={(e)=> ((!addon.includes(e.currentTarget.value))?addon.push(e.currentTarget.value):'', setService(e.currentTarget.value))}
                                                 defaultValue={service}>
                                                 {priceItemLists()[1].map((option,idx) => (
                                                     <option id={priceItemLists()[1][idx]['pritId']} key={priceItemLists()[1][idx]['pritId']}>{priceItemLists()[1][idx]['pritId']}<p>{' | '}{priceItemLists()[1][idx]['pritName']}</p></option>
@@ -683,8 +798,8 @@ export default function HotelDetails(){
                                         <Form.Group>
                                             <Form.Label className='mr-2'>Other Add-On:</Form.Label>
                                             <select
-                                                onChange={(e) => setOthers(e.currentTarget.value)}
-                                                onClick={(e)=> (!addon.includes(e.currentTarget.value))?addon.push(e.currentTarget.value):''}
+                                                // onChange={}
+                                                onClick={(e)=> ((!addon.includes(e.currentTarget.value))?addon.push(e.currentTarget.value):'', setOthers(e.currentTarget.value))}
                                                 defaultValue={others}>
                                                 {priceItemLists()[2].map((option,idx) => (
                                                     <option id={priceItemLists()[2][idx]['pritId']} key={priceItemLists()[2][idx]['pritId']}>{priceItemLists()[2][idx]['pritId']}<p>{' | '}{priceItemLists()[2][idx]['pritName']}</p></option>
@@ -692,6 +807,26 @@ export default function HotelDetails(){
                                             </select>
                                         </Form.Group>
                                         <Form.Label>Add On Items Added: {addOnAdded()[0].join(', ')}</Form.Label>
+                                        <Table striped bordered hover size="sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Add On</th>
+                                                    {/* <th>Last Name</th> */}
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {addOnAdded()[0].map((_,index)=> (
+                                                    <tr key={addOnAdded()[1][index]}>
+                                                        <td key={addOnAdded()[1][index]}>{addOnAdded()[1][index]}</td>
+                                                        <td key={addOnAdded()[0][index]}>{addOnAdded()[0][index]}</td>
+                                                        <td><Button variant='danger' onClick={()=>deleteAddOn(addOnAdded()[1][index],addOnAdded()[0][index])}>Delete</Button></td>
+                                                    </tr>
+                                                ))
+                                                }
+                                            </tbody>
+                                        </Table>
                                         <hr />
                                         <h2>3. Payment</h2>
                                         <Form.Group>
@@ -749,9 +884,3 @@ export default function HotelDetails(){
         </Layout>
     );
 }
-
-
-
-
-
-
