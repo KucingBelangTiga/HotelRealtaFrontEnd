@@ -8,6 +8,7 @@ import {
 import { useFormik, FormikProvider, Field } from "formik";
 import DisplayImage from "./DisplayImage";
 import PhotoPrimary from "./PhotoPrimary";
+import * as Yup from "yup";
 
 export default function AddPhoto(props: any) {
   const dispatch = useDispatch();
@@ -31,6 +32,31 @@ export default function AddPhoto(props: any) {
       file: "",
       faphoFaci: props.id,
     },
+    validationSchema: Yup.object().shape({
+      file: Yup.mixed()
+        .nullable()
+        .notRequired()
+        .test(
+          "FILE_SIZE",
+          "Uploaded file is too big.",
+          (value: any) => !value || (value && value.size <= 1000000)
+        )
+        .test(
+          "FILE_FORMAT",
+          "Uploaded file has unsupported format.",
+          (value: any) => {
+            if (value) {
+              return (
+                value.type === "image/jpeg" ||
+                value.type === "image/jpg" ||
+                value.type === "image/png"
+              );
+            } else {
+              return true;
+            }
+          }
+        ),
+    }),
     onSubmit: async (values) => {
       let payload = new FormData();
       payload.append("faphoPrimary", values.faphoPrimary);
@@ -82,7 +108,7 @@ export default function AddPhoto(props: any) {
       {showModal ? (
         <>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-            <div className="relative w-auto my-6 mx-auto max-w-3xl max-h-96 overflow-y-scroll">
+            <div className="relative w-2/4 my-6 mx-auto max-w-3xl max-h-96 overflow-y-scroll">
               {/*content*/}
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 {/*header*/}
@@ -130,7 +156,12 @@ export default function AddPhoto(props: any) {
                     <div className="my-5">
                       <div className="w-96 mx-auto bg-white rounded shadow border-slate-900">
                         <div className="py-4 px-8 text-black text-xl font-bold border-b border-grey-500 text-center">
-                          <h1>Upload Photos</h1>
+                          <h1>
+                            Upload Photos{" "}
+                            <span className="text-red-400">
+                              &nbsp; * {formik.errors.file}
+                            </span>
+                          </h1>
                         </div>
                         <form onSubmit={formik.handleSubmit}>
                           <div className="py-4 px-8">

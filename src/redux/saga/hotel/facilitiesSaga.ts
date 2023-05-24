@@ -1,6 +1,8 @@
 import { call, put } from "redux-saga/effects";
 import Facilities from "../../../api/hotel/facilities";
 import {
+  GetAllFacilitiesSuccess,
+  GetAllFacilitiesFailed,
   GetFacilitiesSuccess,
   GetFacilitiesFailed,
   AddFacilitiesSuccess,
@@ -12,6 +14,15 @@ import {
   DelFacilitiesSuccess,
   DelFacilitiesFailed,
 } from "../../action/hotel/facilitiesAction";
+
+function* handleAllFacilities(): any {
+  try {
+    const result = yield call(Facilities.listAll);
+    yield put(GetAllFacilitiesSuccess(result));
+  } catch (error) {
+    yield put(GetAllFacilitiesFailed(error));
+  }
+}
 
 function* handleFacilities(action: any): any {
   const { payload } = action;
@@ -64,6 +75,7 @@ function* deleteFacilities(action: any): any {
 }
 
 export {
+  handleAllFacilities,
   handleFacilities,
   handleAddFacilities,
   findFacilities,

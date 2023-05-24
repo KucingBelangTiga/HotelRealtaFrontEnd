@@ -30,6 +30,7 @@ export default function Index() {
     if (router.isReady) {
       dispatch(GetFacilitiesRequest(router.query.id));
       dispatch(FindHotelsRequest(router.query.id));
+      setRefresh(false);
       setLoading(true);
     }
   }, [dispatch, router.query.id, refresh, router.isReady]);
@@ -57,8 +58,8 @@ export default function Index() {
   const startEndTemplate = (rowData: any) => {
     return (
       <div>
-        <p>{rowData.faciStartdate.substring(0, 10)}</p>
-        <p>{rowData.faciEnddate.substring(0, 10)}</p>
+        <p>{rowData.faciStartdate && rowData.faciStartdate.substring(0, 10)}</p>
+        <p>{rowData.faciEnddate && rowData.faciEnddate.substring(0, 10)}</p>
       </div>
     );
   };
@@ -77,10 +78,13 @@ export default function Index() {
       <p>
         {rowData.faciRatePrice && rowData.faciDiscount
           ? Math.round(
-              Number(rowData.faciDiscount.replace(/[^0-9]+/g, "")) /
-                (Number(rowData.faciRatePrice.replace(/[^0-9]+/g, "")) / 100)
+              Number(rowData.faciDiscount.toString().replace(/[^0-9]+/g, "")) /
+                (Number(
+                  rowData.faciRatePrice.toString().replace(/[^0-9]+/g, "")
+                ) /
+                  100)
             )
-          : null}
+          : 0}
         %
       </p>
     );
@@ -91,8 +95,11 @@ export default function Index() {
       <p>
         {rowData.faciRatePrice && rowData.faciTaxRate
           ? Math.round(
-              Number(rowData.faciTaxRate.replace(/[^0-9]+/g, "")) /
-                (Number(rowData.faciRatePrice.replace(/[^0-9]+/g, "")) / 100)
+              Number(rowData.faciTaxRate.toString().replace(/[^0-9]+/g, "")) /
+                (Number(
+                  rowData.faciRatePrice.toString().replace(/[^0-9]+/g, "")
+                ) /
+                  100)
             )
           : null}
         %
@@ -129,7 +136,11 @@ export default function Index() {
           <div className="absolute top-10 border-coldBlue text-coldBlue w-96 z-50 ">
             <ul className="bg-white  absolute right-3  border-coldBlue border-solid border-2 rounded-md text-center">
               <li>
-                <Edit id={rowData.faciId} setRefresh={setRefresh} />
+                <Edit
+                  id={rowData.faciId}
+                  setRefresh={setRefresh}
+                  room={rowData.faciRoomNumber}
+                />
               </li>
               <li>
                 <AddPhoto id={rowData.faciId} setRefresh={setRefresh} />

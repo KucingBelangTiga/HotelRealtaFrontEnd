@@ -1,5 +1,19 @@
 import * as ActionFacilities from "../../constant/hotel/facilitiesConstant";
 
+export const GetAllFacilitiesRequest = () => ({
+  type: ActionFacilities.GET_ALLFACILITIES_REQUEST,
+});
+
+export const GetAllFacilitiesSuccess = (payload: any) => ({
+  type: ActionFacilities.GET_ALLFACILITIES_SUCCESS,
+  payload,
+});
+
+export const GetAllFacilitiesFailed = (payload: any) => ({
+  type: ActionFacilities.GET_ALLFACILITIES_FAILED,
+  payload,
+});
+
 export const GetFacilitiesRequest = (payload: any) => ({
   type: ActionFacilities.GET_FACILITIES_REQUEST,
   payload,

@@ -1,6 +1,15 @@
 import axios from "axios";
 import config from "../../config/config";
 
+const listAll = async () => {
+  try {
+    const result = await axios.get(`${config.domain}/facilities/`);
+    return result.data;
+  } catch (error) {
+    return await error;
+  }
+};
+
 const list = async (id: any) => {
   try {
     const result = await axios.get(`${config.domain}/facilities/all/${id}`);
@@ -50,6 +59,7 @@ const findOne = async (id: any) => {
 };
 
 const allApi = {
+  listAll,
   list,
   deleted,
   create,

@@ -6,6 +6,7 @@ import {
   FindAddressRequest,
 } from "../../../redux/action/master/addressAction";
 import { useFormik, FormikProvider } from "formik";
+import * as Yup from "yup";
 
 export default function Add(props: any) {
   const [showModal, setShowModal] = useState(false);
@@ -27,11 +28,27 @@ export default function Add(props: any) {
       hotelPhonenumber: "",
       hotelAddr: city,
     },
+    validationSchema: Yup.object().shape({
+      hotelName: Yup.string()
+        .min(2, "Too Short!")
+        .max(84, "Too Long!")
+        .required("Required"),
+      hotelDescription: Yup.string()
+        .min(2, "Too Short!")
+        .max(499, "Too Long!")
+        .required("Required"),
+      hotelPhonenumber: Yup.string()
+        .min(3, "Too Short!")
+        .max(24, "Too Long!")
+        .required("Required")
+        .matches(/^\+?[1-9][0-9]{3,14}$/, "Phone number is not valid"),
+    }),
     onSubmit: async (values) => {
       const payload = {
         hotelName: values.hotelName,
         hotelDescription: values.hotelDescription,
         hotelPhonenumber: values.hotelPhonenumber,
+        hotelModifiedDate: new Date(),
         hotelAddr: city,
       };
 
@@ -62,7 +79,7 @@ export default function Add(props: any) {
       {showModal ? (
         <>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-            <div className="relative w-auto my-6 mx-auto min-w-3xl">
+            <div className="relative w-2/4 my-6 mx-auto min-w-3xl">
               {/*content*/}
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 {/*header*/}
@@ -85,6 +102,9 @@ export default function Add(props: any) {
                         <div className="mb-4">
                           <label className="block text-black text-sm font-bold mb-2">
                             Name
+                            <span className="text-red-400">
+                              &nbsp; * {formik.errors.hotelName}
+                            </span>
                           </label>
                           <input
                             className=" border rounded w-full min-w-3xl py-2 px-3 text-black border-slate-900 "
@@ -100,6 +120,9 @@ export default function Add(props: any) {
                         <div className="mb-4">
                           <label className="block text-black text-sm font-bold mb-2">
                             Description
+                            <span className="text-red-400">
+                              &nbsp; * {formik.errors.hotelDescription}
+                            </span>
                           </label>
                           <input
                             className=" border rounded w-full py-2 px-3 text-black border-slate-900"
@@ -115,6 +138,9 @@ export default function Add(props: any) {
                         <div className="mb-4">
                           <label className="block text-black text-sm font-bold mb-2">
                             PhoneNumber
+                            <span className="text-red-400">
+                              &nbsp; * {formik.errors.hotelPhonenumber}
+                            </span>
                           </label>
                           <input
                             className=" border rounded w-full py-2 px-3 text-black border-slate-900"
@@ -133,6 +159,7 @@ export default function Add(props: any) {
                           <select
                             name="hotelAddr"
                             id="hotelAddr"
+                            required
                             onChange={handleChange}
                             value={city}
                             onBlur={formik.handleBlur}
@@ -163,7 +190,7 @@ export default function Add(props: any) {
                           <p className="block text-black text-sm font-bold mb-2">
                             Description
                           </p>
-                          <p className="border rounded w-full py-2 px-3 text-blue-950 border-slate-900">
+                          <p className="border rounded w-full py-2 px-3 text-blue-950 border-slate-900 break-words">
                             {city === undefined
                               ? "Description"
                               : `${address.addrLine1}, ${address.addrLine2}, ${

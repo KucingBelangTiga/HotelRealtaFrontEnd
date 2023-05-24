@@ -1,3 +1,7 @@
+export const GET_ALLFACILITIES_REQUEST = "get/allfacilities/request";
+export const GET_ALLFACILITIES_SUCCESS = "get/allfacilities/success";
+export const GET_ALLFACILITIES_FAILED = "get/allfacilities/failed";
+
 export const GET_FACILITIES_REQUEST = "get/facilities/request";
 export const GET_FACILITIES_SUCCESS = "get/facilities/success";
 export const GET_FACILITIES_FAILED = "get/facilities/failed";

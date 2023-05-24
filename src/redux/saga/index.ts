@@ -31,6 +31,7 @@ import { handleCategoryGroup } from "./master/categoryGroupSaga";
 
 import {
   handleFacilities,
+  handleAllFacilities,
   handleAddFacilities,
   findFacilities,
   editFacilities,
@@ -45,6 +46,7 @@ function* watchAll() {
     takeEvery(ActionHotels.DEL_HOTELS_REQUEST, deleteHotels),
 
     takeEvery(ActionFacilities.GET_FACILITIES_REQUEST, handleFacilities),
+    takeEvery(ActionFacilities.GET_ALLFACILITIES_REQUEST, handleAllFacilities),
     takeEvery(ActionFacilities.ADD_FACILITIES_REQUEST, handleAddFacilities),
     takeEvery(ActionFacilities.FIND_FACILITIES_REQUEST, findFacilities),
     takeEvery(ActionFacilities.EDIT_FACILITIES_REQUEST, editFacilities),

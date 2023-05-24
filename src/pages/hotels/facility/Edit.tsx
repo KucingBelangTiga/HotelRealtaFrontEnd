@@ -3,26 +3,32 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   EditFacilitiesRequest,
   FindFacilitiesRequest,
+  GetAllFacilitiesRequest,
 } from "../../../redux/action/hotel/facilitiesAction";
 import { GetCategoryGroupRequest } from "../../../redux/action/master/categoryGroupAction";
 import { AddFacPriceHistRequest } from "../../../redux/action/hotel/facilityPriceHistoryAction";
 import { useFormik, FormikProvider } from "formik";
+import * as Yup from "yup";
 
 export default function Edit(props: any) {
   const [showModal, setShowModal] = useState(false);
   const [id, setId] = useState<number>();
+  const [room, setRoom] = useState<string>("");
   const dispatch = useDispatch();
-  const { facility } = useSelector((state: any) => state.facilitiesState);
+  const { facility, allFacilities } = useSelector(
+    (state: any) => state.facilitiesState
+  );
   const { categoryGroups } = useSelector(
     (state: any) => state.categoryGroupState
   );
 
   useEffect(() => {
     dispatch(FindFacilitiesRequest(props.id));
+    dispatch(GetAllFacilitiesRequest());
     dispatch(GetCategoryGroupRequest());
   }, [dispatch, props.id]);
 
-  const formik = useFormik({
+  const formik: any = useFormik({
     enableReinitialize: true,
     initialValues: {
       faciId: props.id,
@@ -55,6 +61,55 @@ export default function Edit(props: any) {
         ),
       faciCagro: facility.faciCagro && facility.faciCagro.cagroId,
     },
+    validationSchema: Yup.object().shape({
+      faciName: Yup.string()
+        .min(2, "Too Short!")
+        .max(123, "Too Long!")
+        .required("Required"),
+      faciDescription: Yup.string()
+        .min(2, "Too Short!")
+        .max(254, "Too Long!")
+        .required("Required"),
+      faciMaxNumber: Yup.string()
+        .min(1, "Too Short!")
+        .max(5, "Too Long!")
+        .required("Required")
+        .matches(/^[0-9]*$/, "Max vacant must be a number"),
+      faciRoomNumber: Yup.string()
+        .min(1, "Too Short!")
+        .max(6, "Too Long!")
+        .required("Required")
+        .test("unique", "Number is already in use", function (value: any) {
+          if (
+            !allFacilities.some((item: any) => item.faciRoomNumber === value) ||
+            props.room === value
+          ) {
+            return true;
+          }
+        }),
+      faciLowPrice: Yup.string()
+        .min(3, "Too Short!")
+        .max(10, "Too Long!")
+        .required("Required")
+        .matches(/^[0-9]*$/, "Price must be a number"),
+      faciHighPrice: Yup.string()
+        .min(3, "Too Short!")
+        .max(10, "Too Long!")
+        .required("Required")
+        .matches(/^[0-9]*$/, "Price must be a number"),
+      faciDiscount: Yup.number()
+        .min(0, "Only 0 - 100")
+        .max(100, "Only 0 - 100")
+        .required("Required")
+        .typeError("Discount must be a number"),
+      // .matches(/^[0-9]*$/, "Discount must be a number"),
+      faciTaxRate: Yup.number()
+        .min(0, "Only 0 - 100")
+        .max(100, "Only 0 - 100")
+        .required("Required")
+        .typeError("Tax must be a number"),
+      // .matches(/^[0-9]*$/, "Tax must be a number"),
+    }),
     onSubmit: async (values) => {
       const payload = {
         faciId: props.id,
@@ -67,6 +122,7 @@ export default function Edit(props: any) {
         faciEnddate: values.faciEnddate,
         faciLowPrice: values.faciLowPrice,
         faciHighPrice: values.faciHighPrice,
+        faciModifiedDate: new Date(),
         faciRatePrice:
           (parseInt(values.faciHighPrice) + parseInt(values.faciLowPrice)) / 2,
         faciDiscount:
@@ -83,29 +139,43 @@ export default function Edit(props: any) {
           ) * parseInt(values.faciTaxRate),
         faciCagro: values.faciCagro,
       };
-
-      const priceHistPayload = {
-        faphFaci: facility.faciId,
-        faphStartdate:
-          facility.faciStartdate && facility.faciStartdate.substring(0, 10),
-        faphEnddate:
-          facility.faciEnddate && facility.faciEnddate.substring(0, 10),
-        faphLowPrice: facility.faciLowPrice,
-        faphHighPrice: facility.faciHighPrice,
-        faphDiscount: facility.faciDiscount,
-        faphTaxRate: facility.faciTaxRate,
-        faphRatePrice: facility.faciRatePrice,
-        faphUserId: 1,
-      };
-      dispatch(EditFacilitiesRequest(payload));
-      dispatch(AddFacPriceHistRequest(priceHistPayload));
-      props.setRefresh(true);
-      setShowModal(false);
+      if (
+        Number(values.faciLowPrice) !==
+          Number(facility.faciLowPrice.toString().replace(/[^0-9]+/g, "")) /
+            100 ||
+        Number(values.faciHighPrice) !==
+          Number(facility.faciHighPrice.toString().replace(/[^0-9]+/g, "")) /
+            100
+      ) {
+        const priceHistPayload = {
+          faphFaci: facility.faciId,
+          faphStartdate:
+            facility.faciStartdate && facility.faciStartdate.substring(0, 10),
+          faphEnddate:
+            facility.faciEnddate && facility.faciEnddate.substring(0, 10),
+          faphLowPrice: facility.faciLowPrice,
+          faphHighPrice: facility.faciHighPrice,
+          faphDiscount: facility.faciDiscount,
+          faphTaxRate: facility.faciTaxRate,
+          faphRatePrice: facility.faciRatePrice,
+          faphModifiedDate: new Date(),
+          faphUserId: 1,
+        };
+        dispatch(EditFacilitiesRequest(payload));
+        dispatch(AddFacPriceHistRequest(priceHistPayload));
+        props.setRefresh(true);
+        setShowModal(false);
+      } else {
+        dispatch(EditFacilitiesRequest(payload));
+        props.setRefresh(true);
+        setShowModal(false);
+      }
     },
   });
 
   const editButton = () => {
     setId(props.id);
+    setRoom(props.room);
     setShowModal(true);
   };
 
@@ -124,13 +194,13 @@ export default function Edit(props: any) {
       </button>
       {showModal ? (
         <>
-          <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-            <div className="relative w-auto my-6 mx-auto min-w-3xl">
+          <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none ">
+            <div className="relative w-2/4  mx-auto min-w-3xl ">
               {/*content*/}
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 {/*header*/}
                 <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
-                  <h3 className="text-3xl font-semibold">Edit Hotel</h3>
+                  <h3 className="text-3xl font-semibold">Edit Facility</h3>
                   <button
                     className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                     onClick={() => setShowModal(false)}
@@ -149,6 +219,9 @@ export default function Edit(props: any) {
                           <div className="mb-4">
                             <label className="block text-black text-sm font-bold mb-2">
                               Facility Name
+                              <span className="text-red-400">
+                                &nbsp; * {formik.errors.faciName}
+                              </span>
                             </label>
                             <input
                               className=" border rounded w-full py-2 px-3 text-black border-slate-900 "
@@ -164,6 +237,9 @@ export default function Edit(props: any) {
                             <div className="mb-4">
                               <label className="block text-black text-sm font-bold mb-2">
                                 Room Number
+                                <span className="text-red-400">
+                                  &nbsp; * {formik.errors.faciRoomNumber}
+                                </span>
                               </label>
                               <input
                                 className=" border rounded w-full py-2 px-3 text-black border-slate-900"
@@ -178,6 +254,9 @@ export default function Edit(props: any) {
                             <div className="mb-4">
                               <label className="block text-black text-sm font-bold mb-2">
                                 Max Vacant
+                                <span className="text-red-400">
+                                  &nbsp; * {formik.errors.faciMaxNumber}
+                                </span>
                               </label>
                               <input
                                 className=" border rounded w-full py-2 px-3 text-black border-slate-900"
@@ -195,6 +274,9 @@ export default function Edit(props: any) {
                           <div className="mb-4">
                             <label className="block text-black text-sm font-bold mb-2">
                               Low Price
+                              <span className="text-red-400">
+                                &nbsp; * {formik.errors.faciLowPrice}
+                              </span>
                             </label>
                             <input
                               className=" border rounded w-full py-2 px-3 text-black border-slate-900"
@@ -210,6 +292,9 @@ export default function Edit(props: any) {
                           <div className="mb-4">
                             <label className="block text-black text-sm font-bold mb-2">
                               Disc %
+                              <span className="text-red-400">
+                                &nbsp; * {formik.errors.faciDiscount}
+                              </span>
                             </label>
                             <input
                               className=" border rounded w-full py-2 px-3 text-black border-slate-900"
@@ -230,6 +315,7 @@ export default function Edit(props: any) {
                               type="Date"
                               name="faciStartdate"
                               id="faciStartdate"
+                              required
                               onChange={formik.handleChange}
                               value={formik.values.faciStartdate}
                             />
@@ -237,6 +323,9 @@ export default function Edit(props: any) {
                           <div className="mb-4">
                             <label className="block text-black text-sm font-bold mb-2">
                               Description
+                              <span className="text-red-400">
+                                &nbsp; * {formik.errors.faciDescription}
+                              </span>
                             </label>
                             <input
                               className=" border rounded w-full py-2 px-3 text-black border-slate-900"
@@ -257,6 +346,7 @@ export default function Edit(props: any) {
                             <select
                               name="faciCagro"
                               id="faciCagro"
+                              required
                               onChange={formik.handleChange}
                               value={formik.values.faciCagro}
                               onBlur={formik.handleBlur}
@@ -289,6 +379,7 @@ export default function Edit(props: any) {
                             <select
                               name="faciMeasureUnit"
                               id="faciMeasureUnit"
+                              required
                               onChange={formik.handleChange}
                               value={formik.values.faciMeasureUnit}
                               onBlur={formik.handleBlur}
@@ -311,6 +402,9 @@ export default function Edit(props: any) {
                           <div className="mb-4">
                             <label className="block text-black text-sm font-bold mb-2">
                               High Price
+                              <span className="text-red-400">
+                                &nbsp; * {formik.errors.faciHighPrice}
+                              </span>
                             </label>
                             <input
                               className=" border rounded w-full py-2 px-3 text-black border-slate-900"
@@ -325,6 +419,9 @@ export default function Edit(props: any) {
                           <div className="mb-4">
                             <label className="block text-black text-sm font-bold mb-2">
                               Tax %
+                              <span className="text-red-400">
+                                &nbsp; * {formik.errors.faciTaxRate}
+                              </span>
                             </label>
                             <input
                               className=" border rounded w-full py-2 px-3 text-black border-slate-900"
@@ -345,22 +442,23 @@ export default function Edit(props: any) {
                               type="Date"
                               name="faciEnddate"
                               id="faciEnddate"
+                              required
                               onChange={formik.handleChange}
                               value={formik.values.faciEnddate}
                             />
                           </div>
                         </div>
                       </div>
-                      <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+                      <div className="flex items-center justify-end p-3 border-t border-solid border-slate-200 rounded-b">
                         <button
-                          className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                          className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
                           type="button"
                           onClick={modal}
                         >
                           Close
                         </button>
                         <button
-                          className="bg-coldBlue text-white active:bg-coldBlue font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                          className="bg-coldBlue text-white active:bg-coldBlue font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1  ease-linear transition-all duration-150"
                           type="submit"
                         >
                           Save Changes
