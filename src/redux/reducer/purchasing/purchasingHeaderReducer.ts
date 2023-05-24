@@ -1,10 +1,11 @@
 import * as ActionType from '../../constant/purchasing/purchaseHeaderConstant'
 
 const INIT_STATE = {
-    pohes: []
+    pohes: [],
+    total: 0
 }
 
-const poheReduce = (state = INIT_STATE, action:any) => {
+const poheReduce = (state = INIT_STATE, action: any) => {
     switch (action.type) {
         case ActionType.GET_POHE_REQUEST:
             return { ...state }
@@ -23,14 +24,15 @@ const poheReduce = (state = INIT_STATE, action:any) => {
     }
 }
 
-const GetPohesuccessfully = (state:any, action:any) => {
+const GetPohesuccessfully = (state: any, action: any) => {
     return {
         ...state,
-        pohes: action.payload
+        pohes: action.payload.data,
+        total: action.payload.total
     }
 }
 
-const AddPohesuccessfully = (state:any, action:any) => {
+const AddPohesuccessfully = (state: any, action: any) => {
     const { payload } = action
     return {
         ...state,
@@ -38,7 +40,7 @@ const AddPohesuccessfully = (state:any, action:any) => {
     }
 }
 
-const EditPohesuccessfully = (state:any,action:any) => {
+const EditPohesuccessfully = (state: any, action: any) => {
     return {
         ...state,
     }

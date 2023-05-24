@@ -1,7 +1,8 @@
 import * as ActionType from '../../constant/purchasing/vendorProductConstant'
 
 const INIT_STATE = {
-    vendorProducts: []
+    vendorProducts: [],
+    total:0
 }
 
 const vendorProductReduce = (state = INIT_STATE, action:any) => {
@@ -26,7 +27,8 @@ const vendorProductReduce = (state = INIT_STATE, action:any) => {
 const GetvendorProductsuccessfully = (state:any, action:any) => {
     return {
         ...state,
-        vendorProducts: action.payload
+        vendorProducts: action.payload.data,
+        total:action.payload.total
     }
 }
 

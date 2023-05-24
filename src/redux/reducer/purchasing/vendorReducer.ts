@@ -1,15 +1,20 @@
 import * as ActionType from '../../constant/purchasing/vendorConstant'
 
 const INIT_STATE = {
-    vendors: []
+    vendors: [],
+    total: 0
 }
 
-const vendorReduce = (state = INIT_STATE, action:any) => {
+const vendorReduce = (state = INIT_STATE, action: any) => {
     switch (action.type) {
         case ActionType.GET_VENDOR_REQUEST:
             return { ...state }
         case ActionType.GET_VENDOR_SUCCESS:
             return GetVendorsuccessfully(state, action)
+        case ActionType.GETALL_VENDOR_REQUEST:
+            return { ...state }
+        case ActionType.GETALL_VENDOR_SUCCESS:
+            return GetAllVendorsuccessfully(state, action)
         case ActionType.ADD_VENDOR_REQUEST:
             return { ...state }
         case ActionType.ADD_VENDOR_SUCCESS:
@@ -23,14 +28,22 @@ const vendorReduce = (state = INIT_STATE, action:any) => {
     }
 }
 
-const GetVendorsuccessfully = (state:any, action:any) => {
+const GetVendorsuccessfully = (state: any, action: any) => {
+    return {
+        ...state,
+        vendors: action.payload.data,
+        total: action.payload.total
+    }
+}
+
+const GetAllVendorsuccessfully = (state: any, action: any) => {
     return {
         ...state,
         vendors: action.payload
     }
 }
 
-const AddVendorsuccessfully = (state:any, action:any) => {
+const AddVendorsuccessfully = (state: any, action: any) => {
     const { payload } = action
     return {
         ...state,
@@ -39,7 +52,7 @@ const AddVendorsuccessfully = (state:any, action:any) => {
 }
 
 
-const EditVendorsuccessfully = (state:any,action:any) => {
+const EditVendorsuccessfully = (state: any, action: any) => {
     return {
         ...state,
     }

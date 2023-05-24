@@ -3,10 +3,10 @@ import purchaseDetail from '@/src/api/purchasing/purchaseDetail'
 import { GetPodetFailed, GetPodetSuccess, AddPodetFailed, AddPodetSuccess, EditPodetFailed, EditPodetSuccess, DelPodetFailed, DelPodetSuccess } from '../../action/purchasing/purchaseDetailAction'
 
 function* handlePodet(action:any):any {
-    const { payload } = action
     try {
-        const result = yield call(purchaseDetail.list, payload)
-        yield put(GetPodetSuccess(result))
+        const { payload, page } = action
+        const result = yield call(purchaseDetail.list, payload, page)
+        yield put(GetPodetSuccess(result.data))
     } catch (error) {
         yield put(GetPodetFailed(error))
     }

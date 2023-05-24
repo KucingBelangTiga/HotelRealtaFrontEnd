@@ -2,6 +2,10 @@ export const GET_STOCK_REQUEST = 'stock/get/request'
 export const GET_STOCK_SUCCESS = 'stock/get/success'
 export const GET_STOCK_FAILED = 'stock/get/failed'
 
+export const GETALL_STOCK_REQUEST = 'stock/getAll/request'
+export const GETALL_STOCK_SUCCESS = 'stock/getAll/success'
+export const GETALL_STOCK_FAILED = 'stock/getAll/failed'
+
 export const ADD_STOCK_REQUEST = 'stock/add/request'
 export const ADD_STOCK_SUCCESS = 'stock/add/success'
 export const ADD_STOCK_FAILED = 'stock/add/failed'

@@ -1,7 +1,8 @@
 import * as ActionType from '../../constant/purchasing/purchaseHeaderConstant'
 
-export const GetPoheRequest = () => ({
-    type: ActionType.GET_POHE_REQUEST
+export const GetPoheRequest = (page:number) => ({
+    type: ActionType.GET_POHE_REQUEST,
+    page
 })
 
 export const GetPoheSuccess = (payload:any) =>({

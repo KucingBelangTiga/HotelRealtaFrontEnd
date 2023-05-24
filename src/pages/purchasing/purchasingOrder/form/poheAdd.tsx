@@ -1,17 +1,25 @@
 import React, { useEffect, useState } from 'react'
 import { AddPoheRequest } from '@/src/redux/action/purchasing/purchaseHeaderAction'
-import { GetVendorRequest } from '@/src/redux/action/purchasing/vendorAction'
+import { GetAllVendorRequest } from '@/src/redux/action/purchasing/vendorAction'
 import { FormikProvider, useFormik } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
+import { AutoComplete } from 'primereact/autocomplete'
 
 const AddPurchasingHeader = (props: any) => {
     const { vendors } = useSelector((state: any) => state.vendorState)
+    const [items, setItems] = useState([])
     const dispatch = useDispatch()
-    useEffect(() => { dispatch(GetVendorRequest()) }, [dispatch])
+    useEffect(() => { dispatch(GetAllVendorRequest()) }, [dispatch])
+    const search = (event: any) => {
+        const filteredData = vendors.filter((item: any) =>
+            item.vendorName.toLowerCase().includes(event.query.toLowerCase())
+        );
+        setItems(filteredData.map((item: any) => item.vendorName))
+    }
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: {
-            poheId:props.poheId,
+            poheId: props.poheId,
             poheStatus: 0,
             poheOrderDate: "",
             poheSubtotal: "",
@@ -23,11 +31,16 @@ const AddPurchasingHeader = (props: any) => {
             empId: 0,
             vendorId: 0
         },
-        onSubmit: async (values) => {
+        onSubmit: async (values:any) => {
+            const selectedVendor = vendors.find((vendor: any) => vendor.vendorName === values.vendorId);
+            if (selectedVendor) {
+                values.vendorId = selectedVendor.vendorId;
+            }
             dispatch(AddPoheRequest(values))
             window.location.reload()
         }
     })
+    // console.log(vendors)
     return (
         <div>
             <FormikProvider value={formik}>
@@ -194,12 +207,14 @@ const AddPurchasingHeader = (props: any) => {
                                 >
                                     Vendor
                                 </label>
-                                <select name="vendorId" id="vendorId" className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" onChange={formik.handleChange}>
-                                    <option>-Choose-</option>
-                                    {vendors.map((e: any) =>
-                                        <option key={e.vendorId} value={e.vendorId}>{e.vendorName}</option>
-                                    )}
-                                </select>
+                                <AutoComplete
+                                    inputId='vendorId'
+                                    name='vendorId'
+                                    value={formik.values.vendorId}
+                                    suggestions={items}
+                                    completeMethod={search}
+                                    onChange={formik.handleChange}
+                                />
                             </div>
                         </div>
                     </div>

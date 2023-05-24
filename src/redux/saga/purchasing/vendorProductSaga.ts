@@ -3,10 +3,10 @@ import vendorProduct from '@/src/api/purchasing/vendorProduct'
 import { GetVeproSuccess, GetVeproFailed, AddVeproFailed, AddVeproSuccess, EditVeproSuccess, EditVeproFailed, DelVeproSuccess, DelVeproFailed } from '../../action/purchasing/vendorProductAction'
 
 function* handleVendorProduct(action: any): any {
-    const { payload } = action
     try {
-        const result = yield call(vendorProduct.list, payload)
-        yield put(GetVeproSuccess(result))
+        const { payload, page } = action
+        const result = yield call(vendorProduct.list, payload, page)
+        yield put(GetVeproSuccess(result.data))
     } catch (error) {
         yield put(GetVeproFailed(error))
     }

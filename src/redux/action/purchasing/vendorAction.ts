@@ -1,7 +1,8 @@
 import * as ActionType from '../../constant/purchasing/vendorConstant'
 
-export const GetVendorRequest = () => ({
-    type: ActionType.GET_VENDOR_REQUEST
+export const GetVendorRequest = (page:number) => ({
+    type: ActionType.GET_VENDOR_REQUEST,
+    page
 })
 
 export const GetVendorSuccess = (payload:any) =>({
@@ -14,6 +15,19 @@ export const GetVendorFailed = (payload:any) =>({
     payload
 })
 
+export const GetAllVendorRequest = () => ({
+    type: ActionType.GETALL_VENDOR_REQUEST
+})
+
+export const GetAllVendorSuccess = (payload:any) =>({
+    type: ActionType.GETALL_VENDOR_SUCCESS,
+    payload
+})
+
+export const GetAllVendorFailed = (payload:any) =>({
+    type: ActionType.GETALL_VENDOR_FAILED,
+    payload
+})
 export const AddVendorRequest = (payload:any) => ({
     type: ActionType.ADD_VENDOR_REQUEST,
     payload

@@ -2,10 +2,10 @@ import axios from "axios";
 
 const urlAPI = 'http://localhost:3002/purchasing/vendor'
 
-const list = async (data:any) => {
+const list = async (data:any, page:number) => {
     try {
-        const result = await axios.get(`${urlAPI}/product/${data.vendorId}`)
-        return result.data
+        const result = await axios.get(`${urlAPI}/product/${data.vendorId}/${page}`)
+        return result
     } catch (error:any) {
         return await error.message
     }

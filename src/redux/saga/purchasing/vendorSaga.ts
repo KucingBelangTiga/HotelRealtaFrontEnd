@@ -1,10 +1,19 @@
 import { call, put } from 'redux-saga/effects'
 import purchasing from '@/src/api/purchasing/vendor'
-import { GetVendorFailed, GetVendorRequest, GetVendorSuccess, AddVendorFailed, AddVendorRequest, AddVendorSuccess, EditVendorFailed, EditVendorRequest, EditVendorSuccess, DelVendorFailed, DelVendorRequest, DelVendorSuccess } from '../../action/purchasing/vendorAction'
+import { GetVendorFailed, GetVendorRequest, GetVendorSuccess, AddVendorFailed, AddVendorRequest, AddVendorSuccess, EditVendorFailed, EditVendorRequest, EditVendorSuccess, DelVendorFailed, DelVendorRequest, DelVendorSuccess, GetAllVendorFailed, GetAllVendorSuccess } from '../../action/purchasing/vendorAction'
 
-function* handleVendor(): any {
+function* handleVendor(action: any): any {
     try {
-        const result = yield call(purchasing.list)
+        const { page } = action
+        const result = yield call(purchasing.list, page)
+        yield put(GetVendorSuccess(result.data))
+    } catch (error) {
+        yield put(GetVendorFailed(error))
+    }
+}
+function* getAllVendor(): any {
+    try {
+        const result = yield call(purchasing.getAll)
         yield put(GetVendorSuccess(result))
     } catch (error) {
         yield put(GetVendorFailed(error))
@@ -44,5 +53,6 @@ export {
     handleVendor,
     createVendor,
     EditVendor,
-    DeleteVendor
+    DeleteVendor,
+    getAllVendor
 }

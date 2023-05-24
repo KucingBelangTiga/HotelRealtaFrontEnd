@@ -1,53 +1,6 @@
-// import React, { useEffect } from 'react'
-// import { useDispatch, useSelector } from 'react-redux'
-// import { useRouter } from 'next/router'
-
-// const navigate = [
-//     {name:'Gallery', href:'/purchasing/gallery', current: false},
-//     {name:'Vendor', href:'/purchasing/vendor', current: false},
-//     {name:'Stock', href:'/purchasing/stock', current: false},
-//     {name:'Purchasing Order', href:'/purchasing/purchasingOrder', current: false}
-// ]
-
-// export default function Header() {
-//     return (
-//         <nav className='font-sans flex flex-col text-center bg-white shadow w-full py-4 px-6'>
-//         <div className='mb-2 sm:mb-0'>
-//           {navigate.map(item => {
-//             return (
-//             <a 
-//             key={item.name} 
-//             href={item.href}
-//             className="inline-block no-underline hover:text-black font-medium text-lg py-2 px-4"
-//             >
-//               {item.name}
-//             </a>)
-//           })}
-//         </div>
-//         </nav>
-//       )
-// }
-import { Fragment, useEffect, useState } from "react";
-import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import Image from "next/image";
-// import { useDispatch, useSelector } from "react-redux";
-import { useRouter } from "next/router";
-// import { UserSignoutRequest } from "../../redux-saga/action/userAction";
-// const navigation = [
-//   { name: "Dashboard", href: "/dashboard", current: true },
-//   { name: "regions", href: "/master/regions", current: false },
-// ];
-
-// function classNameNames(...classNamees: any) {
-//   return classNamees.filter(Boolean).join(" ");
-// }
-
 export default function Header() {
-  const router = useRouter();
-
   return (
-    <nav className="fixed top-0 z-20 w-full bg-white  dark:bg-darkBlue ">
+    <nav className="fixed top-0 z-20 w-full bg-white dark:bg-darkBlue ">
       <div className="px-3 py-3 lg:px-5 lg:pl-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center justify-start">
@@ -67,8 +20,8 @@ export default function Header() {
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
-                  clip-rule="evenodd"
-                  fill-rule="evenodd"
+                  clipRule="evenodd"
+                  fillRule="evenodd"
                   d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"
                 ></path>
               </svg>

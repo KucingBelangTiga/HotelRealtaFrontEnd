@@ -1,7 +1,8 @@
 import * as ActionType from '../../constant/purchasing/stockDetailConstant'
 
 const INIT_STATE = {
-    stockDetails: []
+    stockDetails: [],
+    total:0
 }
 
 const stodetReduce = (state = INIT_STATE, action:any) => {
@@ -26,7 +27,8 @@ const stodetReduce = (state = INIT_STATE, action:any) => {
 const GetStodetsuccessfully = (state:any, action:any) => {
     return {
         ...state,
-        stockDetails: action.payload
+        stockDetails: action.payload.data,
+        total:action.payload.total
     }
 }
 

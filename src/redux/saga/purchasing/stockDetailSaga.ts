@@ -2,42 +2,42 @@ import { call, put } from 'redux-saga/effects'
 import stockDetail from '@/src/api/purchasing/stockDetail'
 import { GetStodetSuccess, GetStodetFailed, AddStodetFailed, AddStodetSuccess, EditStodetSuccess, EditStodetFailed, DelStodetSuccess, DelStodetFailed } from '../../action/purchasing/stockDetailAction'
 
-function* handleStodet(action:any):any {
-    const { payload } = action
+function* handleStodet(action: any): any {
     try {
-        const result = yield call(stockDetail.list, payload)
-        yield put(GetStodetSuccess(result))
+        const { payload, page } = action
+        const result = yield call(stockDetail.list, payload, page)
+        yield put(GetStodetSuccess(result.data))
     } catch (error) {
         yield put(GetStodetFailed(error))
     }
 }
-function* createStodet(action:any):any {
+function* createStodet(action: any): any {
     const { payload } = action
     try {
         const result = yield call(stockDetail.create, payload)
         yield put(AddStodetSuccess(result.data))
-        
+
     } catch (error) {
         yield put(AddStodetFailed(error))
     }
 }
-function* EditStodet(action:any):any {
-    const {payload} = action
+function* EditStodet(action: any): any {
+    const { payload } = action
     try {
         const result = yield call(stockDetail.update, payload)
         yield put(EditStodetSuccess(result.data))
     } catch (error) {
-       yield put (EditStodetFailed(error)) 
+        yield put(EditStodetFailed(error))
     }
 }
 
-function* DeleteStodet(action:any):any {
-    const {payload} = action
+function* DeleteStodet(action: any): any {
+    const { payload } = action
     try {
         const result = yield call(stockDetail.deleted, payload)
         yield put(DelStodetSuccess(result))
     } catch (error) {
-       yield put (DelStodetFailed(error)) 
+        yield put(DelStodetFailed(error))
     }
 }
 

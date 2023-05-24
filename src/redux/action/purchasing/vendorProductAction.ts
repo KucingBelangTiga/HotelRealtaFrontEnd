@@ -1,8 +1,9 @@
 import * as ActionType from '../../constant/purchasing/vendorProductConstant'
 
-export const GetVeproRequest = (payload:any) => ({
+export const GetVeproRequest = (payload:any, page:number) => ({
     type: ActionType.GET_VEPRO_REQUEST,
-    payload
+    payload,
+    page
 })
 
 export const GetVeproSuccess = (payload:any) =>({

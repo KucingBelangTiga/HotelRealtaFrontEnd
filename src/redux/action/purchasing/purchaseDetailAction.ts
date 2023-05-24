@@ -1,8 +1,9 @@
 import * as ActionType from '../../constant/purchasing/purchaseDetailConstant'
 
-export const GetPodetRequest = (payload:any) => ({
+export const GetPodetRequest = (payload:any, page:number) => ({
     type: ActionType.GET_PODET_REQUEST,
-    payload
+    payload,
+    page
 })
 
 export const GetPodetSuccess = (payload:any) =>({

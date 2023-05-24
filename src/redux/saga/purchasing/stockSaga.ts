@@ -1,13 +1,22 @@
 import { call, put } from 'redux-saga/effects'
 import stock from '@/src/api/purchasing/stock'
-import { GetStockFailed, GetStockSuccess, AddStockFailed, AddStockSuccess, EditStockFailed, EditStockSuccess, DelStockFailed, DelStockSuccess } from '../../action/purchasing/stockAction'
+import { GetStockFailed, GetStockSuccess, AddStockFailed, AddStockSuccess, EditStockFailed, EditStockSuccess, DelStockFailed, DelStockSuccess, GetAllStockSuccess, GetAllStockFailed } from '../../action/purchasing/stockAction'
 
-function* handleStock():any {
+function* handleStock(action:any):any {
     try {
-        const result = yield call(stock.list)
-        yield put(GetStockSuccess(result))
+        const { page } = action;
+        const result = yield call(stock.list, page)
+        yield put(GetStockSuccess(result.data))
     } catch (error) {
         yield put(GetStockFailed(error))
+    }
+}
+function* getAllStock():any {
+    try {
+        const result = yield call(stock.getAll)
+        yield put(GetAllStockSuccess(result.data))
+    } catch (error) {
+        yield put(GetAllStockFailed(error))
     }
 }
 function* createStock(action:any):any {
@@ -44,5 +53,6 @@ export {
     handleStock,
     createStock,
     EditStock,
-    DeleteStock
+    DeleteStock,
+    getAllStock
 }

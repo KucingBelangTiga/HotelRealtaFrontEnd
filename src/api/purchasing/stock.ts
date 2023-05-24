@@ -2,10 +2,19 @@ import axios from "axios";
 
 const urlAPI = 'http://localhost:3002/purchasing'
 
-const list = async () => {
+const getAll = async()=>{
     try {
         const result = await axios.get(`${urlAPI}/stock`)
-        return result.data
+        return result
+    } catch (error:any) {
+        return await error.message
+    }
+}
+
+const list = async (page:number) => {
+    try {
+        const result = await axios.get(`${urlAPI}/stock/${page}`)
+        return result
     } catch (error:any) {
         return await error.message
     }
@@ -39,4 +48,4 @@ const update = async (data:any) => {
 }
 
 
-export default { list, deleted, create, update }
+export default { list, deleted, create, update, getAll }

@@ -1,7 +1,8 @@
 import * as ActionType from '../../constant/purchasing/stockConstant'
 
-export const GetStockRequest = () => ({
-    type: ActionType.GET_STOCK_REQUEST
+export const GetStockRequest = (page:number) => ({
+    type: ActionType.GET_STOCK_REQUEST,
+    page
 })
 
 export const GetStockSuccess = (payload:any) =>({
@@ -11,6 +12,20 @@ export const GetStockSuccess = (payload:any) =>({
 
 export const GetStockFailed = (payload:any) =>({
     type: ActionType.GET_STOCK_FAILED,
+    payload
+})
+
+export const GetAllStockRequest = () => ({
+    type: ActionType.GETALL_STOCK_REQUEST
+})
+
+export const GetAllStockSuccess = (payload:any) =>({
+    type: ActionType.GETALL_STOCK_SUCCESS,
+    payload
+})
+
+export const GetAllStockFailed = (payload:any) =>({
+    type: ActionType.GETALL_STOCK_FAILED,
     payload
 })
 

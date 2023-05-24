@@ -7,9 +7,9 @@ import * as PoheType from '../constant/purchasing/purchaseHeaderConstant'
 import * as PodetType from '../constant/purchasing/purchaseDetailConstant'
 import * as StopotType from '../constant/purchasing/stockPhotoConstant'
 import * as GalleryType from '../constant/purchasing/galleryConstant'
-import { handleVendor, DeleteVendor, EditVendor, createVendor } from "./purchasing/vendorSaga";
+import { handleVendor, DeleteVendor, EditVendor, createVendor, getAllVendor } from "./purchasing/vendorSaga";
 import { handleVendorProduct, DeleteVendorProduct, EditVendorProduct, createVendorProduct } from './purchasing/vendorProductSaga'
-import { handleStock, DeleteStock, EditStock, createStock } from "./purchasing/stockSaga";
+import { handleStock, DeleteStock, EditStock, createStock, getAllStock } from "./purchasing/stockSaga";
 import { handleStodet, DeleteStodet, EditStodet, createStodet } from "./purchasing/stockDetailSaga";
 import { handlePohe, DeletePohe, EditPohe, createPohe } from "./purchasing/poheSaga";
 import { handlePodet, DeletePodet, EditPodet, createPodet } from './purchasing/podetSaga'
@@ -22,6 +22,7 @@ function* watchAll() {
         takeEvery(VendorType.ADD_VENDOR_REQUEST, createVendor),
         takeEvery(VendorType.EDIT_VENDOR_REQUEST, EditVendor),
         takeEvery(VendorType.DEL_VENDOR_REQUEST, DeleteVendor),
+        takeEvery(VendorType.GETALL_VENDOR_REQUEST, getAllVendor),
         takeEvery(VeproType.GET_VEPRO_REQUEST, handleVendorProduct),
         takeEvery(VeproType.ADD_VEPRO_REQUEST, createVendorProduct),
         takeEvery(VeproType.EDIT_VEPRO_REQUEST, EditVendorProduct),
@@ -30,6 +31,7 @@ function* watchAll() {
         takeEvery(StockType.ADD_STOCK_REQUEST, createStock),
         takeEvery(StockType.EDIT_STOCK_REQUEST, EditStock),
         takeEvery(StockType.DEL_STOCK_REQUEST, DeleteStock),
+        takeEvery(StockType.GETALL_STOCK_REQUEST, getAllStock),
         takeEvery(StodetType.GET_STODET_REQUEST, handleStodet),
         takeEvery(StodetType.ADD_STODET_REQUEST, createStodet),
         takeEvery(StodetType.EDIT_STODET_REQUEST, EditStodet),

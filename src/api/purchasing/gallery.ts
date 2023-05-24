@@ -2,10 +2,10 @@ import axios from "axios";
 
 const urlAPI = 'http://localhost:3002/purchasing'
 
-const list = async () => {
+const list = async (page:number) => {
     try {
-        const result = await axios.get(`${urlAPI}/gallery`)
-        return result.data
+        const result = await axios.get(`${urlAPI}/gallery/${page}`)
+        return result
     } catch (error:any) {
         return await error.message
     }

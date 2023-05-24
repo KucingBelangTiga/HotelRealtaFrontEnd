@@ -1,13 +1,21 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { EditPodetRequest } from '@/src/redux/action/purchasing/purchaseDetailAction'
 import { useDispatch, useSelector } from 'react-redux'
 import { FormikProvider, useFormik } from 'formik'
-import { GetStockRequest } from '@/src/redux/action/purchasing/stockAction'
+import { GetAllStockRequest } from '@/src/redux/action/purchasing/stockAction'
+import { AutoComplete } from 'primereact/autocomplete'
 
 const EditPurchasingDetail = (props: any) => {
     const { stocks } = useSelector((state: any) => state.stockState)
+    const [items, setItems] = useState([])
     const dispatch = useDispatch()
-    useEffect(() => { dispatch(GetStockRequest()) }, [dispatch])
+    useEffect(() => { dispatch(GetAllStockRequest()) }, [dispatch])
+    const search = (event: any) => {
+        const filteredData = stocks.filter((item: any) =>
+            item.stockName.toLowerCase().includes(event.query.toLowerCase())
+        );
+        setItems(filteredData.map((item: any) => item.stockName))
+    }
     const formik = useFormik({
         initialValues: {
             podeId: props.podeId,
@@ -18,6 +26,10 @@ const EditPurchasingDetail = (props: any) => {
             stockId: props.stockId
         },
         onSubmit: async (values) => {
+            const selectedStock = stocks.find((stock: any) => stock.stockName === values.stockId);
+            if (selectedStock) {
+                values.stockId = selectedStock.stockId;
+            }
             dispatch(EditPodetRequest(values))
             window.location.reload()
         }
@@ -33,12 +45,14 @@ const EditPurchasingDetail = (props: any) => {
                         >
                             Stock Name
                         </label>
-                        <select name="stockId" id="stockId" className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" onChange={formik.handleChange}>
-                            <option>-Choose-</option>
-                            {stocks.map((e: any) =>
-                                <option key={e.stockId} value={e.stockId}>{e.stockName}</option>
-                            )}
-                        </select>
+                        <AutoComplete
+                            inputId='stockId'
+                            name='stockId'
+                            value={formik.values.stockId}
+                            suggestions={items}
+                            completeMethod={search}
+                            onChange={formik.handleChange}
+                        />
                     </div>
                     <div className="-mx-3 flex flex-wrap">
                         <div className="w-full px-3 sm:w-1/3">
