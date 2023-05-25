@@ -64,7 +64,6 @@ const EditEmp = (state:any, action:any) => {
 }
 
 const DeleteEmp = (state:any, action:any) => {
-    const { payload } = action
     return {
         ...state,
     }

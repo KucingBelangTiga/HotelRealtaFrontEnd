@@ -1,3 +1,9 @@
+    export const GET_EPHIALL_REQUEST = 'ephiall/get/request'
+    export const GET_EPHIALL_SUCCESS = 'ephiall/get/success'
+    export const GET_EPHIALL_FAILED = 'ephiall/get/failed'
+
+    //
+ 
     export const GET_EPHI_REQUEST = 'ephi/get/request'
     export const GET_EPHI_SUCCESS = 'ephi/get/success'
     export const GET_EPHI_FAILED = 'ephi/get/failed'

@@ -3,7 +3,7 @@
     export const GET_WODE_FAILED = 'wode/get/failed'
 
     export const ADD_WODE_REQUEST = 'wode/add/request'
-    export const ADD_WODE_SUCCESS = 'wode/add/success'
+    export const ADD_WODE_SUCCESS = 'wode/add/success' 
     export const ADD_WODE_FAILED = 'wode/add/failed'
 
     export const FIND_WODE_REQUEST = 'wode/find/request'

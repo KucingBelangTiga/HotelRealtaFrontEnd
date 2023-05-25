@@ -31,12 +31,13 @@ const wodeReducer = (state = init_state, action: any) => {
         default:
             return { ...state };
     }
-}
+} 
 
 const GetWode = (state: any, action: any) => {
+    const { payload } = action;
     return {
         ...state,
-        wodes: action.payload
+        wodes: payload, 
     }
 }
 
@@ -52,7 +53,7 @@ const FindWode = (state: any, action: any) => {
     const { payload } = action
     return {
         ...state,
-        wode: payload
+        wode: payload 
     }
 }
 
@@ -64,7 +65,6 @@ const EditWode = (state:any, action:any) => {
 }
 
 const DeleteWode = (state:any, action:any) => {
-    const { payload } = action
     return {
         ...state,
     }

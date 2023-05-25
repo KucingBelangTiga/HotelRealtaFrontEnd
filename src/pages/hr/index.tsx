@@ -1,6 +1,5 @@
 // /* eslint-disable react-hooks/exhaustive-deps */
-//push to hr/layout
-
+// //push to hr/layout
 import Layout from "../../components/layout";
 import Link from "next/link";
 import React, { useEffect } from "react";
@@ -13,7 +12,7 @@ function Index() {
   useEffect(() => {
     router.push("/hr/department");
   }, []);
-
+  
   return (
     <Layout>
       <h1>Redirecting to HR...</h1>

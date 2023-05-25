@@ -5,7 +5,8 @@ import { GetDeptRequest } from "../../../redux/action/hr/departmentAction";
 
 import { DataTable, DataTableFilterMeta } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { FilterMatchMode } from 'primereact/api';
+import { Menu } from 'primereact/menu';
+import { FilterMatchMode, FilterOperator, PrimeIcons } from 'primereact/api';
 import { InputText } from 'primereact/inputtext';
 import { OverlayPanel } from 'primereact/overlaypanel';
 import { Button } from 'primereact/button';
@@ -110,7 +111,7 @@ const header = renderHeader();
                   <DataTable
                     value={departments}
                     stripedRows 
-                    tableStyle={{ minWidth: "50rem" }} 
+                    tableStyle={{ minWidth: "50rem" }} //minWidth: "100%" : ketika dikecilkan tombol add tetap ada. pakai 50rem: ketika dikecilkan, muncul scroller ke samping di bawah table
                     className="bg-white text-black"
                     paginator
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"

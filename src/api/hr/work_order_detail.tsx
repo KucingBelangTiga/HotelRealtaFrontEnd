@@ -1,14 +1,15 @@
 import axios from "axios";
 import config from "../../config/config";
-
-const findData = async () => {
+ 
+//findall by woroId
+const findData = async (id: number) => {
     try {
-        const result = await axios.get('http://localhost:3002/work-order-detail/')
-        return result.data
+      const result = await axios.get(`http://localhost:3002/work-order-detail/all/${id}`);
+      return result.data;
     } catch (error) {
-        return error
+      return error;
     }
-}
+  };  
 
 const findOne = async (id: any) => { //findOne
     try {

@@ -65,7 +65,6 @@ const EditJoro = (state:any, action:any) => {
 }
 
 const DeleteJoro = (state:any, action:any) => {
-    const { payload } = action
     return {
         ...state,
     }

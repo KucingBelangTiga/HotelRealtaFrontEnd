@@ -1,7 +1,23 @@
 import * as ephiAction from '../../constant/hr/employee_pay_historyConstant'
 
-export const GetEphiRequest = () => ({
-    type: ephiAction.GET_EPHI_REQUEST
+export const GetEphiAllRequest = () => ({
+    type: ephiAction.GET_EPHIALL_REQUEST
+})
+
+export const GetEphiAllSuccess = (payload: any) => ({
+    type: ephiAction.GET_EPHI_SUCCESS,
+    payload
+})
+
+export const GetEphiAllFailed = (payload: any) => ({
+    type: ephiAction.GET_EPHI_FAILED,
+    payload
+}) 
+
+//ephiEmp
+export const GetEphiRequest = (payload: any) => ({
+    type: ephiAction.GET_EPHI_REQUEST,
+    payload
 })
 
 export const GetEphiSuccess = (payload: any) => ({

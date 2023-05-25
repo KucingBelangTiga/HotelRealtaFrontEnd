@@ -25,3 +25,16 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+/* form upload foto hr-employee */
+.upload-form {
+  max-width: 290px; /* lebar maksimum form */
+  margin: 0 auto; /* form horizontal */
+}
+
+@media (max-width: 768px) {
+  .upload-form {
+    max-width: 100%; /* lebar maksimum form jadi 100% pd perangkat dgn lebar maks 768px */
+    padding: 0 20px; /* padding pada sisi form utk memberi ruang */
+  }
+}

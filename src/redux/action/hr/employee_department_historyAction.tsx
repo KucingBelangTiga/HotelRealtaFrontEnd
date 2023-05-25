@@ -1,7 +1,23 @@
 import * as edhiAction from '../../constant/hr/employee_department_historyConstant'
 
-export const GetEdhiRequest = () => ({
-    type: edhiAction.GET_EDHI_REQUEST
+export const GetEdhiAllRequest = () => ({
+    type: edhiAction.GET_EDHIALL_REQUEST
+})
+
+export const GetEdhiAllSuccess = (payload: any) => ({
+    type: edhiAction.GET_EDHI_SUCCESS,
+    payload
+})
+
+export const GetEdhiAllFailed = (payload: any) => ({
+    type: edhiAction.GET_EDHI_FAILED,
+    payload
+}) 
+
+//get by empId
+export const GetEdhiRequest = (payload: any) => ({
+    type: edhiAction.GET_EDHI_REQUEST,
+    payload,
 })
 
 export const GetEdhiSuccess = (payload: any) => ({

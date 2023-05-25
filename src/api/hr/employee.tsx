@@ -1,3 +1,4 @@
+/* eslint-disable import/no-anonymous-default-export */
 import axios from "axios";
 import config from "../../config/config";
 
@@ -7,7 +8,7 @@ const findData = async () => {
         return result.data
     } catch (error) {
         return error
-    }
+    } 
 }
 
 const findOne = async (id: any) => { //findOne
@@ -21,7 +22,11 @@ const findOne = async (id: any) => { //findOne
 
 const createEmp = async (payload: any) => {
     try {
-        const result = await axios.post('http://localhost:3002/employee/', payload)
+        const result = await axios.post('http://localhost:3002/employee/', payload, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          });
         return result
     } catch (error) {
         return error
@@ -30,7 +35,11 @@ const createEmp = async (payload: any) => {
 
 const updateEmp = async (payload: any) => {
     try {
-        const result = await axios.put('http://localhost:3002/employee/' + payload.empId, payload)
+        const result = await axios.put('http://localhost:3002/employee/' + payload.empId, payload, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            });
         return result
     } catch (error) {
         return error

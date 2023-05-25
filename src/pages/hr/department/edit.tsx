@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -5,10 +6,11 @@ import {
   EditDeptRequest,
 } from "../../../redux/action/hr/departmentAction";
 import { useFormik, FormikProvider } from "formik";
+import classNames from 'classnames';
 import * as Yup from 'yup';
 import { Toast } from 'primereact/toast'; 
 import { Button } from 'primereact/button';
-import { Dialog } from 'primereact/dialog';
+import { Dialog } from 'primereact/dialog'; 
 import { InputText } from 'primereact/inputtext';
 import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
@@ -62,6 +64,13 @@ export default function Edit(props: any) {
 
   return (
     <>
+      {/* <button
+        className="bg-darkBlue text-white active:bg-darkBlue font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+        type="button"
+        onClick={editButton}
+      >
+        Edit
+      </button> */}
             <Button icon="pi pi-pencil" severity="secondary" label="Edit" className="" style={{ paddingRight: '54px' }} onClick={editButton} text />
             <Dialog header="Edit" visible={showModal} modal className="p-dialog" onHide={() => setShowModal(false)}> 
                 <FormikProvider value={formik}>

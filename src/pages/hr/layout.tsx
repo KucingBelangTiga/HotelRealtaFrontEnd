@@ -1,6 +1,8 @@
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
+import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
 import Layout from "../../components/layout";
+import { PanelMenu } from "primereact/panelmenu";
 import 'primeflex/primeflex.css';
 
 const navigation = [ 
@@ -39,14 +41,14 @@ const navigation = [
 ];
 
 export default function LayoutHr({ children }: { children: React.ReactNode }) {
-  const [activeItem, setActiveItem] = useState("");
-
+  const [activeItem, setActiveItem] = useState(""); 
+  
   const handleClick = (item: string) => {
     setActiveItem(item);
   };
 
   useEffect(() => {
-    document.title = "Human Resource";
+    document.title = "Human Resource"; 
   }, []);
 
   return (

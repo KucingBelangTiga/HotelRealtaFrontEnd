@@ -1,8 +1,8 @@
 import * as ActionType from '../../constant/hr/departmentConstant'
 
 const init_state = {
-    departments: [], 
-    department: [],  
+    departments: [], //all
+    department: [],  //one
 }
 
 const departmentReducer = (state = init_state, action: any) => {
@@ -64,7 +64,6 @@ const EditDept = (state:any, action:any) => {
 }
 
 const DeleteDept = (state:any, action:any) => {
-    const {payload} = action 
     return {
         ...state,
     }

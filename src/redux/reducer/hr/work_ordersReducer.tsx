@@ -64,7 +64,6 @@ const EditWoro = (state:any, action:any) => {
 }
 
 const DeleteWoro = (state:any, action:any) => {
-    const { payload } = action
     return {
         ...state,
     }

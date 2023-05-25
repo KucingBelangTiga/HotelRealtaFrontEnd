@@ -1,9 +1,19 @@
 import axios from "axios";
 import config from "../../config/config";
 
-const findData = async () => {
+const getData = async () => {
     try {
         const result = await axios.get('http://localhost:3002/employee-pay-history/')
+        return result.data
+    } catch (error) {
+        return error
+    }
+}
+
+//ephiEmp
+const findData = async (id: number) => {
+    try {
+        const result = await axios.get(`http://localhost:3002/employee-pay-history/all/${id}`);
         return result.data
     } catch (error) {
         return error
@@ -46,4 +56,4 @@ const deleteEph = async (id: any) => {
     }
 }
 
-export default { findData, findOne, createEph, updateEph, deleteEph }
+export default { getData, findData, findOne, createEph, updateEph, deleteEph }

@@ -2,10 +2,21 @@ import { call, put } from 'redux-saga/effects'
 import Wode from '../../../api/hr/work_order_detail'
 import { GetWodeSuccess, GetWodeFailed, AddWodeSuccess, AddWodeFailed, FindWodeSuccess, FindWodeFailed, EditWodeSuccess, EditWodeFailed, DeleteWodeSuccess, DeleteWodeFailed } from '../../action/hr/work_order_detailAction'
 
-function* handleFindWode(): any {
+// function* handleFindWode(): any {
+//     try { 
+//         const result = yield call(Wode.findData)
+//         yield put(GetWodeSuccess(result))
+//     } catch (error) {
+//         yield put(GetWodeFailed(error))
+//     }
+// }
+
+//wode-woro
+function* handleFindWode(action: any): any {
+    const { payload } = action;
     try { 
-        const result = yield call(Wode.findData)
-        yield put(GetWodeSuccess(result))
+        const result = yield call(Wode.findData, payload)
+        yield put(GetWodeSuccess(result)) 
     } catch (error) {
         yield put(GetWodeFailed(error))
     }
@@ -33,7 +44,7 @@ function* handleAddWode(action: any): any {
 
 function* handleEditWode(action: any): any {
     const { payload } = action
-    try {
+    try { 
         const result = yield call(Wode.updateWode, payload)
         yield put(EditWodeSuccess(result.data))
     } catch (error) {

@@ -64,7 +64,6 @@ const EditShift = (state:any, action:any) => {
 }
 
 const DeleteShift = (state:any, action:any) => {
-    const { payload } = action
     return {
         ...state,
     }

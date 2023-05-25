@@ -1,16 +1,27 @@
 import { call, put } from 'redux-saga/effects'
 import Edhi from '../../../api/hr/employee_department_history'
-import { GetEdhiSuccess, GetEdhiFailed, AddEdhiSuccess, AddEdhiFailed, FindEdhiSuccess, FindEdhiFailed, EditEdhiSuccess, EditEdhiFailed, DeleteEdhiSuccess, DeleteEdhiFailed } from '../../action/hr/employee_department_historyAction'
+import { GetEdhiAllSuccess, GetEdhiAllFailed, GetEdhiSuccess, GetEdhiFailed, AddEdhiSuccess, AddEdhiFailed, FindEdhiSuccess, FindEdhiFailed, EditEdhiSuccess, EditEdhiFailed, DeleteEdhiSuccess, DeleteEdhiFailed } from '../../action/hr/employee_department_historyAction'
 
-function* handleFindEdhi(): any {
+function* handleGetEdhi(): any {
     try { 
-        const result = yield call(Edhi.findData)
+        const result = yield call(Edhi.getData)
+        yield put(GetEdhiAllSuccess(result))
+    } catch (error) {
+        yield put(GetEdhiAllFailed(error))
+    }
+}
+ 
+//edhiEmp
+function* handleFindEdhi(action: any): any {
+    const { payload } = action;
+    try { 
+        const result = yield call(Edhi.findData, payload)
         yield put(GetEdhiSuccess(result))
     } catch (error) {
         yield put(GetEdhiFailed(error))
     }
-}
-
+} 
+ 
 function* handleFindOneEdhi(action: any): any {
     const { payload } = action
     try {
@@ -52,6 +63,7 @@ function* handleDeleteEdhi(action: any): any {
 }
 
 export {
+    handleGetEdhi,
     handleFindEdhi,
     handleFindOneEdhi,
     handleAddEdhi,

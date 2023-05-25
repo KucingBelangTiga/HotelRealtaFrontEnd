@@ -1,28 +1,28 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/router";
 import Layout from "../../../components/layout";
 import { GetEmpRequest, FindEmpRequest } from "../../../redux/action/hr/employeeAction";
 
 import { DataTable, DataTableFilterMeta } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { FilterMatchMode, FilterOperator } from 'primereact/api';
-import { InputText } from 'primereact/inputtext';
-
-import { OverlayPanel } from 'primereact/overlaypanel';
 import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
+import { OverlayPanel } from 'primereact/overlaypanel';
+import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
-import { ProgressSpinner } from 'primereact/progressspinner';
+import { ProgressSpinner } from 'primereact/progressspinner'; 
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.css";
 import 'primeflex/primeflex.css';
-import 'primeicons/primeicons.css';
+import 'primeicons/primeicons.css'; 
 
-import Add from "./add"; 
-// import Edit from "./edit";
-// import Delete from "./delete";
+import Add from "./add";  
+import Edit from "./edit";
 import LayoutHr from "../layout";
 
 export default function IndexEmp() {
+    const router = useRouter();
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
     const [id, setId] = useState<number>();
@@ -41,9 +41,10 @@ export default function IndexEmp() {
       setRefresh(false);
       setLoading(true);
     }, [dispatch, refresh]);
+    // console.log("emps: ", emps);
 
     useEffect(() => {
-      document.title = "Human Resource - Employee"; //title pada browser
+      document.title = "Human Resource - Employee";
     }, []);
 
     const Emp = (rowData: any) => {
@@ -54,20 +55,39 @@ export default function IndexEmp() {
               <OverlayPanel ref={empRef} >
               <div>
             {rowData && (
-              <>
-                {/* <Edit id={rowData.empId} setRefresh={setRefresh} />
-                <Delete
-                  id={rowData.empId}
-                  name={rowData.empName}
-                  setRefresh={setRefresh}
-                /> */}
-              </>
-            )}
-          </div>
+            <>
+            <ul > 
+              <li className="-mx-3 -mt-3 -mb-2">
+              <Edit id={rowData.empId} setRefresh={setRefresh} emp={rowData.empEmp?.empId} joro={rowData.empJoro?.joroId} user={rowData.empUser?.userId} />
+              </li>
+              <li className="-mx-3 -mb-2">
+               <Button severity="secondary" label="Salary History" className="" style={{ paddingRight: '86px' }} onClick={() => onEphi(rowData.empId)} text />
+               </li> 
+              <li className="-mx-3 -mb-3">
+                <Button severity="secondary" label="Department History" className="" style={{ paddingRight: '41px' }} onClick={() => onEdhi(rowData.empId)} text />
+              </li>
+            </ul>
+            </>
+          )} 
+        </div> 
               </OverlayPanel>
           </div>
         );
       };   
+
+      const onEphi = (id: number) => {
+        router.push({
+          pathname: "/hr/employee/pay_history/[id]",
+          query: { id: id }, 
+        });
+      }; 
+ 
+      const onEdhi = (id: number) => {
+        router.push({
+          pathname: "/hr/employee/department_history/[id]",
+          query: { id: id },
+        });
+      };
 
     const onGlobalFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
@@ -81,13 +101,6 @@ export default function IndexEmp() {
       setGlobalFilterValue(value);
   };  
 
-    // const onStatusFilterChange = (e: { originalEvent: Event, value: any }) => {
-    //   const value = e.value;
-    //   let _filters = { ...filters };
-    
-    //   _filters['empCurrentFlag'].value = value;
-    //   setFilters(_filters);
-    // };
     const onStatusFilterChange = (e: DropdownChangeEvent) => {
       const value = e.value;
       let _filters = { ...filters };
@@ -131,7 +144,6 @@ export default function IndexEmp() {
               </div>
               ) : (
                 <div className="min-h-screen">
-                  <h2 className="text-center my-5 font-bold text-3xl">Employee</h2>
                   <div className="card">
                   <DataTable
                     value={emps}
@@ -167,7 +179,7 @@ export default function IndexEmp() {
                     body={(rowData: any) =>
                       new Date(rowData.empBirthDate).toLocaleDateString("en-GB", {
                         day: "numeric",
-                        month: "short", //nama bulan lengkap pakai: long
+                        month: "short", 
                         year: "numeric"
                       })
                     }
