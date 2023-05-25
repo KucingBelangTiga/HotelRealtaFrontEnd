@@ -41,6 +41,11 @@ const BookingReduce = (state = init_state, action: any) => {
         case ActionType.HOTEL_DATA_SUCCESS:
             return HotelData(state,action)
 
+        case ActionType.FACILITIES_CATEGORY_DATA_REQUEST:
+            return {...state}
+        case ActionType.FACILITIES_CATEGORY_DATA_SUCCESS:
+            return FacilitiesCategory(state,action)
+
         case ActionType.FACILITIES_DATA_SUCCESS:
             return HotelFacilitiesData(state,action)
 
@@ -76,6 +81,13 @@ const HotelData = (state: any, action: any) => {
     }
 }
 
+const FacilitiesCategory = (state: any, action: any) => {
+    return {
+        ...state,
+        bookings: action.payload
+    }
+}
+
 const HotelFacilitiesData = (state: any, action: any) => {
     const {payload} = action
     return {
@@ -85,6 +97,14 @@ const HotelFacilitiesData = (state: any, action: any) => {
 }
 
 const ReviewsData = (state: any, action: any) => {
+    const {payload} = action
+    return {
+        ...state,
+        bookings: [action.payload,payload]
+    }
+}
+
+const UserReviewsData = (state: any, action: any) => {
     const {payload} = action
     return {
         ...state,

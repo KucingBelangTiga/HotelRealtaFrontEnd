@@ -27,6 +27,7 @@ export default function HotelDetails(){
     const [hotel, setHotel] = useState<any[]>([])
     const [facility, setFacility] = useState<any[]>([])
     const [review, setReviews] = useState<any[]>([])
+    const [userreview, setUserReviews] = useState<any[]>([])
     const [voucher, setVoucher] = useState<any[]>([])
     const [priceItems, setPriceItems] = useState<any[]>([])
     const [paymentMethod, setPaymentMethod] = useState<any[]>([])
@@ -89,6 +90,18 @@ export default function HotelDetails(){
         // }, 2000)
         // return () => clearInterval(intervalId);
     }, [])
+
+    useEffect(() => {
+        // const intervalId = setInterval(() => {
+            Hotel.GetUserReviews().then
+                (data => {
+                    setUserReviews(data)
+                })
+        // }, 2000)
+        // return () => clearInterval(intervalId);
+    }, [])
+
+    // console.log(userreview)
 
     useEffect(() => {
         // const intervalId = setInterval(() => {
@@ -202,18 +215,26 @@ export default function HotelDetails(){
             }
         }
 
-        const sum1 = one_star.reduce((a, b) => a + b, 0);
-        const avg1 = (sum1 / result.length) || 0;
-        const sum2 = two_star.reduce((a, b) => a + b, 0);
-        const avg2 = (sum2 / result.length) || 0;
-        const sum3 = three_star.reduce((a, b) => a + b, 0);
-        const avg3 = (sum3 / result.length) || 0;
-        const sum4 = four_star.reduce((a, b) => a + b, 0);
-        const avg4 = (sum4 / result.length) || 0;
-        const sum5 = five_star.reduce((a, b) => a + b, 0);
-        const avg5 = (sum5/ result.length) || 0;
+        const avg1 = (one_star.length / result.length)*100;
+        const avg2 = (two_star.length / result.length)*100;
+        const avg3 = (three_star.length / result.length)*100;
+        const avg4 = (four_star.length / result.length)*100;
+        const avg5 = (five_star.length / result.length)*100;
+
+        // const sum1 = one_star.reduce((a, b) => a + b, 0);
+        // const avg1 = (sum1 / result.length) || 0;
+        // const sum2 = two_star.reduce((a, b) => a + b, 0);
+        // const avg2 = (sum2 / result.length) || 0;
+        // const sum3 = three_star.reduce((a, b) => a + b, 0);
+        // const avg3 = (sum3 / result.length) || 0;
+        // const sum4 = four_star.reduce((a, b) => a + b, 0);
+        // const avg4 = (sum4 / result.length) || 0;
+        // const sum5 = five_star.reduce((a, b) => a + b, 0);
+        // const avg5 = (sum5/ result.length) || 0;
         
-        return [avg1*20, avg2*20, avg3*20, avg4*20, avg5*20]
+        // console.log(sum3)
+        // console.log(avg1, avg2, avg3, avg4, avg5)
+        return [avg1, avg2, avg3, avg4, avg5]
     }
 
     const hotelReviewCount = (id) => {
@@ -296,7 +317,7 @@ export default function HotelDetails(){
         return result
     }
 
-
+    // console.log(voucher)
     const appliedVoucherList2 = (position) => {
         const updatedCheckedState = checkedState.map((item, index) =>
             index === position ? !item : item
@@ -484,7 +505,7 @@ export default function HotelDetails(){
 
     const finalActionToAddBookingDetail = () => {
         let payload = {
-            borderBoorId: bookingList[bookingList.length - 1],
+            borderBoorId: bookingList[bookingList.length],
             // bordeId: number,
             bordeCheckin: values.check_in,
             bordeCheckout: values.check_out,
@@ -571,6 +592,16 @@ export default function HotelDetails(){
         }
     }
 
+    const userReview = (id) => {
+        let result = []
+        for(let i = 0; i < userreview.length; i++){
+            if(userreview[i]['hotel_id'] == id){
+                result.push(userreview[i])
+            }
+        }
+        return result
+    }
+
     const hotelReviewDisplay = (id) => {
         let result = []
         for(let i = 0; i < review.length; i++){
@@ -581,7 +612,17 @@ export default function HotelDetails(){
         return result
     }
 
-    // console.log(hotelReviewDisplay(id))
+    const censoredName = (name) => {
+        let arr = name.split(' ');
+        let result = []
+        for(let i = 0; i < arr.length; i++){
+            result.push(arr[i].replace(/(\w{1})[\w.-]/, "*****"))
+        }
+        // console.log(result)
+        return result.join(' ').split(' ').slice(0,1).join(' ');
+    }
+
+    // console.log(formvalues)
 
     return(
         <Layout>   
@@ -654,13 +695,20 @@ export default function HotelDetails(){
                                             </Col>
                                         </Row>
                                         <Row>
-                                            {Array.from(hotelReviewDisplay(id)).map((_,data)=>(
-                                                <Col style={{ borderRadius:10, backgroundColor:'lightgray', margin:10 }} key={hotelReviewDisplay(id)[data]['horeId']}>
-                                                    <p>User ID: {hotelReviewDisplay(id)[data]['horeUserId']}</p>
-                                                    <p>User Rating: {hotelReviewDisplay(id)[data]['horeRating']}</p>
-                                                    <p>User Review: {hotelReviewDisplay(id)[data]['horeUserReview']}</p>
+                                            {Array.from(userReview(id)).map((_,data)=>(
+                                                <Col style={{ borderRadius:10, backgroundColor:'lightgray', margin:10 }} key={userReview(id)[data]['hotel_id']}>
+                                                    <p>User Name: {censoredName(userReview(id)[data]['user_full_name'])}</p>
+                                                    <p>User Rating: {userReview(id)[data]['hore_rating']}&#9733;</p>
+                                                    <p>User Review: {userReview(id)[data]['hore_user_review']}</p>
                                                 </Col>
                                             ))}
+                                            {/* {Array.from(hotelReviewDisplay(id)).map((_,data)=>(
+                                                <Col style={{ borderRadius:10, backgroundColor:'lightgray', margin:10 }} key={hotelReviewDisplay(id)[data]['horeId']}>
+                                                    <p>User ID: {hotelReviewDisplay(id)[data]['horeUserId']}</p>
+                                                    <p>User Rating: {hotelReviewDisplay(id)[data]['horeRating']}&#9733;</p>
+                                                    <p>User Review: {hotelReviewDisplay(id)[data]['horeUserReview']}</p>
+                                                </Col>
+                                            ))} */}
                                         </Row>
                                     </Col>
                                     <Col>
@@ -850,14 +898,17 @@ export default function HotelDetails(){
                                             </select>
                                         </Form.Group>
                                         <Form.Label>Selected Payment Method: {selectedpayment}</Form.Label>
-                                        <Form.Group>
-                                            <Form.Label>Account Payment</Form.Label>
-                                            <Form.Control  type="number" placeholder="Account Payment Number" name='accountnumber' onChange={onDetailBookingFormChange}></Form.Control>
-                                        </Form.Group>
+                                        {(selectedpayment.length == 0 ? '' : 
+                                            <Form.Group>
+                                                <Form.Label>Account Payment</Form.Label>
+                                                <Form.Control  type="number" placeholder="Account Payment Number" name='accountnumber' onChange={onDetailBookingFormChange}></Form.Control>
+                                            </Form.Group>
+                                        )}
                                         <hr />
                                         <Button variant='success' 
                                         // href={`/booking/checkout/${GatherAllData()}`}
-                                        onClick={()=>passData()}
+                                        onClick={(formvalues.fullname == undefined || formvalues.email == undefined || formvalues.accountnumber == undefined || formvalues.phone == undefined) ? ()=>{alert("Please fill all of your detail for payment")} : passData()}
+                                        // onClick={()=>passData()}
                                         >Proceed</Button>
                 
                                     </Form>

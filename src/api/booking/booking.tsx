@@ -27,10 +27,18 @@ const GetDataHotel = async () => {
     }
 }
 
-
 const GetFacilitiesHotel = async (id: any) => {
     try {
         const result = await axios.get('http://localhost:3001/hotel/facilities/', id)
+        return result.data
+    } catch (error) {
+        return error
+    }
+}
+
+const GetFacilitiesCategory = async (id: any) => {
+    try {
+        const result = await axios.get('http://localhost:3001/hotel/category-groups/', id)
         return result.data
     } catch (error) {
         return error
@@ -49,6 +57,15 @@ const GetHotelDetails = async (id: any) => {
 const GetReviews = async () => {
     try {
         const result = await axios.get('http://localhost:3001/hotel/reviews')
+        return result.data
+    } catch (error) {
+        return error
+    }
+}
+
+const GetUserReviews = async () => {
+    try {
+        const result = await axios.get('http://localhost:3001/hotel/user-reviews')
         return result.data
     } catch (error) {
         return error
@@ -172,4 +189,6 @@ export default {
     CreateDetailExtra,
     GetDataDetail,
     CreateSpecialOfferCoupons,
+    GetFacilitiesCategory,
+    GetUserReviews,
 }

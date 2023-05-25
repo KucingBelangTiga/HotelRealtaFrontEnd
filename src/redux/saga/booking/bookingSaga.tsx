@@ -31,7 +31,11 @@ import {
     GetBookingDetailSuccess,
     GetBookingDetailFailed,
     AddSpecialVoucherCouponsSuccess,
-    AddSpecialVoucherCouponsFailed
+    AddSpecialVoucherCouponsFailed,
+    GetFacilitiesCategorySuccess,
+    GetFacilitiesCategoryFailed,
+    GetUserReviewsSuccess,
+    GetUserReviewsFailed
 } from '../../action/booking/bookingActions'
 
 function* handleGetBooking(): any {
@@ -71,12 +75,31 @@ function* handleGetHotelFacilities(action:any) {
     }
 }
 
+function* handleGetHotelFacilitiesCategory(action:any) {
+    const {payload} = action
+    try {
+        const result = yield call(Booking.GetFacilitiesCategory,payload)
+        yield put(GetFacilitiesCategorySuccess(result))
+    } catch (error) {
+        yield put(GetFacilitiesCategoryFailed(error))
+    }
+}
+
 function* handleGetReviews(): any {
     try {
         const result = yield call(Booking.GetReviews)
         yield put(GetReviewsSuccess(result))
     } catch (error) {
         yield put(GetReviewsFailed(error))
+    }
+}
+
+function* handleGetUserReviews(): any {
+    try {
+        const result = yield call(Booking.GetUserReviews)
+        yield put(GetUserReviewsSuccess(result))
+    } catch (error) {
+        yield put(GetUserReviewsFailed(error))
     }
 }
 
@@ -160,5 +183,6 @@ export {
     handleAddBookingDetailExtra,
     handleGetBookingDetail,
     handleAddSpecialOfferCoupons,
-    
+    handleGetHotelFacilitiesCategory,
+    handleGetUserReviews,
 }

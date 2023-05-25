@@ -8,7 +8,7 @@ interface LayoutProps {
 export default function Layout(props: LayoutProps) {
     const { children } = props
     return (
-        <div>
+        <div style={{ backgroundColor:'lightgray' }}>
             <Header />
             <div>
                 {children}

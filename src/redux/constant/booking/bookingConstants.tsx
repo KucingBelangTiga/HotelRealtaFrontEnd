@@ -14,9 +14,17 @@ export const FACILITIES_DATA_REQUEST = 'facilities/data/request'
 export const FACILITIES_DATA_SUCCESS = 'facilities/data/success'
 export const FACILITIES_DATA_FAILED = 'facilities/data/failed'
 
+export const FACILITIES_CATEGORY_DATA_REQUEST = 'facilities/category/data/request'
+export const FACILITIES_CATEGORY_DATA_SUCCESS = 'facilities/category/data/success'
+export const FACILITIES_CATEGORY_DATA_FAILED = 'facilities/category/data/failed'
+
 export const REVIEW_DATA_REQUEST = 'reviews/data/request'
 export const REVIEW_DATA_SUCCESS = 'reviews/data/success'
 export const REVIEW_DATA_FAILED = 'reviews/data/failed'
+
+export const USER_REVIEW_DATA_REQUEST = 'user/reviews/data/request'
+export const USER_REVIEW_DATA_SUCCESS = 'user/reviews/data/success'
+export const USER_REVIEW_DATA_FAILED = 'user/reviews/data/failed'
 
 export const VOUCHER_DATA_REQUEST = 'voucher/data/request'
 export const VOUCHER_DATA_SUCCESS = 'voucher/data/success'

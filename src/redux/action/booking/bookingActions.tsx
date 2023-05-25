@@ -56,6 +56,20 @@ export const GetFacilitiesHotelFailed = (payload: any) => ({
     payload
 })
 
+export const GetFacilitiesCategoryRequest = (payload: any) => ({
+    type: ActionBooking.FACILITIES_CATEGORY_DATA_REQUEST
+})
+
+export const GetFacilitiesCategorySuccess = (payload: any) => ({
+    type: ActionBooking.FACILITIES_CATEGORY_DATA_SUCCESS,
+    payload
+})
+
+export const GetFacilitiesCategoryFailed = (payload: any) => ({
+    type: ActionBooking.FACILITIES_CATEGORY_DATA_FAILED,
+    payload
+})
+
 export const GetReviewsRequest = (payload: any) => ({
     type: ActionBooking.REVIEW_DATA_REQUEST
 })
@@ -67,6 +81,20 @@ export const GetReviewsSuccess = (payload: any) => ({
 
 export const GetReviewsFailed = (payload: any) => ({
     type: ActionBooking.REVIEW_DATA_FAILED, 
+    payload
+})
+
+export const GetUserReviewsRequest = (payload: any) => ({
+    type: ActionBooking.USER_REVIEW_DATA_REQUEST
+})
+
+export const GetUserReviewsSuccess = (payload: any) => ({
+    type: ActionBooking.USER_REVIEW_DATA_SUCCESS,
+    payload
+})
+
+export const GetUserReviewsFailed = (payload: any) => ({
+    type: ActionBooking.USER_REVIEW_DATA_FAILED, 
     payload
 })
 
