@@ -347,9 +347,9 @@ export default function HotelDetails(){
                     let disc = 0
                     let real_price = moneyToInt(facility[i]['faciRatePrice']) + moneyToInt(facility[i]['faciTaxRate']) - totalDiscount + addOnPriceTotal()
                     if(real_price>0){
-                        return currencyFormatter.format(real_price)
+                        return [currencyFormatter.format(real_price),facility[i]['faciTaxRate']];
                     }else{
-                        return currencyFormatter.format(0)
+                        return [currencyFormatter.format(0),facility[i]['faciTaxRate']]
                     }
                 }else if(facility[i]['faciTaxRate'] === 'Rp0'){
                     let real_price = moneyToInt(facility[i]['faciRatePrice']) - moneyToInt(facility[i]['faciDiscount'])
@@ -732,7 +732,9 @@ export default function HotelDetails(){
                             <Card.Header>
                                 Book Form
                             </Card.Header>
-                            <Card.Text>Price: {priceList(id)}</Card.Text>
+                            <Card.Text>Price: {currencyFormatter.format(moneyToInt2(priceList(id)[0])-moneyToInt(priceList(id)[1]))}<br></br>
+                            <small>Tax: {currencyFormatter.format(moneyToInt(priceList(id)[1]))}</small>
+                            </Card.Text>
                             <Form onSubmit={bookSubmitHandler}>
                                 <Form.Group controlId='formCheckIn' className='mb-2'>
                                     <Form.Label>Check In</Form.Label>
@@ -925,7 +927,7 @@ export default function HotelDetails(){
                                             ).replace(/,/g, '')).join(', ')}
                                         </Card.Text>
                                         <Card.Text>Total Discount Applied: {currencyFormatter.format(totalDiscount)}</Card.Text>
-                                        <Card.Text>Grand Total (incl. tax): {priceList(id)}</Card.Text>
+                                        <Card.Text>Grand Total (incl. tax): {priceList(id)[0]}</Card.Text>
                                     </Row>
                                 </Card>
                             </Col>
