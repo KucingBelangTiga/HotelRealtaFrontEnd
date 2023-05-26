@@ -1,34 +1,24 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { GetEmpRequest, FindEmpRequest, AddEmpRequest } from "../../../redux/action/hr/employeeAction";
-import { GetJoroRequest, AddJoroRequest } from "../../../redux/action/hr/job_roleAction";
-import { GetEphiAllRequest, AddEphiRequest } from "../../../redux/action/hr/employee_pay_historyAction";
-import { GetEdhiAllRequest, AddEdhiRequest } from "../../../redux/action/hr/employee_department_historyAction";
-import { GetDeptRequest, AddDeptRequest } from "../../../redux/action/hr/departmentAction";
-import { GetShiftRequest, AddShiftRequest } from "../../../redux/action/hr/shiftAction";
-import Employee from "../../../api/hr/employee";
+import { GetEmpRequest, AddEmpRequest } from "../../../redux/action/hr/employeeAction";
+import { GetJoroRequest } from "../../../redux/action/hr/job_roleAction";
+import { GetEphiAllRequest } from "../../../redux/action/hr/employee_pay_historyAction";
+import { GetEdhiAllRequest } from "../../../redux/action/hr/employee_department_historyAction";
+import { GetDeptRequest } from "../../../redux/action/hr/departmentAction";
+import { GetShiftRequest } from "../../../redux/action/hr/shiftAction";
 import Users from "../../../api/users/users";
-import Shift from "../../../api/hr/shift";
 import { useFormik, FormikProvider } from "formik";
 import * as Yup from 'yup';
-import classNames from 'classnames';
 import { Calendar, CalendarChangeEvent } from 'primereact/calendar';
 import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import { InputNumber, InputNumberValueChangeEvent, InputNumberChangeEvent } from 'primereact/inputnumber';
-import { Checkbox } from 'primereact/checkbox';
-import { FileUpload } from 'primereact/fileupload';
 import { Fieldset } from 'primereact/fieldset';
-import { Tooltip } from 'primereact/tooltip';
-import { Tag } from 'primereact/tag';
-import { ProgressBar } from 'primereact/progressbar';
-import { Badge } from 'primereact/badge';
 import { Toast } from 'primereact/toast';
 import { ScrollTop } from 'primereact/scrolltop';
-import { ScrollPanel } from 'primereact/scrollpanel';
 import 'primeicons/primeicons.css';
 import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
@@ -43,15 +33,10 @@ export default function Add(props: any) {
   const [submitted, setSubmitted] = useState<boolean>(false);
   const { emps } = useSelector((state: any) => state.empState);
   const { joros } = useSelector((state: any) => state.joroState);
-  const { ephis } = useSelector((state: any) => state.ephiState);
   const { departments } = useSelector((state: any) => state.deptState);
   const { shifts } = useSelector((state: any) => state.shiftState);
-  const { edhis } = useSelector((state: any) => state.edhiState);
   const toast = useRef<any>(null);
-  const [totalSize, setTotalSize] = useState(0);
-  const fileUploadRef = useRef(null);
   const [date, setDate] = useState<string | Date | Date[] | null>(null);
-  const [time, setTime] = useState<string | Date | Date[] | null>(null);
   const [inputNumberValue, setInputNumberValue] = useState<number | null>(null);
   const [previewImg, setPreviewImg] = useState<any>()
   const [upload, setUpload] = useState(false)
@@ -108,15 +93,15 @@ export default function Add(props: any) {
       empSickleaveHourse: "",
       empCurrentFlag: "",
       file: "", //empPhoto
-      empEmpId: "", 
+      empEmp: "", 
       empJoroId: "",
       empUserId: "", 
       ephiRateSalary: "",
       ephiPayFrequence: "",
       edhiStartDate: "",
       edhiEndDate: "",
-      edhiDeptId: "",
-      edhiShiftId: "",
+      edhiDept: "",
+      edhiShift: "",
     },
     validationSchema: Yup.object({
       empNationalId: Yup.string().required('*Required NationalId.'),
@@ -142,7 +127,7 @@ export default function Add(props: any) {
       payload.append('empSickleaveHourse', values.empSickleaveHourse)
       payload.append('empCurrentFlag', values.empCurrentFlag)
       payload.append('file', values.file)
-      payload.append('empEmpId', values.empEmpId)
+      payload.append('empEmp', values.empEmp)
       payload.append('empJoroId', values.empJoroId)
       payload.append('empUserId', values.empUserId)
       payload.append('ephiRateSalary', values.ephiRateSalary)
@@ -155,7 +140,6 @@ export default function Add(props: any) {
     },
   });
 
-  //photo berhasil
   const uploadConfig = (name: any) => (event: any) => {
     let reader = new FileReader()
     const file = event.target.files[0]
@@ -289,7 +273,6 @@ export default function Add(props: any) {
     }
   };  
   //
-  //
 
   return (
     <>
@@ -327,7 +310,7 @@ export default function Add(props: any) {
                                 name="empUser.userFullName"
                                 value={formik.values.empUserId}
                                 onChange={(e: DropdownChangeEvent) => {
-                                  formik.setFieldValue("empUserId", e.value); 
+                                  formik.setFieldValue("empUserId", e.value); // Set nilai empUserId dengan nilai yang dipilih
                                 }}
                                 options={users.map((user: any, index: number) => ({
                                   key: index,
@@ -349,6 +332,7 @@ export default function Add(props: any) {
                                 name="empBirthDate"
                                 value={formik.values.empBirthDate}
                                 onChange={(e : CalendarChangeEvent) => {
+                                  // setDate(e.value),
                                   setDate((prevState) => e.value || prevState);
                                   formik.setFieldValue("empBirthDate", e.value);
                                 }} 
@@ -447,7 +431,7 @@ export default function Add(props: any) {
                                 onChange={(e: DropdownChangeEvent) => {
                                   formik.setFieldValue("empCurrentFlag", e.value); 
                                 }}
-                                options={[ { label: 'Active', value: 1 }, //kalau error, 1 ganti jadi '1'(string). pastiin, cek tipe data di backend
+                                options={[ { label: 'Active', value: 1 }, 
                                 { label: 'Inactive', value: 0 },]}
                                 optionLabel="label"
                                 placeholder="Select Current Flag"
@@ -517,7 +501,7 @@ export default function Add(props: any) {
                     <div className="col-4">
                       <div className="upload-form">
                       <label htmlFor="file">Photo</label>
-                                <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
+                        <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
                         {
                             upload === false ?
                                 <>
@@ -527,7 +511,7 @@ export default function Add(props: any) {
                                         <img src={previewImg} alt='img' className="max-w-xs" width={100} />
                                     </div>
                                     <div>
-                                        <button className="text-red-700 hover:text-white text-xs border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900" onClick={onClear}>Remove</button>
+                                        <button className="text-red-700 hover:text-white text-xs border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-small rounded-md text-sm px-3 py-2.5 text-center mr-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900" onClick={onClear}>Remove</button>
                                     </div>
                                 </>
                         }
@@ -575,7 +559,7 @@ export default function Add(props: any) {
                                 onChange={(e: DropdownChangeEvent) => {
                                   formik.setFieldValue("ephiPayFrequence", e.value); 
                                 }}
-                                options={[ { label: 'Hourly', value: 0 },  //kalau error, 0 ganti jadi '0'(string). pastiin, cek tipe data di backend
+                                options={[ { label: 'Hourly', value: 0 },  
                                 { label: 'Monthly', value: 1 },]}
                                 optionLabel="label"
                                 placeholder="Select Frequency"
@@ -597,9 +581,9 @@ export default function Add(props: any) {
                                 className="w-full md:w-12rem"
                                 inputId="Department"
                                 name="edhiDept.deptName"
-                                value={formik.values.edhiDeptId}
+                                value={formik.values.edhiDept}
                                 onChange={(e: DropdownChangeEvent) => {
-                                  formik.setFieldValue("edhiDeptId", e.value); 
+                                  formik.setFieldValue("edhiDept", e.value); 
                                   setSelectedDepts(e.value); 
                                 }}
                                 options={departments.map((dept: any) => ({
@@ -657,9 +641,9 @@ export default function Add(props: any) {
                                 className="w-full md:w-12rem"
                                 inputId="Shift"
                                 name="edhiShift.shiftName"
-                                value={formik.values.edhiShiftId}
+                                value={formik.values.edhiShift}
                                 onChange={(e: DropdownChangeEvent) => {
-                                  formik.setFieldValue("edhiShiftId", e.value); 
+                                  formik.setFieldValue("edhiShift", e.value); 
                                   setSelectedShifts(e.value); 
                                   handleChangeShift(e);
                                 }}
@@ -677,7 +661,6 @@ export default function Add(props: any) {
                               {selectedShifts && (
                               <div className="col-4">
                                 <label htmlFor="shiftStartTime" className="mr-2">Start Time</label> 
-                                {/* <Calendar  */}
                                 <span className="p-input-icon-right">
                                 <i className="pi pi-clock" />
                                 <InputText
@@ -692,7 +675,7 @@ export default function Add(props: any) {
 
                               {selectedShifts && (
                                 <div className="col-4">
-                                  <label htmlFor="shiftEndTime" className="mr-2">End Time</label> 
+                                <label htmlFor="shiftEndTime" className="mr-2">End Time</label> 
                                 <span className="p-input-icon-right">
                                 <i className="pi pi-clock" />
                                 <InputText

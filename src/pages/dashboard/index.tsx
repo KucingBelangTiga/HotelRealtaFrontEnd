@@ -120,12 +120,12 @@ export default function Index() {
               </Link>
             </li>
           </ul>
-          <hr className="fixed bottom-20 w-full border-gray-200 sm:mx-auto dark:border-gray-700" />
+          <hr className="fixed bottom-20 w-5/6 border-gray-200 sm:mx-2 dark:border-gray-700" />
           <Link href="/" className="hover:underline" passHref>
             <span className="fixed bottom-8 left-0 right-0 text-sm text-gray-500 sm:text-center dark:text-gray-400" title="Dashboard">
-              &copy; 2023 <a className="hover:underline">
+              &copy; 2023 <span className="hover:underline">
                 RealtaHotel
-              </a>.
+              </span>.
             </span>
           </Link>
         </div>

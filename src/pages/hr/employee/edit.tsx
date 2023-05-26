@@ -7,6 +7,10 @@ import {
   EditEmpRequest,
 } from "../../../redux/action/hr/employeeAction";
 import { GetJoroRequest, AddJoroRequest } from "../../../redux/action/hr/job_roleAction";
+// import { GetEphiAllRequest, AddEphiRequest } from "../../../redux/action/hr/employee_pay_historyAction";
+// import { GetEdhiAllRequest, AddEdhiRequest } from "../../../redux/action/hr/employee_department_historyAction";
+// import { GetDeptRequest, AddDeptRequest } from "../../../redux/action/hr/departmentAction";
+// import { GetShiftRequest, AddShiftRequest } from "../../../redux/action/hr/shiftAction";
 import Users from "../../../api/users/users";
 import { useFormik, FormikProvider } from "formik";
 import * as Yup from 'yup';
@@ -16,16 +20,9 @@ import { Calendar, CalendarChangeEvent } from 'primereact/calendar';
 import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
 import { Dialog } from 'primereact/dialog';
 import { InputNumber, InputNumberValueChangeEvent, InputNumberChangeEvent } from 'primereact/inputnumber';
-import { Checkbox } from 'primereact/checkbox';
-import { FileUpload } from 'primereact/fileupload';
 import { Fieldset } from 'primereact/fieldset';
-import { Tooltip } from 'primereact/tooltip';
-import { Tag } from 'primereact/tag';
-import { ProgressBar } from 'primereact/progressbar';
-import { Badge } from 'primereact/badge';
 import { Toast } from 'primereact/toast';
 import { ScrollTop } from 'primereact/scrolltop';
-import { ScrollPanel } from 'primereact/scrollpanel';
 import 'primeicons/primeicons.css';
 import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
@@ -42,8 +39,6 @@ export default function Edit(props: any) {
   const { joros } = useSelector((state: any) => state.joroState);
   const [submitted, setSubmitted] = useState<boolean>(false);
   const toast = useRef<any>(null);
-  const [totalSize, setTotalSize] = useState(0);
-  const fileUploadRef = useRef(null);
   const [date, setDate] = useState<string | Date | Date[] | null>(null);
   const [inputNumberValue, setInputNumberValue] = useState<number | null>(null);
   const [previewImg, setPreviewImg] = useState<any>()
@@ -86,6 +81,7 @@ export default function Edit(props: any) {
       empSalariedFlag: Yup.string().required('*Required SalariedFlag.'),
       empCurrentFlag: Yup.string().required('*Required CurrentFlag.'),
       empJoroId: Yup.string().required('*Required JobRole.'),
+      empUserId: Yup.string().required('*Required FullName.'),
     }),
     onSubmit: async (values) => {
       dispatch(EditEmpRequest(values));
@@ -121,7 +117,7 @@ export default function Edit(props: any) {
     const file = event.target.files[0]
     console.log(event.target.files);
     reader.onload = () => {
-        formik.setFieldValue('file', file)
+        formik.setFieldValue("file", file)
         setPreviewImg(reader.result)
     }
     reader.readAsDataURL(file)
@@ -133,6 +129,7 @@ export default function Edit(props: any) {
     setPreviewImg(null)
     setUpload(false)
 }
+//
 
   //get user
   const [users, setUsers] = useState<any[]>([]);
@@ -198,6 +195,9 @@ export default function Edit(props: any) {
                                 filter showClear
                                 emptyMessage="No users found."
                               />
+                              {formik.touched.empUserId && formik.errors.empUserId && (
+                                  <small className="p-invalid text-red-500">{formik.errors.empUserId.toString()}</small>
+                                )}
                           </div>
                 
                           <div className="col-6">
@@ -377,7 +377,7 @@ export default function Edit(props: any) {
                       <div className="upload-form">
                       <label htmlFor="empPhoto">Photo</label>
                         <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
-                            {
+                          {
                             upload === false ?
                                 <>
                                     <span>Empty file</span></> :
@@ -386,14 +386,14 @@ export default function Edit(props: any) {
                                         <img src={previewImg} alt='img' className="max-w-xs" width={100} />
                                     </div>
                                     <div>
-                                        <button className="text-red-700 hover:text-white text-xs border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900" onClick={onClear}>Remove</button>
+                                        <button className="text-red-700 hover:text-white text-xs border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-small rounded-md text-sm px-3 py-2.5 text-center mr-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900" onClick={onClear}>Remove</button>
                                     </div>
                                 </>
                         }
                     </div>
                     <div>
-                        <input className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="user_avatar_help" id="user_avatar" type="file" onChange={uploadConfig('file')} />
-                        <div className="mt-1 text-sm text-gray-500 dark:text-gray-300" id="user_avatar_help"> </div>
+                        <input className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="user_avatar_help" id="empPhoto" name="empPhoto" type="file" onChange={uploadConfig("file")} />
+                        <div className="mt-1 text-sm text-gray-500 dark:text-gray-300" id="user_avatar_help" > </div>
                     </div>
 
                      </div>

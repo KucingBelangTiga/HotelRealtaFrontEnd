@@ -1,8 +1,6 @@
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
-import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
 import Layout from "../../components/layout";
-import { PanelMenu } from "primereact/panelmenu";
 import 'primeflex/primeflex.css';
 
 const navigation = [ 
@@ -40,12 +38,11 @@ const navigation = [
   },
 ];
 
-export default function LayoutHr({ children }: { children: React.ReactNode }) {
-  const [activeItem, setActiveItem] = useState(""); 
-  
-  const handleClick = (item: string) => {
-    setActiveItem(item);
-  };
+export default function LayoutHr({ 
+  children,
+  }: {
+    children: React.ReactNode;
+  }) {
 
   useEffect(() => {
     document.title = "Human Resource"; 
@@ -54,42 +51,41 @@ export default function LayoutHr({ children }: { children: React.ReactNode }) {
   return (
     <Layout>
       <div>
-        <aside
-          id="logo-sidebar"
-          className="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-darkBlue dark:border-coldBlue"
-          aria-label="Sidebar"
-        >
-          <div className="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-darkBlue">
-            <ul className="space-y-2 font-medium">
-              {navigation.map((item, index) => (
-                <li key={index}>
-                  <Link
-                    href={item.href}
-                    className={`flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-lightBlue dark:hover:bg-coldBlue ${activeItem === item.name ? "bg-lightBlue dark:bg-coldBlue" : ""}`}
-                    onClick={() => handleClick(item.name)}
-                  >
-                    {item.svg}
-                    <span className="ml-3">{item.name}</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            <hr className="fixed bottom-20 w-full border-gray-200 sm:mx-auto dark:border-gray-700" />
+      <aside
+        id="logo-sidebar"
+        className="fixed top-0 left-0 z-10 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white   sm:translate-x-0 dark:bg-darkBlue "
+        aria-label="Sidebar"
+      >
+        <div className="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-darkBlue">
+          <ul className="space-y-2 font-medium">
+            {navigation.map((item, index) => (
+              <li key={index}>
+                <Link
+                  href={item.href}
+                  className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-lightBlue dark:hover:bg-coldBlue"
+                >
+                  {item.svg}
+                  <span className="ml-3">{item.name}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+          <hr className="fixed bottom-20 w-5/6 border-gray-200 sm:mx-2 dark:border-gray-700" />
             <Link href="/" className="hover:underline" passHref>
             <span className="fixed bottom-8 left-0 right-0 text-sm text-gray-500 sm:text-center dark:text-gray-400" title="Dashboard">
-              &copy; 2023 <a className="hover:underline">
+              &copy; 2023 <span className="hover:underline">
                 RealtaHotel
-              </a>.
-            </span>
+              </span>.</span>
             </Link>
-          </div>
-        </aside>
-        <div className="p-10 sm:ml-72 ">
-        <div className="p-4 mt-14">  
-          {children}
+
         </div>
-        </div>
+      </aside>
+
+      <div className="p-10 sm:ml-72 ">
+        <div className="p-4 mt-14">{children}</div>
       </div>
+    </div>
       </Layout>
   );
 }
