@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FormikProvider, useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { EditUserAccountRequest, FindUserAccountRequest } from "../../../redux/action/payment/userAccountAction";
+import { EditUserAccountRequest, FindUserAccountRequest } from "@/src/redux/action/payment/userAccountAction";
 
 export default function Edit(props: any) {
   const dispatch = useDispatch();
@@ -16,17 +16,17 @@ export default function Edit(props: any) {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      usacUserId: props.id,
-      usacAccountNumber: userAccount.usacAccountNumber,
       usacEntityId: userAccount.usacEntityId,
+      usacUserId: userAccount.usacUserId,
+      usacAccountNumber: userAccount.usacAccountNumber,
       usacSaldo: userAccount.usacSaldo,
       usacType: userAccount.usacType,
     },
     onSubmit: async (values) => {
       const payload = {
+        usacEntityId: values.usacEntityId,
         usacUserId: values.usacUserId,
         usacAccountNumber: values.usacAccountNumber,
-        usacEntityId: values.usacEntityId,
         usacSaldo: values.usacSaldo,
         usacType: values.usacType,
       };
@@ -59,7 +59,7 @@ export default function Edit(props: any) {
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 {/*header*/}
                 <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
-                  <h3 className="text-3xl font-semibold">Edit User Account{props.bankName}</h3>
+                  <h3 className="text-3xl font-semibold">Edit User Account</h3>
                   <button className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none" onClick={() => setShowModal(false)}>
                     <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">×</span>
                   </button>
@@ -79,11 +79,21 @@ export default function Edit(props: any) {
                             onChange={formik.handleChange}
                             value={formik.values.usacAccountNumber}
                             placeholder="Account Number"
+                            disabled
                           />
                         </div>
                         <div className="mb-4">
                           <label className="block text-black text-sm font-bold mb-2">Saldo</label>
-                          <input className=" border rounded w-full py-2 px-3 text-black border-slate-900" type="text" name="usacSaldo" id="usacSaldo" onChange={formik.handleChange} value={formik.values.usacSaldo} placeholder="Saldo" />
+                          <input
+                            className=" border rounded w-full py-2 px-3 text-black border-slate-900"
+                            type="text"
+                            name="usacSaldo"
+                            id="usacSaldo"
+                            onChange={formik.handleChange}
+                            value={formik.values.usacSaldo}
+                            placeholder="Saldo"
+                            autoComplete="off"
+                          />
                         </div>
                         <div className="mb-4">
                           <label className="block text-black text-sm font-bold mb-2">Type</label>

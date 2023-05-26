@@ -14,6 +14,35 @@ export const GetUserAccountFailed = (payload: any) => ({
   payload,
 });
 
+export const GetCurrAccountSourceRequest = (payload: any) => ({
+  type: ActionUserAccount.GET_CURACCOUNT_SOURCE_REQUEST,
+  payload,
+});
+
+export const GetCurrAccountSourceSuccess = (payload: any) => ({
+  type: ActionUserAccount.GET_CURACCOUNT_SOURCE_SUCCESS,
+  payload,
+});
+
+export const GetCurrAccountSourceFailed = (payload: any) => ({
+  type: ActionUserAccount.GET_CURACCOUNT_SOURCE_FAILED,
+  payload,
+});
+export const GetCurrAccountTargetRequest = (payload: any) => ({
+  type: ActionUserAccount.GET_CURACCOUNT_TARGET_REQUEST,
+  payload,
+});
+
+export const GetCurrAccountTargetSuccess = (payload: any) => ({
+  type: ActionUserAccount.GET_CURACCOUNT_TARGET_SUCCESS,
+  payload,
+});
+
+export const GetCurrAccountTargetFailed = (payload: any) => ({
+  type: ActionUserAccount.GET_CURACCOUNT_TARGET_FAILED,
+  payload,
+});
+
 export const AddUserAccountRequest = (payload: any) => ({
   type: ActionUserAccount.ADD_USERACCOUNT_REQUEST,
   payload,

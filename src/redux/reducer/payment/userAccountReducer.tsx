@@ -1,6 +1,8 @@
 import * as ActionTypeUserAccount from "../../constant/payment/userAccountConstant";
 
 const init_state = {
+  currAccountSource: [],
+  currAccountTarget: [],
   userAccounts: [],
   userAccount: [],
 };
@@ -11,6 +13,14 @@ const UserAccountReduce = (state = init_state, action: any) => {
       return { ...state };
     case ActionTypeUserAccount.GET_USERACCOUNT_SUCCESS:
       return GetUserAccount(state, action);
+    case ActionTypeUserAccount.GET_CURACCOUNT_SOURCE_REQUEST:
+      return { ...state };
+    case ActionTypeUserAccount.GET_CURACCOUNT_SOURCE_SUCCESS:
+      return GetCurrAccountSource(state, action);
+    case ActionTypeUserAccount.GET_CURACCOUNT_TARGET_REQUEST:
+      return { ...state };
+    case ActionTypeUserAccount.GET_CURACCOUNT_TARGET_SUCCESS:
+      return GetCurrAccountTarget(state, action);
     case ActionTypeUserAccount.ADD_USERACCOUNT_REQUEST:
       return { ...state };
     case ActionTypeUserAccount.ADD_USERACCOUNT_SUCCESS:
@@ -36,6 +46,22 @@ const GetUserAccount = (state: any, action: any) => {
   return {
     ...state,
     userAccounts: action.payload,
+  };
+};
+
+const GetCurrAccountSource = (state: any, action: any) => {
+  const { payload } = action;
+  return {
+    ...state,
+    currAccountSource: payload,
+  };
+};
+
+const GetCurrAccountTarget = (state: any, action: any) => {
+  const { payload } = action;
+  return {
+    ...state,
+    currAccountTarget: payload,
   };
 };
 

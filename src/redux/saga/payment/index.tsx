@@ -6,9 +6,11 @@ import { handleAddEntitys, handleGetEntitys, handleFindEntitys, handleEditEntity
 import * as ActionTypePaymentGateway from "../../constant/payment/paymentGatewayConstant";
 import { handleAddPaymentGateway, handleGetPaymentGateway, handleFindPaymentGateway, handleEditPaymentGateway, handleDeletePaymentGateway } from "../payment/paymentGatewaySaga";
 import * as ActionTypeUserAccount from "../../constant/payment/userAccountConstant";
-import { handleAddUserAccount, handleGetUserAccount, handleFindUserAccount, handleEditUserAccount, handleDeleteUserAccount } from "../payment/userAccountSaga";
+import { handleAddUserAccount, handleGetUserAccount, handleFindUserAccount, handleEditUserAccount, handleDeleteUserAccount, handleCurrAccountSource, handleCurrAccountTarget } from "../payment/userAccountSaga";
 import * as ActionTypePaymentTransaction from "../../constant/payment/paymentTransactionConstant";
 import { handleAddPaymentTransaction, handleGetPaymentTransaction, handleFindPaymentTransaction, handleEditPaymentTransaction, handleDeletePaymentTransaction } from "../payment/paymentTransactionSaga";
+import * as ActionTypeTopUp from "../../constant/payment/topUpConstan";
+import { handleCreditAccount, handleDebitAccount, handleCreditTransaction, handleDebitTransaction } from "../payment/topUpSaga";
 
 function* watchAll() {
   yield all([
@@ -32,6 +34,8 @@ function* watchAll() {
     takeEvery(ActionTypePaymentGateway.DEL_PAYMENTGATEWAY_REQUEST, handleDeletePaymentGateway),
     // User Account
     takeEvery(ActionTypeUserAccount.GET_USERACCOUNT_REQUEST, handleGetUserAccount),
+    takeEvery(ActionTypeUserAccount.GET_CURACCOUNT_SOURCE_REQUEST, handleCurrAccountSource),
+    takeEvery(ActionTypeUserAccount.GET_CURACCOUNT_TARGET_REQUEST, handleCurrAccountTarget),
     takeEvery(ActionTypeUserAccount.ADD_USERACCOUNT_REQUEST, handleAddUserAccount),
     takeEvery(ActionTypeUserAccount.FIND_USERACCOUNT_REQUEST, handleFindUserAccount),
     takeEvery(ActionTypeUserAccount.EDIT_USERACCOUNT_REQUEST, handleEditUserAccount),
@@ -42,6 +46,11 @@ function* watchAll() {
     takeEvery(ActionTypePaymentTransaction.FIND_PAYMENTTRANSACTION_REQUEST, handleFindPaymentTransaction),
     takeEvery(ActionTypePaymentTransaction.EDIT_PAYMENTTRANSACTION_REQUEST, handleEditPaymentTransaction),
     takeEvery(ActionTypePaymentTransaction.DEL_PAYMENTTRANSACTION_REQUEST, handleDeletePaymentTransaction),
+    // TopUp
+    takeEvery(ActionTypeTopUp.ADD_CREDIT_ACCOUNT_REQUEST, handleCreditAccount),
+    takeEvery(ActionTypeTopUp.ADD_DEBIT_ACCOUNT_REQUEST, handleDebitAccount),
+    takeEvery(ActionTypeTopUp.ADD_CREDIT_TRANSACTION_REQUEST, handleCreditTransaction),
+    takeEvery(ActionTypeTopUp.ADD_DEBIT_TRANSACTION_REQUEST, handleDebitTransaction),
   ]);
 }
 

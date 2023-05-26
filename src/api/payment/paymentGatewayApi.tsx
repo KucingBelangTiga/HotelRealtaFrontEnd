@@ -2,7 +2,7 @@ import axios from "axios";
 
 const getPaymentGateway = async () => {
   try {
-    const result = await axios.get("http://localhost:3002/paymentgateway/");
+    const result = await axios.get(`${process.env.URL_DOMAIN}/paymentgateway/`);
     return result.data;
   } catch (error) {
     return error;
@@ -11,7 +11,7 @@ const getPaymentGateway = async () => {
 
 const createPaymentGateway = async (payload: any) => {
   try {
-    const result = await axios.post("http://localhost:3002/paymentgateway/", payload);
+    const result = await axios.post(`${process.env.URL_DOMAIN}/paymentgateway/`, payload);
     return result;
   } catch (error) {
     return error;
@@ -20,7 +20,7 @@ const createPaymentGateway = async (payload: any) => {
 
 const updatePaymentGateway = async (payload: any) => {
   try {
-    const result = await axios.put(`http://localhost:3002/paymentgateway/${payload.pagaEntityId}`, payload);
+    const result = await axios.put(`${process.env.URL_DOMAIN}/paymentgateway/${payload.pagaEntityId}`, payload);
     return result;
   } catch (error) {
     return error;
@@ -29,7 +29,7 @@ const updatePaymentGateway = async (payload: any) => {
 
 const findOnePaymentGateway = async (id: any) => {
   try {
-    const result = await axios.get(`http://localhost:3002/paymentgateway/${id}`);
+    const result = await axios.get(`${process.env.URL_DOMAIN}/paymentgateway/${id}`);
     return result.data;
   } catch (error) {
     return error;
@@ -38,7 +38,7 @@ const findOnePaymentGateway = async (id: any) => {
 
 const deletePaymentGateway = async (id: any) => {
   try {
-    const result = await axios.delete(`http://localhost:3002/paymentgateway/${id}`);
+    const result = await axios.delete(`${process.env.URL_DOMAIN}/paymentgateway/${id}`);
     return result.data;
   } catch (error) {
     return error;

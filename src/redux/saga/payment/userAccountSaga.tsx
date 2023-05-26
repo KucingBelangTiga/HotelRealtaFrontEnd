@@ -1,6 +1,10 @@
 import { call, put } from "redux-saga/effects";
 import UserAccountApi from "../../../api/payment/userAccountApi";
 import {
+  GetCurrAccountSourceSuccess,
+  GetCurrAccountSourceFailed,
+  GetCurrAccountTargetSuccess,
+  GetCurrAccountTargetFailed,
   GetUserAccountSuccess,
   GetUserAccountFailed,
   AddUserAccountSuccess,
@@ -20,6 +24,26 @@ function* handleGetUserAccount(action: any): any {
     yield put(GetUserAccountSuccess(result));
   } catch (error) {
     yield put(GetUserAccountFailed(error));
+  }
+}
+
+function* handleCurrAccountSource(action: any): any {
+  const { payload } = action;
+  try {
+    const result = yield call(UserAccountApi.findCurrAccountSource, payload);
+    yield put(GetCurrAccountSourceSuccess(result));
+  } catch (error) {
+    yield put(GetCurrAccountSourceFailed(error));
+  }
+}
+
+function* handleCurrAccountTarget(action: any): any {
+  const { payload } = action;
+  try {
+    const result = yield call(UserAccountApi.findCurrAccountTarget, payload);
+    yield put(GetCurrAccountTargetSuccess(result));
+  } catch (error) {
+    yield put(GetCurrAccountTargetFailed(error));
   }
 }
 
@@ -63,4 +87,4 @@ function* handleDeleteUserAccount(action: any): any {
   }
 }
 
-export { handleGetUserAccount, handleAddUserAccount, handleFindUserAccount, handleEditUserAccount, handleDeleteUserAccount };
+export { handleGetUserAccount, handleCurrAccountSource, handleCurrAccountTarget, handleAddUserAccount, handleFindUserAccount, handleEditUserAccount, handleDeleteUserAccount };

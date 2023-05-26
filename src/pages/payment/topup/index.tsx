@@ -1,72 +1,142 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { FormikProvider, useFormik } from "formik";
-import Layout from "../../../components/layouts";
+import Layout from "@/src/components/layouts";
 import { useDispatch, useSelector } from "react-redux";
-import { AddPaymentTransactionRequest } from "../../../redux/action/payment/paymentTransactionAction";
-import { GetBankRequest, FindBankRequest } from "../../../redux/action/payment/bankAction";
+import { GetBankRequest } from "@/src/redux/action/payment/bankAction";
 import { AutoComplete, AutoCompleteCompleteEvent } from "primereact/autocomplete";
-// import { Toast } from "primereact/toast";
+import { Toast } from "primereact/toast";
 import LayoutPayment from "../layout";
-import { GetUserAccountFailed, GetUserAccountRequest } from "@/src/redux/action/payment/userAccountAction";
+import { GetUserAccountRequest } from "@/src/redux/action/payment/userAccountAction";
+import { CreditAccountRequest, DebitAccountRequest, CreditTransactionRequest, DebitTransactionRequest } from "@/src/redux/action/payment/topUpAction";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.css";
 import { GetPaymentGatewayRequest } from "@/src/redux/action/payment/paymentGatewayAction";
-
-interface Bank {
-  bankEntityId: number;
-  bankCode: string;
-  bankName: string;
-}
-
-interface PaymentGateway {
-  pagaEntityId: number;
-  pagaCode: string;
-  pagaName: string;
-}
+import moment from "moment";
+import userAccountApi from "@/src/api/payment/userAccountApi";
 
 export default function Index() {
   const dispatch = useDispatch();
+  const router = useRouter();
   const { banks } = useSelector((state: any) => state.bankState);
   const { paymentGateways } = useSelector((state: any) => state.paymentGatewayState);
   const { userAccounts } = useSelector((state: any) => state.userAccountState);
-  const [selectedBankSource, setSelectedBankSource] = useState<Bank>(banks[0]);
-  const [selectedPaymentGatewayTarget, setSelectedPaymentGatewayTarget] = useState<PaymentGateway>(paymentGateways[0]);
-  const [itemSource, setItemSource] = useState<Bank[]>([]);
-  const [itemTarget, setItemTarget] = useState<PaymentGateway[]>([]);
-  const [currentSaldoSource, setCurrentSaldoSource] = useState<any[]>([]);
-  const [currentSaldoTarget, setCurrentSaldoTarget] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [selectedBankSource, setSelectedBankSource] = useState<any>(banks[0]);
+  const [selectedPaymentGatewayTarget, setSelectedPaymentGatewayTarget] = useState<any>(paymentGateways[0]);
+  const [itemSource, setItemSource] = useState<any[]>([]);
+  const [itemTarget, setItemTarget] = useState<any[]>([]);
   const [refresh, setRefresh] = useState<boolean>(false);
   const toast = useRef(null);
+  const [source, setSource] = useState({
+    account: undefined,
+    saldo: undefined,
+    entity: undefined,
+    typeAccount: undefined,
+    user: undefined,
+  });
+  const [target, setTarget] = useState({
+    account: undefined,
+    saldo: undefined,
+    entity: undefined,
+    typeAccount: undefined,
+    user: undefined,
+  });
+  const [userId, setUserId] = useState<number>();
 
   useEffect(() => {
     dispatch(GetBankRequest());
     dispatch(GetPaymentGatewayRequest());
     dispatch(GetUserAccountRequest());
-    setCurrentSaldoSource(userAccounts);
-    setCurrentSaldoTarget(userAccounts);
-    console.log("saldosearch", userAccounts);
-  }, [dispatch]);
+  }, [dispatch, refresh]);
 
-  console.log("Data Bank", banks);
   const formik = useFormik({
     initialValues: {
-      bankEntitySource: "",
-      usacSaldo: "",
-      patrSourceId: "",
-      patrDebet: "",
-      patrTargetId: "",
+      transfer: "",
+      source_account: "",
+      target_account: "",
+      user_id: "",
     },
-    onSubmit: async (values) => {
-      let payload = new FormData();
-      payload.append("bankEntitySource", String(selectedBankSource.bankEntityId));
-      // payload.append("bankEntityTarget", String(selectedBankTarget.bankEntityId));
-      payload.append("patrSourceId", values.patrSourceId);
-      payload.append("patrDebet", values.patrDebet);
-      dispatch(AddPaymentTransactionRequest(payload));
+    onSubmit: async (values, { resetForm }) => {
+      const numberAccountCredit = "TP#" + moment(Date()).format("YYYYMMDD") + "-" + Math.floor(1000 + Math.random() * 9000);
+      const numberAccountDebit = "TP#" + moment(Date()).format("YYYYMMDD") + "-" + Math.floor(1000 + Math.random() * 9000);
+      const orderNumber = moment(Date()).format("YYYYMMDD") + "-" + Math.floor(1000 + Math.random() * 9000);
+      let payloadCreditTransaction = {
+        patrTrxId: numberAccountCredit,
+        patrDebet: "0",
+        patrCredit: values.transfer,
+        patrType: "TP",
+        patrNote: "Top Up",
+        patrOrderNumber: orderNumber,
+        patrSourceId: values.source_account,
+        patrTargetId: values.target_account,
+        patrUserId: userId,
+      };
+      let payloadDebetTransaction = {
+        patrTrxId: numberAccountDebit,
+        patrDebet: values.transfer,
+        patrCredit: "0",
+        patrType: "TP",
+        patrNote: "Top Up",
+        patrOrderNumber: orderNumber,
+        patrSourceId: values.source_account,
+        patrTargetId: values.target_account,
+        patrUserId: userId,
+      };
+      const payloadCredit = {
+        usacEntityId: source.entity,
+        usacUserId: source.user,
+        usacSaldo: source.saldo,
+        usacNominal: values.transfer,
+      };
+      const payloadDebit = {
+        usacEntityId: target.entity,
+        usacUserId: target.user,
+        usacSaldo: target.saldo,
+        usacNominal: values.transfer,
+      };
+      dispatch(CreditAccountRequest(payloadCredit));
+      dispatch(DebitAccountRequest(payloadDebit));
+      dispatch(CreditTransactionRequest(payloadCreditTransaction));
+      dispatch(DebitTransactionRequest(payloadDebetTransaction));
+      window.alert("Transfer Success");
       setRefresh(true);
+      resetForm();
+      router.push("/payment/transaction");
     },
   });
+
+  const handleCurrValue =
+    (name: any) =>
+    (event: any): any => {
+      if (name == "sourceAccount") {
+        formik.setFieldValue("source_account", event.target.value);
+        userAccountApi.findCurrAccountSource(event.target.value).then((data) => {
+          setSource({
+            ...source,
+            account: event.target.value,
+            saldo: data.usacSaldo,
+            typeAccount: data.usacType,
+            entity: data.usacEntityId,
+            user: data.usacUserId,
+          });
+          setUserId(data.usacUserId);
+        });
+      } else if (name == "targetAccount") {
+        formik.setFieldValue("target_account", event.target.value);
+        userAccountApi.findCurrAccountTarget(event.target.value).then((data) => {
+          console.log("bank", data);
+          setTarget({
+            ...target,
+            account: event.target.value,
+            saldo: data.usacSaldo,
+            typeAccount: data.usacType,
+            entity: data.usacEntityId,
+            user: data.usacUserId,
+          });
+          setUserId(data.usacUserId);
+        });
+      }
+    };
 
   const SearchSource = (event: AutoCompleteCompleteEvent) => {
     setTimeout(() => {
@@ -121,9 +191,9 @@ export default function Index() {
               <form onSubmit={formik.handleSubmit} className="flex m-4 min-h-screen">
                 <div className="w-1/2 my-4 border-r-4 dark:border-r-white-100 border-r-gray-500">
                   <h1 className="text-center my-4 font-bold text-3xl">Source</h1>
-                  <div className="left-0 gap-6 flex pl-1 pointer-events-none">
+                  <div className="gap-10 flex pl-1">
                     <h1 className="h-16 my-4 font-bold text-xl mr-4">Source Name</h1>
-                    {/* <Toast ref={toast} /> */}
+                    <Toast ref={toast} />
                     <AutoComplete
                       id="bankEntityId"
                       name="bankEntityId"
@@ -133,19 +203,21 @@ export default function Index() {
                       completeMethod={SearchSource}
                       onChange={(e: any) => setSelectedBankSource(e.value)}
                       itemTemplate={itemTemplateSource}
+                      className="h-12 mt-2"
+                      placeholder="Search Bank"
                     />
                   </div>
                   <div className="w-1/2 flex gap-28 mt-10">
                     <label className="text-black dark:text-white text-xl font-bold mb-2">Account</label>
-                    <select name="patrSourceId" id="patrSourceId" className="border rounded py-2 px-3 text-black border-slate-900 w-auto" onChange={formik.handleChange} onBlur={formik.handleBlur}>
-                      <option value="" selected disabled hidden className="text-black">
-                        Choose Account
+                    <select name="patrSourceId" id="patrSourceId" className="border rounded py-2 px-3 text-black border-slate-900 w-auto" onChange={handleCurrValue("sourceAccount")} required>
+                      <option value="" selected disabled hidden className="text-black ">
+                        -Select Account-
                       </option>
                       {userAccounts &&
-                        userAccounts.map((item: any) => {
+                        userAccounts.map((item: any, index: any) => {
                           return (
                             <>
-                              <option value={item.usacAccountNumber} key={item.usacEntityId}>
+                              <option value={item.usacAccountNumber} key={index}>
                                 {item.usacAccountNumber}
                               </option>
                               ;
@@ -156,55 +228,45 @@ export default function Index() {
                   </div>
                   <div className="flex gap-8 mt-20">
                     <label className="text-black dark:text-white text-2xl font-bold">Current Saldo</label>
-                    {/* { GetUserAccountRequest()
-                    userAccountSource && userAccountSource.usacAccountNumber === } */}
-                    <input
-                      className="border rounded w-[45%] py-2 px-3 text-black border-slate-900 "
-                      type="text"
-                      name="patrDebet"
-                      id="patrDebet"
-                      onChange={formik.handleChange}
-                      // defaultValue={currentSaldoSource ? currentSaldoSource.usacSaldo : null}
-                      value={formik.values.patrDebet}
-                      placeholder="Current Saldo"
-                      disabled
-                    />
+                    <input className="border rounded w-[202px] py-2 px-3 text-black border-slate-900 " type="text" name="saldo" id="saldo" defaultValue={source == null ? " " : source.saldo} disabled />
                   </div>
                   <div className="flex gap-2 mt-20">
-                    <button className="group h-18 w-[30%] border border-green-500 rounded-md bg-coldBlue hover:bg-moderateBlue px-4 py-2 m-2 text-white relative overflow-hidden text-xl">Transfer</button>
+                    <button className="group h-18 w-[30%] border border-green-500 rounded-md bg-coldBlue hover:bg-moderateBlue px-4 py-2 -mt-1 text-white relative overflow-hidden text-xl">Transfer</button>
                     <input
-                      type="text"
-                      id="nominal"
-                      className="h-14 pl-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-[55%]"
+                      type="number"
+                      name="transfer"
+                      id="transfer"
+                      className="h-14 pl-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-[50%] ml-4"
                       placeholder="Nominal Transfer"
+                      value={formik.values.transfer}
                       onChange={formik.handleChange}
+                      required
                     />
                   </div>
                 </div>
                 <div className="w-1/2 relative my-4 ml-10">
                   <h1 className="text-center my-4 font-bold text-3xl">Target</h1>
-                  <div className="left-0 gap-14 flex pl-1 pointer-events-none">
-                    <h1 className="my-4 font-bold text-xl mr-4">Target</h1>
-                    {/* <Toast ref={toast} /> */}
+                  <div className="gap-10 flex pl-1">
+                    <h1 className="h-16 my-4 font-bold text-xl">Target Payment</h1>
+                    <Toast ref={toast} />
                     <AutoComplete
                       id="bankEntityId"
                       name="bankEntityId"
                       field="pagaName"
-                      multiple
                       value={selectedPaymentGatewayTarget}
                       suggestions={itemTarget}
                       completeMethod={SearchTarget}
                       onChange={(e: any) => setSelectedPaymentGatewayTarget(e.value)}
                       itemTemplate={itemTemplateTarget}
-                      // className="h-16 mt-[18px]"
-                      // placeholder="Search Bank"
+                      className="h-12 mt-2"
+                      placeholder="Search Bank"
                     />
                   </div>
                   <div className="w-1/2 flex gap-28 mt-10">
                     <label className="text-black dark:text-white text-xl font-bold mb-2">Account</label>
-                    <select name="usacAccountNumber" id="usacAccountNumber" className=" border rounded py-2 px-3 text-black border-slate-900" onChange={formik.handleChange} onBlur={formik.handleBlur}>
-                      <option value="" selected disabled hidden className="text-black">
-                        Choose Account
+                    <select name="usacAccountNumber" id="usacAccountNumber" className=" border rounded py-2 px-3 text-black border-slate-900" onChange={handleCurrValue("targetAccount")} required>
+                      <option value="" selected disabled hidden className="text-black ">
+                        -Select Account-
                       </option>
                       {userAccounts &&
                         userAccounts.map((item: any) => {
@@ -221,17 +283,7 @@ export default function Index() {
                   </div>
                   <div className="flex gap-8 mt-20">
                     <label className="text-black dark:text-white text-2xl font-bold">Current Saldo</label>
-                    <input
-                      className="border rounded w-[40%] py-2 px-3 text-black border-slate-900 "
-                      type="text"
-                      name="usacSaldo"
-                      id="usacSaldo"
-                      onChange={formik.handleChange}
-                      // value={formik.values.usacSaldo}
-                      defaultValue={currentSaldoTarget ? currentSaldoTarget.values.usacSaldo : null}
-                      placeholder="Current Saldo"
-                      disabled
-                    />
+                    <input className="border rounded w-[202px] py-2 px-3 text-black border-slate-900 " type="text" name="saldo" id="saldo" defaultValue={target == null ? " " : target.saldo} disabled />
                   </div>
                 </div>
               </form>

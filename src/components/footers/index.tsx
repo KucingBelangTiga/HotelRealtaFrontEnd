@@ -8,8 +8,8 @@ export default function Footer() {
         <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
           <div className="md:flex md:justify-between">
             <div className="mb-6 md:mb-0">
-              <a href="https://flowbite.com/" className="flex items-center">
-                <Image src="/logo.jfif" className="h-8 mr-3 w-[250px] h-[150px]" alt="FlowBite Logo" width={200} height={50} />
+              <a href="https://realta.co.id/site/" className="flex items-center">
+                <Image src="/logo.jfif" className="h-8 mr-3 w-[250px] h-[150px]" alt="Realta Logo" width={200} height={50} />
                 {/* <span className="self-center font-semibold whitespace-nowrap dark:text-white">Flowbite</span> */}
               </a>
             </div>
@@ -18,13 +18,13 @@ export default function Footer() {
                 <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Resources</h2>
                 <ul className="text-gray-600 dark:text-gray-400 font-medium">
                   <li className="mb-4">
-                    <a href="https://flowbite.com/" className="hover:underline">
-                      Flowbite
+                    <a href="https://realta.co.id/site/#gkHeader" className="hover:underline">
+                      Solutions For Business
                     </a>
                   </li>
                   <li>
-                    <a href="https://tailwindcss.com/" className="hover:underline">
-                      Tailwind CSS
+                    <a href="https://realta.co.id/site/#gkBottom1" className="hover:underline">
+                      Industry
                     </a>
                   </li>
                 </ul>
@@ -33,7 +33,7 @@ export default function Footer() {
                 <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Follow us</h2>
                 <ul className="text-gray-600 dark:text-gray-400 font-medium">
                   <li className="mb-4">
-                    <a href="https://github.com/themesberg/flowbite" className="hover:underline ">
+                    <a href="https://github.com/mohagussetiaone" className="hover:underline ">
                       Github
                     </a>
                   </li>
@@ -66,7 +66,7 @@ export default function Footer() {
             <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
               © 2023{" "}
               <a href="https://flowbite.com/" className="hover:underline">
-                Flowbite™
+                Realta ™
               </a>
               . All Rights Reserved.
             </span>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { AddPaymentGatewayRequest } from "../../../redux/action/payment/paymentGatewayAction";
+import { AddPaymentGatewayRequest } from "@/src/redux/action/payment/paymentGatewayAction";
 import { useFormik, FormikProvider } from "formik";
 
 export default function Create(props: any) {
@@ -12,16 +12,16 @@ export default function Create(props: any) {
       pagaCode: undefined,
       pagaName: undefined,
     },
-    onSubmit: async (values) => {
+    onSubmit: async (values, { resetForm }) => {
       let payload = {
         pagaEntityId: values.pagaEntityId,
         pagaCode: values.pagaCode,
         pagaName: values.pagaName,
       };
       dispatch(AddPaymentGatewayRequest(payload));
-      props.setDisplay(false);
       props.setRefresh(true);
       setShowModal(false);
+      resetForm();
     },
   });
 
@@ -57,25 +57,33 @@ export default function Create(props: any) {
                   <FormikProvider value={formik}>
                     <form onSubmit={formik.handleSubmit}>
                       <div className="py-4 px-8 ">
-                        <div className="flex gap-10 ">
-                          <label className="text-black  font-bold pr-20 border border-solid float-left">Entity Id</label>
+                        <div className="flex gap-10 mb-4">
+                          <label className="text-black  font-bold pr-20 border border-solid w-1/2 ">Code</label>
                           <input
                             className=" border rounded w-full py-2 px-3 text-black border-slate-900 "
                             type="text"
-                            name="pagaEntityId"
-                            id="pagaEntityId"
+                            name="pagaCode"
+                            id="pagaCode"
                             onChange={formik.handleChange}
-                            value={formik.values.pagaEntityId}
-                            placeholder="Entity Id"
+                            value={formik.values.pagaCode}
+                            placeholder="Code"
+                            autoComplete="off"
+                            required
                           />
                         </div>
-                        <div className="flex gap-10 ">
-                          <label className="text-black  font-bold pr-20 border border-solid float-left">Code</label>
-                          <input className=" border rounded w-full py-2 px-3 text-black border-slate-900 " type="text" name="pagaCode" id="pagaCode" onChange={formik.handleChange} value={formik.values.pagaCode} placeholder="Code" />
-                        </div>
-                        <div className="flex gap-10 ">
-                          <label className="text-black  font-bold pr-20 border border-solid float-left">Fintech</label>
-                          <input className=" border rounded w-full py-2 px-3 text-black border-slate-900 " type="text" name="pagaName" id="pagaName" onChange={formik.handleChange} value={formik.values.pagaName} placeholder="Fintech" />
+                        <div className="flex gap-10 mb-4">
+                          <label className="text-black  font-bold pr-20 border border-solid w-1/2 ">Fintech</label>
+                          <input
+                            className=" border rounded w-full py-2 px-3 text-black border-slate-900 "
+                            type="text"
+                            name="pagaName"
+                            id="pagaName"
+                            onChange={formik.handleChange}
+                            value={formik.values.pagaName}
+                            placeholder="Fintech"
+                            autoComplete="off"
+                            required
+                          />
                         </div>
                       </div>
                       <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
@@ -83,7 +91,7 @@ export default function Create(props: any) {
                           Close
                         </button>
                         <button
-                          className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                          className="bg-moderateBlue text-white active:bg-moderateBlue hover:bg-coldBlue font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                           type="submit"
                         >
                           Save Changes

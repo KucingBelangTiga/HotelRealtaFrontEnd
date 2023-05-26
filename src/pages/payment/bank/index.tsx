@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Layout from "../../../components/layouts";
 import { useDispatch, useSelector } from "react-redux";
-import { GetBankRequest, DeleteBankRequest } from "../../../redux/action/payment/bankAction";
-import { useRouter } from "next/router";
+import { GetBankRequest, DeleteBankRequest } from "@/src/redux/action/payment/bankAction";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { FilterMatchMode } from "primereact/api";
@@ -10,6 +8,7 @@ import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.css";
 import Add from "./Create";
 import Edit from "./Edit";
+import Layout from "@/src/components/layouts";
 import LayoutPayment from "../layout";
 
 export default function Index() {
@@ -28,6 +27,7 @@ export default function Index() {
   useEffect(() => {
     dispatch(GetBankRequest());
     setLoading(true);
+    setRefresh(false);
   }, [dispatch, refresh]);
 
   const handleSearch = (e: any) => {
@@ -60,7 +60,7 @@ export default function Index() {
                 <Edit id={rowData.bankEntityId} setRefresh={setRefresh} />
               </li>
               <li>
-                <button onClick={() => onDelete(rowData.bankEntityId)} className="p-3 hover:bg-coldBlue hover:text-white w-full">
+                <button onClick={() => onDelete()} className="p-3 hover:bg-coldBlue hover:text-white w-full">
                   Delete
                 </button>
               </li>
@@ -71,10 +71,26 @@ export default function Index() {
     );
   };
 
-  const onDelete = async (id: any) => {
-    dispatch(DeleteBankRequest(id));
-    window.alert("Delete Successfully");
-    setRefresh(true);
+  const onDelete = async () => {
+    if (window.confirm("Are you sure you want to delete data?")) {
+      deleteDataRequest()
+        .then(() => {
+          window.alert("Delete Successfully");
+        })
+        .catch((error) => {
+          console.error("There was an error deleting data", error);
+        });
+    }
+  };
+
+  const deleteDataRequest = () => {
+    return new Promise((resolve: any, reject: any) => {
+      setTimeout(() => {
+        dispatch(DeleteBankRequest(id));
+        setRefresh(true);
+        resolve();
+      }, 1000);
+    });
   };
 
   return (
@@ -88,7 +104,7 @@ export default function Index() {
               <div className="m-4 min-h-screen">
                 <div className="relative my-4">
                   <div className="absolute inset-y-0 left-0 flex items-center pl-1 pointer-events-none">
-                    <svg aria-hidden="true" className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <svg aria-hidden="true" className="mb-[3px] w-5 h-5 ml-2 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                     </svg>
                   </div>
@@ -99,10 +115,11 @@ export default function Index() {
                     placeholder="Search Bank"
                     onChange={handleSearch}
                     value={search}
+                    autoComplete="off"
                   />
                 </div>
                 <DataTable value={banks} stripedRows tableStyle={{ minWidth: "50rem" }} className="bg-white text-black" paginator rows={10} first={first} globalFilterFields={["bankCode", "bankName"]} filters={filters}>
-                  <Column field="bankEntityId" header="Entity Id"></Column>
+                  {/* <Column field="bankEntityId" header="Entity Id"></Column> */}
                   <Column field="bankCode" header="Bank Code"></Column>
                   <Column field="bankName" header="Bank Name"></Column>
                   <Column field="bankEntityId" header={<Add setRefresh={setRefresh} />} body={kebabBank}></Column>
