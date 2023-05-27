@@ -1,6 +1,6 @@
 import { call, put } from 'redux-saga/effects'
 import pohe from '@/src/api/purchasing/purchaseHeader'
-import { GetPoheSuccess, GetPoheFailed, AddPoheFailed, AddPoheSuccess, EditPoheSuccess, EditPoheFailed, DelPoheFailed, DelPoheSuccess } from '../../action/purchasing/purchaseHeaderAction'
+import { GetPoheSuccess, GetPoheFailed, AddPoheFailed, AddPoheSuccess, EditPoheSuccess, EditPoheFailed, DelPoheFailed, DelPoheSuccess, GetAllPoheSuccess, GetAllPoheFailed } from '../../action/purchasing/purchaseHeaderAction'
 
 function* handlePohe(action: any): any {
     try {
@@ -9,6 +9,14 @@ function* handlePohe(action: any): any {
         yield put(GetPoheSuccess(result.data))
     } catch (error) {
         yield put(GetPoheFailed(error))
+    }
+}
+function* getAllPohe():any {
+    try {
+        const result = yield call(pohe.getAll)
+        yield put(GetAllPoheSuccess(result.data))
+    } catch (error) {
+        yield put(GetAllPoheFailed(error))
     }
 }
 function* createPohe(action: any): any {
@@ -45,5 +53,6 @@ export {
     handlePohe,
     createPohe,
     EditPohe,
-    DeletePohe
+    DeletePohe,
+    getAllPohe
 }

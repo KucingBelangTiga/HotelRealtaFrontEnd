@@ -2,6 +2,10 @@ export const GET_POHE_REQUEST = 'pohe/get/request'
 export const GET_POHE_SUCCESS = 'pohe/get/success'
 export const GET_POHE_FAILED = 'pohe/get/failed'
 
+export const GETALL_POHE_REQUEST = 'pohe/getAll/request'
+export const GETALL_POHE_SUCCESS = 'pohe/getAll/success'
+export const GETALL_POHE_FAILED = 'pohe/getAll/failed'
+
 export const ADD_POHE_REQUEST = 'pohe/add/request'
 export const ADD_POHE_SUCCESS = 'pohe/add/success'
 export const ADD_POHE_FAILED = 'pohe/add/failed'

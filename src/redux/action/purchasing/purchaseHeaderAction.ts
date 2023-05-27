@@ -15,6 +15,20 @@ export const GetPoheFailed = (payload:any) =>({
     payload
 })
 
+export const GetAllPoheRequest = () => ({
+    type: ActionType.GETALL_POHE_REQUEST
+})
+
+export const GetAllPoheSuccess = (payload:any) =>({
+    type: ActionType.GETALL_POHE_SUCCESS,
+    payload
+})
+
+export const GetAllPoheFailed = (payload:any) =>({
+    type: ActionType.GETALL_POHE_FAILED,
+    payload
+})
+
 export const AddPoheRequest = (payload:any) => ({
     type: ActionType.ADD_POHE_REQUEST,
     payload

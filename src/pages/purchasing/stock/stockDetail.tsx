@@ -10,15 +10,18 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Dialog } from 'primereact/dialog'
 import { InputText } from 'primereact/inputtext'
 import EditStockDetail from './form/stodEdit'
+import AddStockDetail from './form/stodAdd'
 
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.css";
 import LayoutMaster from '../layoutMaster'
 import Footer from '@/src/components/footer/Footer'
+import { Button } from 'primereact/button'
 
 const StockDetail = () => {
     const { stockDetails, total } = useSelector((state: any) => state.stockDetailState)
     const [visible, setVisible] = useState(false);
+    const [isEdit, setIsEdit] = useState(false)
     const [globalFilter, setGlobalFilter] = useState('')
     const [stodId, setStodId] = useState(0)
     const [stodStatus, setStodStatus] = useState('')
@@ -64,6 +67,7 @@ const StockDetail = () => {
                                 <div>
                                     <Toast ref={toast}></Toast>
                                     <SplitButton label="Update" onClick={() => {
+                                        setIsEdit(true)
                                         setVisible(true)
                                         setStodId(rowData.stodid)
                                         setStockId(rowData.stockid)
@@ -83,10 +87,17 @@ const StockDetail = () => {
                                         }
                                     ]} />
                                 </div>
-                            )} header='Action'></Column>
+                            )} header={() => (
+                                <div>
+                                    <Button label="Add" onClick={() => {
+                                        setIsEdit(false)
+                                        setVisible(true)
+                                    }} />
+                                </div>
+                            )}></Column>
                         </DataTable>
-                        <Dialog header='Switch Status' visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
-                            <EditStockDetail stodId={stodId} stodStatus={stodStatus} faciId={faciId} stockId={stockId} ></EditStockDetail>
+                        <Dialog header={isEdit ? "Edit" : "Create"} visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
+                            {isEdit ? <EditStockDetail stodId={stodId} stodStatus={stodStatus} faciId={faciId} stockId={stockId} ></EditStockDetail> : <AddStockDetail stockId={stockId}></AddStockDetail>}
                         </Dialog>
                         <Footer total={total} page={page} setPage={setPage} limit={10} />
                     </div>

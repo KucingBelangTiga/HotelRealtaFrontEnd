@@ -11,6 +11,10 @@ const poheReduce = (state = INIT_STATE, action: any) => {
             return { ...state }
         case ActionType.GET_POHE_SUCCESS:
             return GetPohesuccessfully(state, action)
+        case ActionType.GETALL_POHE_REQUEST:
+            return { ...state }
+        case ActionType.GETALL_POHE_SUCCESS:
+            return GetAllPohesuccessfully(state, action)
         case ActionType.ADD_POHE_REQUEST:
             return { ...state }
         case ActionType.ADD_POHE_SUCCESS:
@@ -29,6 +33,13 @@ const GetPohesuccessfully = (state: any, action: any) => {
         ...state,
         pohes: action.payload.data,
         total: action.payload.total
+    }
+}
+
+const GetAllPohesuccessfully = (state: any, action: any) => {
+    return {
+        ...state,
+        pohes: action.payload
     }
 }
 

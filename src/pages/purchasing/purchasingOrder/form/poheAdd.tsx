@@ -40,7 +40,6 @@ const AddPurchasingHeader = (props: any) => {
             window.location.reload()
         }
     })
-    // console.log(vendors)
     return (
         <div>
             <FormikProvider value={formik}>

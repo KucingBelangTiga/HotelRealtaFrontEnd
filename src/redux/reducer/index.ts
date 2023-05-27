@@ -7,6 +7,7 @@ import poheReduce from "./purchasing/purchasingHeaderReducer";
 import podetReduce from "./purchasing/purchaseDetailReducer";
 import stopotReduce from "./purchasing/stockPhotoReducer";
 import galleryReduce from "./purchasing/galleryReducer";
+import facilityReduce from "./hotel/facilityReducer";
 
 const rootReducer = combineReducers({
     vendorState: vendorReduce,
@@ -16,7 +17,8 @@ const rootReducer = combineReducers({
     poheState: poheReduce,
     podetState: podetReduce,
     stopotState: stopotReduce,
-    galleryState: galleryReduce
+    galleryState: galleryReduce,
+    facilityState: facilityReduce
 })
 
 export default rootReducer
