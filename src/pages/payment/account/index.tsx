@@ -1,20 +1,24 @@
-import React, { useEffect, useState } from "react";
-import Layout from "@/src/components/layouts";
+import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GetUserAccountRequest, DeleteUserAccountRequest } from "@/src/redux/action/payment/userAccountAction";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
+import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
+import { Toast } from "primereact/toast";
 import { FilterMatchMode } from "primereact/api";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.css";
+import "primeicons/primeicons.css";
 import Add from "./Create";
 import Edit from "./Edit";
+import Layout from "@/src/components/layouts";
 import LayoutPayment from "../layout";
 
 export default function Index() {
   const dispatch = useDispatch();
   const { userAccounts } = useSelector((state: any) => state.userAccountState);
   const [loading, setLoading] = useState(false);
+  const toast = useRef<any>(null);
   const [first, setFirst] = useState<number>(0);
   const [search, setSearch] = useState<string>("");
   const [refresh, setRefresh] = useState<boolean>(false);
@@ -60,7 +64,9 @@ export default function Index() {
                 <Edit id={rowData.usacAccountNumber} setRefresh={setRefresh} />
               </li>
               <li>
-                <button onClick={() => onDelete(rowData.usacEntityId, rowData.usacUserId)} className="p-3 hover:bg-coldBlue hover:text-white w-full">
+                <Toast ref={toast} className="mt-14" />
+                <ConfirmDialog />
+                <button onClick={() => handleDelete(rowData.usacEntityId, rowData.usacUserId)} className="p-3 w-full bg-white text-red-600 hover:bg-red-600 hover:text-white font-semibold">
                   Delete
                 </button>
               </li>
@@ -79,12 +85,31 @@ export default function Index() {
     );
   };
 
-  const onDelete = async (usacEntityId: number, usacUserId: number) => {
-    if (window.confirm("Are you sure you want to delete data?")) {
-      const payload = { usacEntityId: usacEntityId, usacUserId: usacUserId };
-      dispatch(DeleteUserAccountRequest(payload));
-      window.alert("Delete Successfully");
-      setRefresh(true);
+  const handleDelete = async (usacEntityId: number, usacUserId: number) => {
+    const payload = { usacEntityId: usacEntityId, usacUserId: usacUserId };
+    confirmDialog({
+      message: "Do you want to delete this Account?",
+      header: "Delete Confirmation",
+      icon: "pi pi-exclamation-triangle",
+      acceptClassName: "p-button-danger",
+      acceptLabel: "Yes",
+      rejectLabel: "No",
+      accept: () => {
+        showToast("Delete account successfully", "success");
+        setTimeout(() => {
+          dispatch(DeleteUserAccountRequest(payload));
+          setRefresh(true);
+        }, 900);
+      },
+      reject: () => {
+        showToast("Delete Cancelled", "warn");
+      },
+    });
+  };
+
+  const showToast = (message: string, severity: string) => {
+    if (toast.current) {
+      toast.current.show({ severity, summary: "Information", detail: message, life: 3000 });
     }
   };
 

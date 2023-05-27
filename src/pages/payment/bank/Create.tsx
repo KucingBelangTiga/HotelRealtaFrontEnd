@@ -61,7 +61,7 @@ export default function Create(props: any) {
                           <label className="text-black  font-bold border border-solid w-1/2">Bank Code</label>
                           <input
                             className=" border rounded w-full py-2 px-3 text-black border-slate-900 "
-                            type="text"
+                            type="number"
                             name="bankCode"
                             id="bankCode"
                             onChange={formik.handleChange}

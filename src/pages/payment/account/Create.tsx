@@ -65,7 +65,7 @@ export default function Create(props: any) {
                           <label className="text-black  font-bold pr-20 border border-solid w-1/2">Entity Id</label>
                           <input
                             className=" border rounded w-full py-2 px-3 text-black border-slate-900 "
-                            type="text"
+                            type="number"
                             name="usacEntityId"
                             id="usacEntityId"
                             onChange={formik.handleChange}
@@ -79,7 +79,8 @@ export default function Create(props: any) {
                           <label className="text-black  font-bold pr-20 border border-solid w-1/2 ">User Id</label>
                           <input
                             className=" border rounded w-full py-2 px-3 text-black border-slate-900 "
-                            type="text"
+                            type="number"
+                            min="0"
                             name="usacUserId"
                             id="usacUserId"
                             onChange={formik.handleChange}
@@ -93,7 +94,8 @@ export default function Create(props: any) {
                           <label className="text-black  font-bold pr-20 border border-solid w-1/2 ">Account Number</label>
                           <input
                             className=" border rounded w-full py-2 px-3 text-black border-slate-900 "
-                            type="text"
+                            type="number"
+                            min="0"
                             name="usacAccountNumber"
                             id="usacAccountNumber"
                             onChange={formik.handleChange}
@@ -107,7 +109,8 @@ export default function Create(props: any) {
                           <label className="text-black  font-bold pr-20 border border-solid w-1/2 ">Saldo</label>
                           <input
                             className=" border rounded w-full py-2 px-3 text-black border-slate-900 "
-                            type="text"
+                            type="number"
+                            min="0"
                             name="usacSaldo"
                             id="usacSaldo"
                             onChange={formik.handleChange}

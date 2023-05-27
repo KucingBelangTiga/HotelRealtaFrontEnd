@@ -1,19 +1,21 @@
 import React, { useEffect, useRef, useState } from "react";
+import moment from "moment";
 import { useRouter } from "next/navigation";
 import { FormikProvider, useFormik } from "formik";
 import Layout from "@/src/components/layouts";
 import { useDispatch, useSelector } from "react-redux";
 import { GetBankRequest } from "@/src/redux/action/payment/bankAction";
 import { AutoComplete, AutoCompleteCompleteEvent } from "primereact/autocomplete";
-import { Toast } from "primereact/toast";
-import LayoutPayment from "../layout";
 import { GetUserAccountRequest } from "@/src/redux/action/payment/userAccountAction";
 import { CreditAccountRequest, DebitAccountRequest, CreditTransactionRequest, DebitTransactionRequest } from "@/src/redux/action/payment/topUpAction";
+import { GetPaymentGatewayRequest } from "@/src/redux/action/payment/paymentGatewayAction";
+import userAccountApi from "@/src/api/payment/userAccountApi";
+import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
+import { Toast } from "primereact/toast";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.css";
-import { GetPaymentGatewayRequest } from "@/src/redux/action/payment/paymentGatewayAction";
-import moment from "moment";
-import userAccountApi from "@/src/api/payment/userAccountApi";
+import "primeicons/primeicons.css";
+import LayoutPayment from "../layout";
 
 export default function Index() {
   const dispatch = useDispatch();
@@ -26,7 +28,7 @@ export default function Index() {
   const [itemSource, setItemSource] = useState<any[]>([]);
   const [itemTarget, setItemTarget] = useState<any[]>([]);
   const [refresh, setRefresh] = useState<boolean>(false);
-  const toast = useRef(null);
+  const toast = useRef<any>(null);
   const [source, setSource] = useState({
     account: undefined,
     saldo: undefined,
@@ -94,16 +96,34 @@ export default function Index() {
         usacSaldo: target.saldo,
         usacNominal: values.transfer,
       };
-      dispatch(CreditAccountRequest(payloadCredit));
-      dispatch(DebitAccountRequest(payloadDebit));
-      dispatch(CreditTransactionRequest(payloadCreditTransaction));
-      dispatch(DebitTransactionRequest(payloadDebetTransaction));
-      window.alert("Transfer Success");
-      setRefresh(true);
-      resetForm();
-      router.push("/payment/transaction");
+      confirmDialog({
+        message: "Are you sure want to Transfer?",
+        header: "Transfer Confirmation",
+        icon: "pi pi-exclamation-triangle",
+        acceptLabel: "Yes",
+        rejectLabel: "No",
+        accept: () => {
+          dispatch(CreditAccountRequest(payloadCredit));
+          dispatch(DebitAccountRequest(payloadDebit));
+          dispatch(CreditTransactionRequest(payloadCreditTransaction));
+          dispatch(DebitTransactionRequest(payloadDebetTransaction));
+          showToast("Transfer successfully", "success");
+          setRefresh(true);
+          resetForm();
+          router.push("/payment/transaction");
+        },
+        reject: () => {
+          showToast("Transfer Cancelled", "warn");
+        },
+      });
     },
   });
+
+  const showToast = (message: string, severity: string) => {
+    if (toast.current) {
+      toast.current.show({ severity, summary: "Information", detail: message, life: 3000 });
+    }
+  };
 
   const handleCurrValue =
     (name: any) =>
@@ -231,6 +251,8 @@ export default function Index() {
                     <input className="border rounded w-[202px] py-2 px-3 text-black border-slate-900 " type="text" name="saldo" id="saldo" defaultValue={source == null ? " " : source.saldo} disabled />
                   </div>
                   <div className="flex gap-2 mt-20">
+                    <Toast ref={toast} className="mt-14" />
+                    <ConfirmDialog />
                     <button className="group h-18 w-[30%] border border-green-500 rounded-md bg-coldBlue hover:bg-moderateBlue px-4 py-2 -mt-1 text-white relative overflow-hidden text-xl">Transfer</button>
                     <input
                       type="number"

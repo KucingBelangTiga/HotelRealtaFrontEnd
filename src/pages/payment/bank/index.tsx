@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GetBankRequest, DeleteBankRequest } from "@/src/redux/action/payment/bankAction";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
+import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
+import { Toast } from "primereact/toast";
 import { FilterMatchMode } from "primereact/api";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.css";
+import "primeicons/primeicons.css";
 import Add from "./Create";
 import Edit from "./Edit";
 import Layout from "@/src/components/layouts";
@@ -15,6 +18,7 @@ export default function Index() {
   const dispatch = useDispatch();
   const { banks } = useSelector((state: any) => state.bankState);
   const [loading, setLoading] = useState(false);
+  const toast = useRef<any>(null);
   const [first, setFirst] = useState<number>(0);
   const [search, setSearch] = useState<string>("");
   const [refresh, setRefresh] = useState<boolean>(false);
@@ -60,7 +64,9 @@ export default function Index() {
                 <Edit id={rowData.bankEntityId} setRefresh={setRefresh} />
               </li>
               <li>
-                <button onClick={() => onDelete()} className="p-3 hover:bg-coldBlue hover:text-white w-full">
+                <Toast ref={toast} className="mt-14" />
+                <ConfirmDialog />
+                <button onClick={() => handleDelete()} className="p-3 w-full bg-white text-red-600 hover:bg-red-600 hover:text-white font-semibold">
                   Delete
                 </button>
               </li>
@@ -71,26 +77,31 @@ export default function Index() {
     );
   };
 
-  const onDelete = async () => {
-    if (window.confirm("Are you sure you want to delete data?")) {
-      deleteDataRequest()
-        .then(() => {
-          window.alert("Delete Successfully");
-        })
-        .catch((error) => {
-          console.error("There was an error deleting data", error);
-        });
-    }
+  const handleDelete = () => {
+    confirmDialog({
+      message: "Do you want to delete this Bank?",
+      header: "Delete Confirmation",
+      icon: "pi pi-exclamation-triangle",
+      acceptClassName: "p-button-danger",
+      acceptLabel: "Yes",
+      rejectLabel: "No",
+      accept: () => {
+        showToast("Delete bank successfully", "success");
+        setTimeout(() => {
+          dispatch(DeleteBankRequest(id));
+          setRefresh(true);
+        }, 900);
+      },
+      reject: () => {
+        showToast("Delete Cancelled", "warn");
+      },
+    });
   };
 
-  const deleteDataRequest = () => {
-    return new Promise((resolve: any, reject: any) => {
-      setTimeout(() => {
-        dispatch(DeleteBankRequest(id));
-        setRefresh(true);
-        resolve();
-      }, 1000);
-    });
+  const showToast = (message: string, severity: string) => {
+    if (toast.current) {
+      toast.current.show({ severity, summary: "Information", detail: message, life: 3000 });
+    }
   };
 
   return (

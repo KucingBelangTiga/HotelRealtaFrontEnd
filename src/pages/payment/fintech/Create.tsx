@@ -58,7 +58,7 @@ export default function Create(props: any) {
                     <form onSubmit={formik.handleSubmit}>
                       <div className="py-4 px-8 ">
                         <div className="flex gap-10 mb-4">
-                          <label className="text-black  font-bold pr-20 border border-solid w-1/2 ">Code</label>
+                          <label className="text-black  font-bold border border-solid w-1/2 ">Code</label>
                           <input
                             className=" border rounded w-full py-2 px-3 text-black border-slate-900 "
                             type="text"
@@ -72,7 +72,7 @@ export default function Create(props: any) {
                           />
                         </div>
                         <div className="flex gap-10 mb-4">
-                          <label className="text-black  font-bold pr-20 border border-solid w-1/2 ">Fintech</label>
+                          <label className="text-black  font-bold border border-solid w-1/2 ">Fintech</label>
                           <input
                             className=" border rounded w-full py-2 px-3 text-black border-slate-900 "
                             type="text"
