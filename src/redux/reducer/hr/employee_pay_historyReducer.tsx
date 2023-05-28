@@ -11,11 +11,13 @@ const ephiReducer = (state = init_state, action: any) => {
             return { ...state }
         case ActionType.GET_EPHIALL_SUCCESS:
             return GetEphiAll(state, action)
-            //
+        
+        //ephiEmp
         case ActionType.GET_EPHI_REQUEST:
             return { ...state }
         case ActionType.GET_EPHI_SUCCESS:
             return GetEphi(state, action)
+        //
         case ActionType.ADD_EPHI_REQUEST:
             return {...state}
         case ActionType.ADD_EPHI_SUCCESS:
@@ -44,13 +46,15 @@ const GetEphiAll = (state: any, action: any) => {
         ephis: action.payload
     }
 }
-//
+
+//ephiEmp
 const GetEphi = (state: any, action: any) => {
     return {
         ...state,
         ephis: action.payload
     }
 }
+//
 
 const AddEphi = (state:any, action:any) => {
     const {payload} = action

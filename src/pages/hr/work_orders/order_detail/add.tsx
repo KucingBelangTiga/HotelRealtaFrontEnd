@@ -54,6 +54,7 @@ export default function Add(props: any) {
     setLoading(true);
   }, [dispatch, refresh]);
 
+  //get faci
   const [facilities, setFacis] = useState<any[]>([]);
 
   useEffect(() => {
@@ -68,17 +69,7 @@ export default function Add(props: any) {
     getFaciData();
   }, []);
   console.log(facilities);
-  
-  const selectedFacisTemplate = (option: any, props: any) => {
-    if (option) {
-      return (
-        <div className="flex align-items-center">
-          <div key={option.faciId}>{option.faciName}</div>
-        </div>
-      );
-    }
-    return <span>{props.placeholder}</span>;
-  };
+  //
 
   const formik = useFormik({
     initialValues: {
@@ -88,7 +79,7 @@ export default function Add(props: any) {
       wodeStatus: "",
       wodeNotes: "",
       wodeFaciId: "",
-      wodeWoro: Number(props.id), //agar ketika add, id = router.query.id
+      wodeWoro: Number(props.id), //ketika add, id = router.query.id
     },
     validationSchema: Yup.object({
         wodeSetaId: Yup.string().required('*Required taskName.'),
@@ -169,6 +160,7 @@ export default function Add(props: any) {
                                 inputId="taskName"
                                 name="wodeSetaId"
                                 value={formik.values.wodeSetaId}
+                                //simpan data taskName ke wodeTaskName sekaligus
                                 onChange={(e: DropdownChangeEvent) => {
                                   const selectedValue = e.value;
                                   const selectedTask = serviceTasks.find((task: any) => task.setaId === selectedValue);

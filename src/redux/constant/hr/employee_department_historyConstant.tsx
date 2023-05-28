@@ -2,11 +2,11 @@ export const GET_EDHIALL_REQUEST = 'edhiall/get/request'
 export const GET_EDHIALL_SUCCESS = 'edhiall/get/success'
 export const GET_EDHIALL_FAILED = 'edhiall/get/failed'
 
-//
-
+//edhiEmp
 export const GET_EDHI_REQUEST = 'edhi/get/request'
 export const GET_EDHI_SUCCESS = 'edhi/get/success'
 export const GET_EDHI_FAILED = 'edhi/get/failed'
+//
 
 export const ADD_EDHI_REQUEST = 'edhi/add/request'
 export const ADD_EDHI_SUCCESS = 'edhi/add/success'

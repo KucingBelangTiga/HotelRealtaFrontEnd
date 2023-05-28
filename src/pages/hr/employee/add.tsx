@@ -188,17 +188,7 @@ export default function Add(props: any) {
    getUserData();
  }, []);
  console.log(users);
- 
- const selectedUsersTemplate = (option: any, props: any) => {
-   if (option) {
-     return (
-       <div className="flex align-items-center">
-         <div key={option.userId}>{option.userFullName}</div>
-       </div>
-     );
-   }
-   return <span>{props.placeholder}</span>;
- };
+ //
   
   //get joroname
   const [selectedJoros, setSelectedJoros] = useState<typeof joros | null>(null);
@@ -310,7 +300,7 @@ export default function Add(props: any) {
                                 name="empUser.userFullName"
                                 value={formik.values.empUserId}
                                 onChange={(e: DropdownChangeEvent) => {
-                                  formik.setFieldValue("empUserId", e.value); // Set nilai empUserId dengan nilai yang dipilih
+                                  formik.setFieldValue("empUserId", e.value); 
                                 }}
                                 options={users.map((user: any, index: number) => ({
                                   key: index,
@@ -332,7 +322,6 @@ export default function Add(props: any) {
                                 name="empBirthDate"
                                 value={formik.values.empBirthDate}
                                 onChange={(e : CalendarChangeEvent) => {
-                                  // setDate(e.value),
                                   setDate((prevState) => e.value || prevState);
                                   formik.setFieldValue("empBirthDate", e.value);
                                 }} 
@@ -658,6 +647,7 @@ export default function Add(props: any) {
                               />
                           </div>
 
+                              {/* starttime dan endtime muncul ketika shift dipilih */}
                               {selectedShifts && (
                               <div className="col-4">
                                 <label htmlFor="shiftStartTime" className="mr-2">Start Time</label> 

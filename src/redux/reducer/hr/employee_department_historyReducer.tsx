@@ -11,11 +11,13 @@ const edhiReducer = (state = init_state, action: any) => {
             return { ...state }
         case ActionType.GET_EDHIALL_SUCCESS:
             return GetEdhiAll(state, action)
-            //
+
+        //edhiEmp
         case ActionType.GET_EDHI_REQUEST:
             return { ...state }
         case ActionType.GET_EDHI_SUCCESS:
             return GetEdhi(state, action)
+        //
         case ActionType.ADD_EDHI_REQUEST:
             return {...state}
         case ActionType.ADD_EDHI_SUCCESS:
@@ -44,13 +46,15 @@ const GetEdhiAll = (state: any, action: any) => {
         edhis: action.payload
     } 
 }
-//
+
+//edhiEmp
 const GetEdhi = (state: any, action: any) => {
     return {
         ...state,
         edhis: action.payload
     } 
 }
+//
 
 const AddEdhi = (state:any, action:any) => {
     const {payload} = action

@@ -6,11 +6,7 @@ import {
   FindEmpRequest,
   EditEmpRequest,
 } from "../../../redux/action/hr/employeeAction";
-import { GetJoroRequest, AddJoroRequest } from "../../../redux/action/hr/job_roleAction";
-// import { GetEphiAllRequest, AddEphiRequest } from "../../../redux/action/hr/employee_pay_historyAction";
-// import { GetEdhiAllRequest, AddEdhiRequest } from "../../../redux/action/hr/employee_department_historyAction";
-// import { GetDeptRequest, AddDeptRequest } from "../../../redux/action/hr/departmentAction";
-// import { GetShiftRequest, AddShiftRequest } from "../../../redux/action/hr/shiftAction";
+import { GetJoroRequest } from "../../../redux/action/hr/job_roleAction";
 import Users from "../../../api/users/users";
 import { useFormik, FormikProvider } from "formik";
 import * as Yup from 'yup';

@@ -14,7 +14,7 @@ export const GetEdhiAllFailed = (payload: any) => ({
     payload
 }) 
 
-//get by empId
+//edhiEmp
 export const GetEdhiRequest = (payload: any) => ({
     type: edhiAction.GET_EDHI_REQUEST,
     payload,
@@ -29,6 +29,7 @@ export const GetEdhiFailed = (payload: any) => ({
     type: edhiAction.GET_EDHI_FAILED,
     payload
 }) 
+//
 
 export const AddEdhiRequest = (payload: any) => ({
     type: edhiAction.ADD_EDHI_REQUEST,

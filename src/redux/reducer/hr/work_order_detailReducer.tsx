@@ -7,10 +7,12 @@ const init_state = {
 
 const wodeReducer = (state = init_state, action: any) => {
     switch (action.type) {
+        //wodeWoro
         case ActionType.GET_WODE_REQUEST:
             return { ...state }
         case ActionType.GET_WODE_SUCCESS:
             return GetWode(state, action)
+        //
         case ActionType.ADD_WODE_REQUEST:
             return {...state}
         case ActionType.ADD_WODE_SUCCESS:
@@ -33,6 +35,7 @@ const wodeReducer = (state = init_state, action: any) => {
     }
 } 
 
+//wodeWoro
 const GetWode = (state: any, action: any) => {
     const { payload } = action;
     return {
@@ -40,6 +43,7 @@ const GetWode = (state: any, action: any) => {
         wodes: payload, 
     }
 }
+//
 
 const AddWode = (state:any, action:any) => {
     const {payload} = action

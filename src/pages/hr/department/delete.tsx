@@ -60,7 +60,7 @@ export default function Delete(props: any) {
         <div className="p-d-flex p-ai-center">
           <span className="p-mr-2">
           <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
-            Are you sure you want to delete Department `{props.name}`?
+            Are you sure you want to delete Department <strong>{props.name}</strong> ?
           </span>
         </div>
       </Dialog>

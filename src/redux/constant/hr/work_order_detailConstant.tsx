@@ -1,6 +1,8 @@
+   //wodeWoro
     export const GET_WODE_REQUEST = 'wode/get/request'
     export const GET_WODE_SUCCESS = 'wode/get/success'
     export const GET_WODE_FAILED = 'wode/get/failed'
+    //
 
     export const ADD_WODE_REQUEST = 'wode/add/request'
     export const ADD_WODE_SUCCESS = 'wode/add/success' 

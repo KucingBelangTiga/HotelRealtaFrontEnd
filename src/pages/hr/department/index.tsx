@@ -72,7 +72,8 @@ export default function IndexDept() {
         </div>
       );
     };    
-
+  
+    //filter name
   const onGlobalFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     let _filters = { ...filters };
@@ -82,7 +83,8 @@ export default function IndexDept() {
     }
     setFilters(_filters);
     setGlobalFilterValue(value);
-};
+  };
+  //
 
   const renderHeader = () => {
     return (

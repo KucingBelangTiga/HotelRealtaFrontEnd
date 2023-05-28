@@ -6,7 +6,6 @@ import {
   EditWodeRequest,
 } from "../../../../redux/action/hr/work_order_detailAction";
 import { useFormik, FormikProvider } from "formik";
-import classNames from 'classnames';
 import * as Yup from 'yup';
 import { Toast } from 'primereact/toast'; 
 import { Button } from 'primereact/button';
@@ -55,8 +54,7 @@ export default function Edit(props: any) {
     initialValues: {
       wodeId: props.id, 
       wodeTaskName: wode.wodeTaskName,
-    //   wodeSetaId: wode.wodeSetaId,
-      wodeSetaId: wode.wodeSeta?.setaId,  //agar initial values yg tampil sesuai label dropdown
+      wodeSetaId: wode.wodeSeta?.setaId, 
       wodeEmpId: wode.wodeEmp?.empId,
       wodeStatus: wode.wodeStatus,
       wodeNotes: wode.wodeNotes,
@@ -109,18 +107,7 @@ export default function Edit(props: any) {
   }, []);
   console.log(facilities);
 // console.log(faci);
-  
-  const selectedFacisTemplate = (option: any, props: any) => {
-    if (option) {
-      return (
-        <div className="flex align-items-center">
-          <div key={option.faciId}>{option.faciName}</div>
-        </div>
-      );
-    }
-    return <span>{props.placeholder}</span>;
-  };
-  //
+//
 
   //get taskname
   const [selectedTasks, setSelectedTasks] = useState<typeof serviceTasks | null>(null);
@@ -167,8 +154,7 @@ export default function Edit(props: any) {
                                 inputId="taskName"
                                 name="wodeSetaId"
                                 value={formik.values.wodeSetaId}
-                                
-                                //simpan data ke wodeTaskName sekaligus
+                                //simpan data taskName ke wodeTaskName sekaligus
                                 onChange={(e: DropdownChangeEvent) => {
                                   const selectedValue = e.value;
                                   const selectedTask = serviceTasks.find((task: any) => task.setaId === selectedValue);

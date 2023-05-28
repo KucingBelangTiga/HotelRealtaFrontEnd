@@ -11,7 +11,7 @@ import { GetWodeSuccess, GetWodeFailed, AddWodeSuccess, AddWodeFailed, FindWodeS
 //     }
 // }
 
-//wode-woro
+//wodeWoro
 function* handleFindWode(action: any): any {
     const { payload } = action;
     try { 
@@ -21,6 +21,7 @@ function* handleFindWode(action: any): any {
         yield put(GetWodeFailed(error))
     }
 }
+// /
 
 function* handleFindOneWode(action: any): any {
     const { payload } = action

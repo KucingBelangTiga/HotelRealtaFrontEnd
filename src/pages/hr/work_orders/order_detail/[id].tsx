@@ -6,11 +6,7 @@ import { GetWodeRequest, FindWodeRequest } from "../../../../redux/action/hr/wor
 import { FindWoroRequest } from "../../../../redux/action/hr/work_ordersAction";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { FilterMatchMode, FilterOperator, PrimeIcons } from 'primereact/api';
 import { Badge } from 'primereact/badge';
-import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
-import { Calendar, CalendarChangeEvent } from 'primereact/calendar';
-import { Menu } from 'primereact/menu';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { InputText } from 'primereact/inputtext';
 import { OverlayPanel } from 'primereact/overlaypanel';
@@ -41,6 +37,16 @@ export default function IndexWode() {
     const { serviceTasks } = useSelector((state: any) => state.serviceTasksState); 
 
     useEffect(() => {
+      if (router.isReady) {
+        dispatch(GetWodeRequest(router.query.id)); 
+        dispatch(FindWoroRequest(router.query.id));
+        setLoading(true);
+      }else {
+        console.log('Invalid Id.');
+      }
+    }, [dispatch, router.query.id, refresh, router.isReady]);
+
+    useEffect(() => {
       dispatch(GetEmpRequest());
       setRefresh(false);
       setLoading(true);
@@ -54,22 +60,13 @@ export default function IndexWode() {
       }
       return mapping;
     }, {});
+    //
   
     useEffect(() => {
       dispatch(GetServiceTasksRequest());
       setRefresh(false);
       setLoading(true);
     }, [dispatch, refresh]);
-
-    useEffect(() => {
-      if (router.isReady) {
-        dispatch(GetWodeRequest(router.query.id)); 
-        dispatch(FindWoroRequest(router.query.id));
-        setLoading(true);
-      }else {
-        console.log('Invalid Id.');
-      }
-    }, [dispatch, router.query.id, refresh, router.isReady]);
 
     useEffect(() => {
       document.title = "Human Resource - Work Order Detail"; 
@@ -170,7 +167,9 @@ const header = renderHeader();
                      body={(rowData: any) => (
                       <span>
                         <strong>{rowData.wodeFaci?.faciName}</strong>
-                        <strong>{rowData.wodeFaci?.faciName && " : "}</strong><br/>
+                        {/* jika faciName ada */}
+                        <strong>{rowData.wodeFaci?.faciName && " : "}</strong><br/> 
+                        {/* faciName+notes */}
                         {rowData.wodeNotes}
                       </span>
                     )}

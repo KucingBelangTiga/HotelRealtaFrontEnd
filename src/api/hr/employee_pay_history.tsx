@@ -20,7 +20,7 @@ const findData = async (id: number) => {
     }
 }
 
-const findOne = async (id: any) => { //findOne
+const findOne = async (id: any) => { 
     try {
         const result = await axios.get('http://localhost:3002/employee-pay-history/' + id)
         return result.data

@@ -10,7 +10,7 @@ const findData = async () => {
     }
 }
 
-const findOne = async (id: any) => { //findOne
+const findOne = async (id: any) => { 
     try {
         const result = await axios.get('http://localhost:3002/work-orders/' + id)
         return result.data

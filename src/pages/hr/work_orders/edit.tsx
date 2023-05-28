@@ -66,15 +66,6 @@ export default function Edit(props: any) {
     setShowModal(true);
   };
 
-  const modal = () => {
-    props.setRefresh(true);
-    setShowModal(false);
-  };
-
-  const handleReset = () => {
-    formik.resetForm(); 
-  };
-
   return ( 
     <>
             <Button severity="secondary" label="Edit" className="" style={{ paddingRight: '165px' }} onClick={editButton} text />
@@ -91,7 +82,7 @@ export default function Edit(props: any) {
                   className="w-full md:w-12rem"
                   id="woroStartDate"
                   name="woroStartDate"
-                  value={formik.values.woroStartDate ? new Date(formik.values.woroStartDate) : null} //pada db terbaca string, tapi di form harus terbaca sebagai date
+                  value={formik.values.woroStartDate ? new Date(formik.values.woroStartDate) : null} //convert: pada db terbaca string, tapi di form harus terbaca sebagai date
                   onChange={(e : CalendarChangeEvent) => {
                     setDate((prevState) => e.value || prevState);
                     formik.setFieldValue("woroStartDate", e.value);
@@ -127,17 +118,17 @@ export default function Edit(props: any) {
                )}
               </div>
 
-                    {/* hanya get user dari profilnya/session */}
+              {/* hanya get user dari profilnya/session pada value*/}
               {/* <div className="col-4">
-                                <label htmlFor="woroUserId" className="mr-2">createdBy</label>
-                                <InputText
-                                  className="w-full md:w-12rem"
-                                  id="woroUserId"
-                                  name="woroUserId"
-                                  value={formik.values.woroUserId}
-                                  autoFocus readOnly
-                                  />
-                              </div> */}
+                    <label htmlFor="woroUserId" className="mr-2">createdBy</label>
+                    <InputText
+                    className="w-full md:w-12rem"
+                    id="woroUserId"
+                    name="woroUserId"
+                    value={formik.values.woroUserId}
+                    autoFocus readOnly
+                    />
+                  </div> */}
 
             </div> </div></div>
 

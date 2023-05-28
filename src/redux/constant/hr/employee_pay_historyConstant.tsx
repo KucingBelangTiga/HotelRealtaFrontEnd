@@ -2,11 +2,11 @@
     export const GET_EPHIALL_SUCCESS = 'ephiall/get/success'
     export const GET_EPHIALL_FAILED = 'ephiall/get/failed'
 
-    //
- 
+    //ephiEmp
     export const GET_EPHI_REQUEST = 'ephi/get/request'
     export const GET_EPHI_SUCCESS = 'ephi/get/success'
     export const GET_EPHI_FAILED = 'ephi/get/failed'
+    //
 
     export const ADD_EPHI_REQUEST = 'ephi/add/request'
     export const ADD_EPHI_SUCCESS = 'ephi/add/success'

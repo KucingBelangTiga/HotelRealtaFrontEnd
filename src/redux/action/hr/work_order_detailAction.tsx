@@ -4,7 +4,7 @@ import * as wodeAction from '../../constant/hr/work_order_detailConstant'
 //     type: wodeAction.GET_WODE_REQUEST
 // })
 
-//get all wode by woroId
+//wodeWoro
 export const GetWodeRequest = (payload: any) => ({
     type: wodeAction.GET_WODE_REQUEST,
     payload,
@@ -19,6 +19,7 @@ export const GetWodeFailed = (payload: any) => ({
     type: wodeAction.GET_WODE_FAILED,
     payload
 }) 
+//
 
 export const AddWodeRequest = (payload: any) => ({
     type: wodeAction.ADD_WODE_REQUEST,

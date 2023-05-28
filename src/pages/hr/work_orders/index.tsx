@@ -85,7 +85,34 @@ export default function IndexWoro() {
         });
       };      
 
-const onStatusFilterChange = (e: DropdownChangeEvent) => {
+  //filter date
+  const handleStartDateChange = (e: any) => {
+    setStartDate(e.value);
+  };
+  const handleEndDateChange = (e: any) => {
+    setEndDate(e.value);
+  }; 
+
+  const onDateFilterChange = () => {
+    const newFilters = { ...filters };
+  
+    if (startDate && endDate) {
+      newFilters['woroStartDate'] = {
+        matchMode: FilterMatchMode.DATE_IS,
+        value: [startDate, endDate],
+      };
+    } else {
+      newFilters['woroStartDate'] = {
+        operator: FilterOperator.AND,
+        constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }],
+      };
+    }
+    setFilters(newFilters);
+  };
+  //
+
+  //filter status
+  const onStatusFilterChange = (e: DropdownChangeEvent) => {
     const value = e.value;
     let _filters = { ...filters };
   
@@ -94,7 +121,6 @@ const onStatusFilterChange = (e: DropdownChangeEvent) => {
     }
     setFilters(_filters);
   }; 
-
   //
 
   const handleStartDateChange = (e: any) => {
@@ -126,7 +152,7 @@ const onStatusFilterChange = (e: DropdownChangeEvent) => {
       <div className="flex justify-content-between align-items-center">
       <div className="flex align-items-center">
           <label htmlFor="dateFilter" className="search-label mr-2">Date Range: </label>
-            <div>
+          <div>
             <Calendar className="w-full md:w-10rem" value={startDate} onChange={handleStartDateChange} dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" showButtonBar />
             <span className="mx-2">to</span>
             <Calendar className="w-full md:w-10rem" value={endDate} onChange={handleEndDateChange} dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" showButtonBar /> 

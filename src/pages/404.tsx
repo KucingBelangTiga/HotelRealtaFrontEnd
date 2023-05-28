@@ -12,6 +12,7 @@ export default function Custom404() {
     return () => clearInterval(timer);
   }, []);
 
+  //push to dashboard
   useEffect(() => {
     if (count === 0) {
       router.push('/');

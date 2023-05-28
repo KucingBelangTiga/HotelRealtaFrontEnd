@@ -89,6 +89,7 @@ export default function IndexEmp() {
         });
       };
 
+  //filter name
     const onGlobalFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
       let _filters = { ...filters };
@@ -99,8 +100,10 @@ export default function IndexEmp() {
   
       setFilters(_filters);
       setGlobalFilterValue(value);
-  };  
+  }; 
+  // 
 
+  //filter status
     const onStatusFilterChange = (e: DropdownChangeEvent) => {
       const value = e.value;
       let _filters = { ...filters };
@@ -109,7 +112,8 @@ export default function IndexEmp() {
         _filters['empCurrentFlag'].value = value;
       }
       setFilters(_filters);
-    };    
+    };  
+  //  
 
     const renderHeader = () => {
         return (

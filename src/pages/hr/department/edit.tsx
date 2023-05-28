@@ -64,13 +64,6 @@ export default function Edit(props: any) {
 
   return (
     <>
-      {/* <button
-        className="bg-darkBlue text-white active:bg-darkBlue font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-        type="button"
-        onClick={editButton}
-      >
-        Edit
-      </button> */}
             <Button icon="pi pi-pencil" severity="secondary" label="Edit" className="" style={{ paddingRight: '54px' }} onClick={editButton} text />
             <Dialog header="Edit" visible={showModal} modal className="p-dialog" onHide={() => setShowModal(false)}> 
                 <FormikProvider value={formik}>

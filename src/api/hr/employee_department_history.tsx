@@ -21,7 +21,7 @@ const findData = async (id: any) => { //id asli : number
     }  
 }
 
-const findOne = async (id: any) => { //findOne
+const findOne = async (id: any) => { 
     try {
         const result = await axios.get('http://localhost:3002/employee-department-history/' + id)
         return result.data
