@@ -3,6 +3,7 @@ import * as ActionType from "../../constant/master/provincesConstants";
 const INIT_STATE = {
   provinces: [],
   province: [],
+  provincePage: [],
 };
 
 const ProvincesReduce = (state = INIT_STATE, action: any) => {
@@ -11,6 +12,10 @@ const ProvincesReduce = (state = INIT_STATE, action: any) => {
       return { ...state };
     case ActionType.GET_PROVINCES_SUCCESS:
       return GetProvincesSuccessfully(state, action);
+    case ActionType.GET_PAGE_PROVINCES_REQUEST:
+      return { ...state };
+    case ActionType.GET_PAGE_PROVINCES_SUCCESS:
+      return GetPageProvincesSuccessfully(state, action);
     case ActionType.ADD_PROVINCES_REQUEST:
       return { ...state };
     case ActionType.ADD_PROVINCES_SUCCESS:
@@ -37,6 +42,14 @@ const GetProvincesSuccessfully = (state: any, action: any) => {
   return {
     ...state,
     provinces: payload,
+  };
+};
+
+const GetPageProvincesSuccessfully = (state: any, action: any) => {
+  const { payload } = action;
+  return {
+    ...state,
+    provincePage: payload,
   };
 };
 

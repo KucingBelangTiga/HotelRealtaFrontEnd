@@ -3,6 +3,7 @@ import * as ActionType from "../../constant/master/policyConstant";
 const INIT_STATE = {
   policies: [],
   policy: [],
+  policyPage: [],
 };
 
 const PolicyReduce = (state = INIT_STATE, action: any) => {
@@ -11,6 +12,10 @@ const PolicyReduce = (state = INIT_STATE, action: any) => {
       return { ...state };
     case ActionType.GET_POLICY_SUCCESS:
       return GetPolicySuccessfully(state, action);
+    case ActionType.GET_PAGE_POLICY_REQUEST:
+      return { ...state };
+    case ActionType.GET_PAGE_POLICY_SUCCESS:
+      return GetPagePolicySuccessfully(state, action);
     case ActionType.ADD_POLICY_REQUEST:
       return { ...state };
     case ActionType.ADD_POLICY_SUCCESS:
@@ -37,6 +42,14 @@ const GetPolicySuccessfully = (state: any, action: any) => {
   return {
     ...state,
     policies: payload,
+  };
+};
+
+const GetPagePolicySuccessfully = (state: any, action: any) => {
+  const { payload } = action;
+  return {
+    ...state,
+    policyPage: payload,
   };
 };
 

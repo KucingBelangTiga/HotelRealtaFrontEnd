@@ -14,6 +14,21 @@ export const GetServiceTasksFailed = (payload: any) => ({
   payload,
 });
 
+export const GetPageServiceTasksRequest = (payload: any) => ({
+  type: ActionServiceTasks.GET_PAGE_SERVICE_TASKS_REQUEST,
+  payload,
+});
+
+export const GetPageServiceTasksSuccess = (payload: any) => ({
+  type: ActionServiceTasks.GET_PAGE_SERVICE_TASKS_SUCCESS,
+  payload,
+});
+
+export const GetPageServiceTasksFailed = (payload: any) => ({
+  type: ActionServiceTasks.GET_PAGE_SERVICE_TASKS_FAILED,
+  payload,
+});
+
 export const AddServiceTasksRequest = (payload: any) => ({
   type: ActionServiceTasks.ADD_SERVICE_TASKS_REQUEST,
   payload,

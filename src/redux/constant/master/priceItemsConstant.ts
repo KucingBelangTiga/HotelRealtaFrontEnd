@@ -2,6 +2,10 @@ export const GET_PRICE_ITEMS_REQUEST = "get/priceItems/request";
 export const GET_PRICE_ITEMS_SUCCESS = "get/priceItems/success";
 export const GET_PRICE_ITEMS_FAILED = "get/priceItems/failed";
 
+export const GET_PAGE_PRICE_ITEMS_REQUEST = "get/pagePriceItems/request";
+export const GET_PAGE_PRICE_ITEMS_SUCCESS = "get/pagePriceItems/success";
+export const GET_PAGE_PRICE_ITEMS_FAILED = "get/pagePriceItems/failed";
+
 export const ADD_PRICE_ITEMS_REQUEST = "add/priceItems/request";
 export const ADD_PRICE_ITEMS_SUCCESS = "add/priceItems/success";
 export const ADD_PRICE_ITEMS_FAILED = "add/priceItems/failed";

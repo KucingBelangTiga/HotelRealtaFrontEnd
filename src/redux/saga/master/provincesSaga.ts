@@ -3,6 +3,8 @@ import Provinces from "../../../api/master/provinces";
 import {
   GetProvincesSuccess,
   GetProvincesFailed,
+  GetPageProvincesSuccess,
+  GetPageProvincesFailed,
   AddProvincesSuccess,
   AddProvincesFailed,
   FindProvincesSuccess,
@@ -19,6 +21,16 @@ function* handleProvinces(): any {
     yield put(GetProvincesSuccess(result));
   } catch (error) {
     yield put(GetProvincesFailed(error));
+  }
+}
+
+function* handlePageProvinces(action: any): any {
+  const { payload } = action;
+  try {
+    const result = yield call(Provinces.listPage, payload);
+    yield put(GetPageProvincesSuccess(result));
+  } catch (error) {
+    yield put(GetPageProvincesFailed(error));
   }
 }
 
@@ -64,6 +76,7 @@ function* deleteProvinces(action: any): any {
 
 export {
   handleProvinces,
+  handlePageProvinces,
   handleAddProvinces,
   findProvinces,
   editProvinces,

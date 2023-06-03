@@ -14,6 +14,21 @@ export const GetCityFailed = (payload: any) => ({
   payload,
 });
 
+export const GetPageCityRequest = (payload: any) => ({
+  type: ActionCity.GET_PAGE_CITY_REQUEST,
+  payload,
+});
+
+export const GetPageCitySuccess = (payload: any) => ({
+  type: ActionCity.GET_PAGE_CITY_SUCCESS,
+  payload,
+});
+
+export const GetPageCityFailed = (payload: any) => ({
+  type: ActionCity.GET_PAGE_CITY_FAILED,
+  payload,
+});
+
 export const AddCityRequest = (payload: any) => ({
   type: ActionCity.ADD_CITY_REQUEST,
   payload,

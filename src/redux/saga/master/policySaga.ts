@@ -3,6 +3,8 @@ import Policy from "../../../api/master/policy";
 import {
   GetPolicySuccess,
   GetPolicyFailed,
+  GetPagePolicySuccess,
+  GetPagePolicyFailed,
   AddPolicySuccess,
   AddPolicyFailed,
   FindPolicySuccess,
@@ -19,6 +21,16 @@ function* handlePolicy(): any {
     yield put(GetPolicySuccess(result));
   } catch (error) {
     yield put(GetPolicyFailed(error));
+  }
+}
+
+function* handlePagePolicy(action: any): any {
+  const { payload } = action;
+  try {
+    const result = yield call(Policy.listPage, payload);
+    yield put(GetPagePolicySuccess(result));
+  } catch (error) {
+    yield put(GetPagePolicyFailed(error));
   }
 }
 
@@ -62,4 +74,11 @@ function* deletePolicy(action: any): any {
   }
 }
 
-export { handlePolicy, handleAddPolicy, findPolicy, editPolicy, deletePolicy };
+export {
+  handlePolicy,
+  handlePagePolicy,
+  handleAddPolicy,
+  findPolicy,
+  editPolicy,
+  deletePolicy,
+};

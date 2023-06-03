@@ -3,25 +3,46 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   FindRegionsRequest,
   EditRegionsRequest,
+  GetRegionsRequest,
 } from "../../../../redux/action/master/regionsAction";
 import { useFormik, FormikProvider } from "formik";
+import * as Yup from "yup";
 
 export default function Edit(props: any) {
   const [showModal, setShowModal] = useState(false);
   const [id, setId] = useState<number>();
+  const [name, setName] = useState<string>("");
   const dispatch = useDispatch();
-  const { region } = useSelector((state: any) => state.regionsState);
+  const { region, regions } = useSelector((state: any) => state.regionsState);
 
   useEffect(() => {
+    dispatch(GetRegionsRequest());
     dispatch(FindRegionsRequest(id));
   }, [dispatch, id, showModal]);
 
-  const formik = useFormik({
+  const formik: any = useFormik({
     enableReinitialize: true,
     initialValues: {
       regionCode: props.id,
       regionName: region.regionName,
     },
+    validationSchema: Yup.object().shape({
+      regionName: Yup.string()
+        .min(1, "Too Short!")
+        .max(34, "Too Long!")
+        .required("Required")
+        .test("unique", "Region Name is already in use", function (value: any) {
+          if (
+            !regions.some(
+              (item: any) =>
+                item.regionName.toLowerCase() === value.toLowerCase()
+            ) ||
+            props.name.toLowerCase() === value.toLowerCase()
+          ) {
+            return true;
+          }
+        }),
+    }),
     onSubmit: async (values) => {
       dispatch(EditRegionsRequest(values));
       props.setRefresh(true);
@@ -31,6 +52,7 @@ export default function Edit(props: any) {
 
   const editButton = () => {
     setId(props.id);
+    setName(props.name);
     setShowModal(true);
   };
 
@@ -74,6 +96,9 @@ export default function Edit(props: any) {
                         <div className="flex gap-10 ">
                           <label className="py-2 text-black font-bold w-full">
                             Region Name
+                            <span className="text-red-400">
+                              &nbsp; * {formik.errors.regionName}
+                            </span>
                           </label>
                           <input
                             className=" border rounded w-full py-2 px-3 text-black border-slate-900 "

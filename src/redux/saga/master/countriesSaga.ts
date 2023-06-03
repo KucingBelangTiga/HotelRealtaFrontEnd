@@ -3,6 +3,8 @@ import Countries from "../../../api/master/countries";
 import {
   GetCountriesSuccess,
   GetCountriesFailed,
+  GetPageCountriesSuccess,
+  GetPageCountriesFailed,
   AddCountriesSuccess,
   AddCountriesFailed,
   FindCountriesSuccess,
@@ -19,6 +21,16 @@ function* handleCountries(): any {
     yield put(GetCountriesSuccess(result));
   } catch (error) {
     yield put(GetCountriesFailed(error));
+  }
+}
+
+function* handlePageCountries(action: any): any {
+  const { payload } = action;
+  try {
+    const result = yield call(Countries.listPage, payload);
+    yield put(GetPageCountriesSuccess(result));
+  } catch (error) {
+    yield put(GetPageCountriesFailed(error));
   }
 }
 
@@ -64,6 +76,7 @@ function* deleteCountries(action: any): any {
 
 export {
   handleCountries,
+  handlePageCountries,
   handleAddCountries,
   findCountries,
   editCountries,

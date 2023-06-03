@@ -3,6 +3,8 @@ import ServiceTasks from "../../../api/master/serviceTasks";
 import {
   GetServiceTasksSuccess,
   GetServiceTasksFailed,
+  GetPageServiceTasksSuccess,
+  GetPageServiceTasksFailed,
   AddServiceTasksSuccess,
   AddServiceTasksFailed,
   FindServiceTasksSuccess,
@@ -19,6 +21,16 @@ function* handleServiceTasks(): any {
     yield put(GetServiceTasksSuccess(result));
   } catch (error) {
     yield put(GetServiceTasksFailed(error));
+  }
+}
+
+function* handlePageServiceTasks(action: any): any {
+  const { payload } = action;
+  try {
+    const result = yield call(ServiceTasks.listPage, payload);
+    yield put(GetPageServiceTasksSuccess(result));
+  } catch (error) {
+    yield put(GetPageServiceTasksFailed(error));
   }
 }
 
@@ -64,6 +76,7 @@ function* deleteServiceTasks(action: any): any {
 
 export {
   handleServiceTasks,
+  handlePageServiceTasks,
   handleAddServiceTasks,
   findServiceTasks,
   editServiceTasks,

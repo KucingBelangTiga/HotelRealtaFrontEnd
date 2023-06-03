@@ -3,6 +3,8 @@ import Regions from "../../../api/master/regions";
 import {
   GetRegionsSuccess,
   GetRegionsFailed,
+  GetPageRegionsSuccess,
+  GetPageRegionsFailed,
   AddRegionsSuccess,
   AddRegionsFailed,
   FindRegionsSuccess,
@@ -19,6 +21,16 @@ function* handleRegions(): any {
     yield put(GetRegionsSuccess(result));
   } catch (error) {
     yield put(GetRegionsFailed(error));
+  }
+}
+
+function* handlePageRegions(action: any): any {
+  const { payload } = action;
+  try {
+    const result = yield call(Regions.listPage, payload);
+    yield put(GetPageRegionsSuccess(result));
+  } catch (error) {
+    yield put(GetPageRegionsFailed(error));
   }
 }
 
@@ -64,6 +76,7 @@ function* deleteRegions(action: any): any {
 
 export {
   handleRegions,
+  handlePageRegions,
   handleAddRegions,
   findRegions,
   editRegions,

@@ -2,6 +2,10 @@ export const GET_CATEGORY_REQUEST = "get/category/request";
 export const GET_CATEGORY_SUCCESS = "get/category/success";
 export const GET_CATEGORY_FAILED = "get/category/failed";
 
+export const GET_PAGE_CATEGORY_REQUEST = "get/pageCategory/request";
+export const GET_PAGE_CATEGORY_SUCCESS = "get/pageCategory/success";
+export const GET_PAGE_CATEGORY_FAILED = "get/pageCategory/failed";
+
 export const ADD_CATEGORY_REQUEST = "add/category/request";
 export const ADD_CATEGORY_SUCCESS = "add/category/success";
 export const ADD_CATEGORY_FAILED = "add/category/failed";

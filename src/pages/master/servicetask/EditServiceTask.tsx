@@ -3,26 +3,53 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   EditServiceTasksRequest,
   FindServiceTasksRequest,
+  GetServiceTasksRequest,
 } from "../../../redux/action/master/serviceTasksAction";
 import { useFormik, FormikProvider } from "formik";
+import * as Yup from "yup";
 
 export default function EditServiceTask(props: any) {
   const [showModal, setShowModal] = useState(false);
   const [id, setId] = useState<number>();
+  const [name, setName] = useState<string>("");
   const dispatch = useDispatch();
-  const { serviceTask } = useSelector((state: any) => state.serviceTasksState);
+  const { serviceTask, serviceTasks } = useSelector(
+    (state: any) => state.serviceTasksState
+  );
 
   useEffect(() => {
+    dispatch(GetServiceTasksRequest());
     dispatch(FindServiceTasksRequest(id));
   }, [dispatch, id, showModal]);
 
-  const formik = useFormik({
+  const formik: any = useFormik({
     enableReinitialize: true,
     initialValues: {
       setaId: props.id,
       setaName: serviceTask.setaName,
       setSeq: serviceTask.setSeq,
     },
+    validationSchema: Yup.object().shape({
+      setaName: Yup.string()
+        .min(1, "Too Short!")
+        .max(84, "Too Long!")
+        .required("Required")
+        .test("unique", "Name is already in use", function (value: any) {
+          if (
+            !serviceTasks.some(
+              (item: any) => item.setaName.toLowerCase() === value.toLowerCase()
+            ) ||
+            props.name.toLowerCase() === value.toLowerCase()
+          ) {
+            return true;
+          }
+        }),
+      setSeq: Yup.string()
+        .min(1, "Too Short!")
+        .max(10, "Too Long!")
+        .required("Required")
+        .matches(/^[0-9]*$/, "Sequence must be a number"),
+    }),
     onSubmit: async (values) => {
       dispatch(EditServiceTasksRequest(values));
       props.setRefresh(true);
@@ -32,6 +59,7 @@ export default function EditServiceTask(props: any) {
 
   const editButton = () => {
     setId(props.id);
+    setName(props.name);
     setShowModal(true);
   };
 
@@ -75,6 +103,9 @@ export default function EditServiceTask(props: any) {
                         <div className="flex gap-10 ">
                           <label className="py-2 text-black font-bold w-full">
                             Task Name
+                            <span className="text-red-400">
+                              &nbsp; * {formik.errors.setaName}
+                            </span>
                           </label>
                           <input
                             className="border rounded w-full py-2 px-3 text-black border-slate-900 "
@@ -91,6 +122,9 @@ export default function EditServiceTask(props: any) {
                         <div className="flex gap-10 ">
                           <label className="text-black py-2 font-bold w-full">
                             Sequence Order
+                            <span className="text-red-400">
+                              &nbsp; * {formik.errors.setSeq}
+                            </span>
                           </label>
 
                           <input

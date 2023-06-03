@@ -1,16 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Layout from "@/src/components/layout";
 import { useDispatch, useSelector } from "react-redux";
-import { GetRegionsRequest } from "../../../redux/action/master/regionsAction";
-import { GetCountriesRequest } from "../../../redux/action/master/countriesAction";
-import { GetProvincesRequest } from "../../../redux/action/master/provincesAction";
-import { GetCityRequest } from "../../../redux/action/master/cityAction";
-
-import { DataTable } from "primereact/datatable";
-import { Column } from "primereact/column";
-
-import "primereact/resources/themes/lara-light-indigo/theme.css";
-import "primereact/resources/primereact.css";
+import { GetPageRegionsRequest } from "../../../redux/action/master/regionsAction";
+import { GetPageCountriesRequest } from "../../../redux/action/master/countriesAction";
+import { GetPageProvincesRequest } from "../../../redux/action/master/provincesAction";
+import { GetPageCityRequest } from "../../../redux/action/master/cityAction";
 
 import Add from "./regions/Add";
 import Edit from "./regions/Edit";
@@ -25,95 +19,46 @@ import DeleteProvince from "./provinces/DeleteProvince";
 import AddCity from "./city/AddCity";
 import EditCity from "./city/EditCity";
 import DeleteCity from "./city/DeleteCity";
+import Pagination from "@/src/components/component/Pagination";
 
 export default function Index() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-  const [id, setId] = useState<number>(0);
-  const [first, setFirst] = useState(0);
+  const [pageRegion, setPageRegion] = useState<number>(1);
+  const [pageCountry, setPageCountry] = useState<number>(1);
+  const [pageProvince, setPageProvince] = useState<number>(1);
+  const [pageCity, setPageCity] = useState<number>(1);
   const [refresh, setRefresh] = useState(false);
 
-  const { regions } = useSelector((state: any) => state.regionsState);
-  const { countries } = useSelector((state: any) => state.countriesState);
-  const { provinces } = useSelector((state: any) => state.provincesState);
-  const { cities } = useSelector((state: any) => state.cityState);
+  const { regionPage } = useSelector((state: any) => state.regionsState);
+  const { countryPage } = useSelector((state: any) => state.countriesState);
+  const { provincePage } = useSelector((state: any) => state.provincesState);
+  const { cityPage } = useSelector((state: any) => state.cityState);
 
-  const [selectedRegion, setSelectedRegion] = useState(regions[0]);
-  const [selectedCountry, setSelectedCountry] = useState(countries[0]);
-  const [selectedProvince, setSelectedProvince] = useState(provinces[0]);
+  const [selectedRegion, setSelectedRegion] = useState(regionPage[0]);
+  const [selectedCountry, setSelectedCountry] = useState(countryPage[0]);
+  const [selectedProvince, setSelectedProvince] = useState(provincePage[0]);
 
   useEffect(() => {
-    dispatch(GetRegionsRequest());
-    dispatch(GetCountriesRequest());
-    dispatch(GetProvincesRequest());
-    dispatch(GetCityRequest());
+    const payloadRegion = {
+      page: pageRegion,
+    };
+    const payloadCountry = {
+      page: pageCountry,
+    };
+    const payloadProvince = {
+      page: pageProvince,
+    };
+    const payloadCity = {
+      page: pageCity,
+    };
+    dispatch(GetPageRegionsRequest(payloadRegion));
+    dispatch(GetPageCountriesRequest(payloadCountry));
+    dispatch(GetPageProvincesRequest(payloadProvince));
+    dispatch(GetPageCityRequest(payloadCity));
     setRefresh(false);
     setLoading(true);
-  }, [dispatch, refresh]);
-
-  const kebabRegion = (rowData: any) => {
-    return (
-      <div>
-        <Edit id={rowData.regionCode} setRefresh={setRefresh} />
-        <Delete
-          id={rowData.regionCode}
-          name={rowData.regionName}
-          setRefresh={setRefresh}
-        />
-      </div>
-    );
-  };
-
-  const kebabCountry = (rowData: any) => {
-    return (
-      <div>
-        <EditCountry
-          id={rowData.countryId}
-          setRefresh={setRefresh}
-          region={selectedRegion}
-        />
-        <DeleteCountry
-          id={rowData.countryId}
-          name={rowData.countryName}
-          setRefresh={setRefresh}
-        />
-      </div>
-    );
-  };
-
-  const kebabProvince = (rowData: any) => {
-    return (
-      <div>
-        <EditProvince
-          id={rowData.provId}
-          setRefresh={setRefresh}
-          country={selectedCountry}
-        />
-        <DeleteProvince
-          id={rowData.provId}
-          name={rowData.provName}
-          setRefresh={setRefresh}
-        />
-      </div>
-    );
-  };
-
-  const kebabCity = (rowData: any) => {
-    return (
-      <div>
-        <EditCity
-          id={rowData.addrId}
-          setRefresh={setRefresh}
-          province={selectedProvince}
-        />
-        <DeleteCity
-          id={rowData.addrId}
-          name={rowData.addrLine2}
-          setRefresh={setRefresh}
-        />
-      </div>
-    );
-  };
+  }, [dispatch, refresh, pageRegion, pageCountry, pageProvince, pageCity]);
 
   return (
     <div>
@@ -124,106 +69,307 @@ export default function Index() {
           ) : (
             <div className="min-h-screen">
               <h2 className="text-center my-5 font-bold text-3xl">Regions</h2>
-              <DataTable
-                value={regions}
-                stripedRows
-                tableStyle={{ minWidth: "50rem" }}
-                className="bg-white text-black"
-                paginator
-                rows={5}
-                first={first}
-                selectionMode="single"
-                selection={selectedRegion}
-                onSelectionChange={(e) => setSelectedRegion(e.value)}
-              >
-                <Column field="regionCode" header="Code"></Column>
-                <Column field="regionName" header="Name"></Column>
-                <Column
-                  field="regionCode"
-                  header={<Add setRefresh={setRefresh} />}
-                  body={kebabRegion}
-                ></Column>
-              </DataTable>
+              <table className=" w-full border-collapse my-5 rounded-lg border border-gray-200 bg-white text-left text-sm text-gray-500 ">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-4 font-medium text-gray-900"></th>
+                    <th
+                      scope="col"
+                      className="px-6 py-4 font-medium text-gray-900"
+                    >
+                      Code
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-4 font-medium text-gray-900"
+                    >
+                      Name
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-4 font-medium  text-gray-900 text-center"
+                    >
+                      <Add setRefresh={setRefresh} />
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100 border-t border-gray-100">
+                  {(regionPage.items || []).map((item: any) => (
+                    <tr className="hover:bg-gray-50" key={item.regionCode}>
+                      <td>
+                        <div className="px-6 py-4">
+                          <input
+                            id="default-radio-1"
+                            type="radio"
+                            onClick={() => setSelectedRegion(item)}
+                            name="default-radio"
+                            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                          />
+                        </div>
+                      </td>
+
+                      <th className="px-6 py-4 font-normal text-gray-900">
+                        <div className="text-sm">
+                          <div className="font-medium text-gray-700">
+                            {item.regionCode}
+                          </div>
+                        </div>
+                      </th>
+                      <td className="px-6 py-4">{item.regionName}</td>
+                      <td>
+                        <div className="text-center py-3">
+                          <Edit
+                            id={item.regionCode}
+                            setRefresh={setRefresh}
+                            name={item.regionName}
+                          />
+                          <Delete
+                            id={item.regionCode}
+                            name={item.regionName}
+                            setRefresh={setRefresh}
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              {regionPage.meta && (
+                <Pagination
+                  currentPage={regionPage.meta.currentPage}
+                  totalPages={regionPage.meta.totalPages}
+                  setpage={setPageRegion}
+                  page={pageRegion}
+                  items={regionPage.items}
+                />
+              )}
+
               <h2 className="text-center my-5 font-bold text-3xl">Countries</h2>
 
-              <DataTable
-                value={countries}
-                stripedRows
-                tableStyle={{ minWidth: "50rem" }}
-                className="bg-white text-black"
-                paginator
-                rows={5}
-                first={first}
-                selectionMode="single"
-                selection={selectedCountry}
-                onSelectionChange={(e) => setSelectedCountry(e.value)}
-              >
-                <Column field="countryId" header="Id"></Column>
-                <Column field="countryName" header="Name"></Column>
-                <Column
-                  field="countryId"
-                  header={
-                    <AddCountry
-                      setRefresh={setRefresh}
-                      region={selectedRegion}
-                    />
-                  }
-                  body={kebabCountry}
-                ></Column>
-              </DataTable>
+              <table className=" w-full border-collapse my-5 rounded-lg border border-gray-200 bg-white text-left text-sm text-gray-500 ">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-4 font-medium text-gray-900"></th>
+                    <th
+                      scope="col"
+                      className="px-6 py-4 font-medium text-gray-900"
+                    >
+                      Id
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-4 font-medium text-gray-900"
+                    >
+                      Name
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-4 font-medium  text-gray-900 text-center"
+                    >
+                      <AddCountry
+                        setRefresh={setRefresh}
+                        region={selectedRegion}
+                      />
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100 border-t border-gray-100">
+                  {(countryPage.items || []).map((item: any) => (
+                    <tr className="hover:bg-gray-50" key={item.countryId}>
+                      <td>
+                        <div className="px-6 py-4">
+                          <input
+                            id="default-radio-1"
+                            type="radio"
+                            onClick={() => setSelectedCountry(item)}
+                            name="default-radio"
+                            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                          />
+                        </div>
+                      </td>
+
+                      <th className="px-6 py-4 font-normal text-gray-900">
+                        <div className="text-sm">
+                          <div className="font-medium text-gray-700">
+                            {item.countryId}
+                          </div>
+                        </div>
+                      </th>
+                      <td className="px-6 py-4">{item.countryName}</td>
+                      <td>
+                        <div className="text-center py-3">
+                          <EditCountry
+                            id={item.countryId}
+                            setRefresh={setRefresh}
+                            region={selectedRegion}
+                            name={item.countryName}
+                          />
+                          <DeleteCountry
+                            id={item.countryId}
+                            name={item.countryName}
+                            setRefresh={setRefresh}
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              {countryPage.meta && (
+                <Pagination
+                  currentPage={countryPage.meta.currentPage}
+                  totalPages={countryPage.meta.totalPages}
+                  setpage={setPageCountry}
+                  page={pageCountry}
+                  items={countryPage.items}
+                />
+              )}
 
               <h2 className="text-center my-5 font-bold text-3xl">Provinces</h2>
 
-              <DataTable
-                value={provinces}
-                stripedRows
-                tableStyle={{ minWidth: "50rem" }}
-                className="bg-white text-black"
-                paginator
-                rows={5}
-                first={first}
-                selectionMode="single"
-                selection={selectedProvince}
-                onSelectionChange={(e) => setSelectedProvince(e.value)}
-              >
-                <Column field="provId" header="Id"></Column>
-                <Column field="provName" header="Name"></Column>
-                <Column
-                  field="provId"
-                  header={
-                    <AddProvince
-                      setRefresh={setRefresh}
-                      country={selectedCountry}
-                    />
-                  }
-                  body={kebabProvince}
-                ></Column>
-              </DataTable>
+              <table className=" w-full border-collapse my-5 rounded-lg border border-gray-200 bg-white text-left text-sm text-gray-500 ">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-4 font-medium text-gray-900"></th>
+                    <th
+                      scope="col"
+                      className="px-6 py-4 font-medium text-gray-900"
+                    >
+                      Id
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-4 font-medium text-gray-900"
+                    >
+                      Name
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-4 font-medium  text-gray-900 text-center"
+                    >
+                      <AddProvince
+                        setRefresh={setRefresh}
+                        country={selectedCountry}
+                      />
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100 border-t border-gray-100">
+                  {(provincePage.items || []).map((item: any) => (
+                    <tr className="hover:bg-gray-50" key={item.provId}>
+                      <td>
+                        <div className="px-6 py-4">
+                          <input
+                            id="default-radio-1"
+                            type="radio"
+                            onClick={() => setSelectedProvince(item)}
+                            name="default-radio"
+                            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                          />
+                        </div>
+                      </td>
+
+                      <th className="px-6 py-4 font-normal text-gray-900">
+                        <div className="text-sm">
+                          <div className="font-medium text-gray-700">
+                            {item.provId}
+                          </div>
+                        </div>
+                      </th>
+                      <td className="px-6 py-4">{item.provName}</td>
+                      <td>
+                        <div className="text-center py-3">
+                          <EditProvince
+                            id={item.provId}
+                            setRefresh={setRefresh}
+                            country={selectedCountry}
+                          />
+                          <DeleteProvince
+                            id={item.provId}
+                            name={item.provName}
+                            setRefresh={setRefresh}
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              {provincePage.meta && (
+                <Pagination
+                  currentPage={provincePage.meta.currentPage}
+                  totalPages={provincePage.meta.totalPages}
+                  setpage={setPageProvince}
+                  page={pageProvince}
+                  items={provincePage.items}
+                />
+              )}
 
               <h2 className="text-center my-5 font-bold text-3xl">City</h2>
-
-              <DataTable
-                value={cities}
-                stripedRows
-                tableStyle={{ minWidth: "50rem" }}
-                className="bg-white text-black"
-                paginator
-                rows={5}
-                first={first}
-              >
-                <Column field="addrId" header="Id"></Column>
-                <Column field="addrLine2" header="Name"></Column>
-                <Column
-                  field="addrId"
-                  header={
-                    <AddCity
-                      setRefresh={setRefresh}
-                      province={selectedProvince}
-                    />
-                  }
-                  body={kebabCity}
-                ></Column>
-              </DataTable>
+              <table className=" w-full border-collapse my-5 rounded-lg border border-gray-200 bg-white text-left text-sm text-gray-500 ">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th
+                      scope="col"
+                      className="px-6 py-4 font-medium text-gray-900"
+                    >
+                      Id
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-4 font-medium text-gray-900"
+                    >
+                      Name
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-4 font-medium  text-gray-900 text-center"
+                    >
+                      <AddCity
+                        setRefresh={setRefresh}
+                        province={selectedProvince}
+                      />
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100 border-t border-gray-100">
+                  {(cityPage.items || []).map((item: any) => (
+                    <tr className="hover:bg-gray-50" key={item.addrId}>
+                      <th className="px-6 py-4 font-normal text-gray-900">
+                        <div className="text-sm">
+                          <div className="font-medium text-gray-700">
+                            {item.addrId}
+                          </div>
+                        </div>
+                      </th>
+                      <td className="px-6 py-4">{item.addrLine2}</td>
+                      <td>
+                        <div className="text-center py-3">
+                          <EditCity
+                            id={item.addrId}
+                            setRefresh={setRefresh}
+                            province={selectedProvince}
+                          />
+                          <DeleteCity
+                            id={item.addrId}
+                            name={item.addrLine2}
+                            setRefresh={setRefresh}
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              {cityPage.meta && (
+                <Pagination
+                  currentPage={cityPage.meta.currentPage}
+                  totalPages={cityPage.meta.totalPages}
+                  setpage={setPageCity}
+                  page={pageCity}
+                  items={cityPage.items}
+                />
+              )}
             </div>
           )}
         </LayoutMaster>

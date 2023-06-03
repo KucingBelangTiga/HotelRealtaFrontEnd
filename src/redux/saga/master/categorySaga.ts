@@ -3,6 +3,8 @@ import Category from "../../../api/master/category";
 import {
   GetCategorySuccess,
   GetCategoryFailed,
+  GetPageCategorySuccess,
+  GetPageCategoryFailed,
   AddCategorySuccess,
   AddCategoryFailed,
   FindCategorySuccess,
@@ -21,6 +23,16 @@ function* handleCategory(): any {
     yield put(GetCategorySuccess(result));
   } catch (error) {
     yield put(GetCategoryFailed(error));
+  }
+}
+
+function* handlePageCategory(action: any): any {
+  const { payload } = action;
+  try {
+    const result = yield call(Category.listPage, payload);
+    yield put(GetPageCategorySuccess(result));
+  } catch (error) {
+    yield put(GetPageCategoryFailed(error));
   }
 }
 
@@ -76,6 +88,7 @@ function* deleteCategory(action: any): any {
 
 export {
   handleCategory,
+  handlePageCategory,
   handleAddCategory,
   findCategory,
   editCategory,

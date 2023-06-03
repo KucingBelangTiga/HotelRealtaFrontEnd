@@ -2,6 +2,10 @@ export const GET_CITY_REQUEST = "get/city/request";
 export const GET_CITY_SUCCESS = "get/city/success";
 export const GET_CITY_FAILED = "get/city/failed";
 
+export const GET_PAGE_CITY_REQUEST = "get/pageCity/request";
+export const GET_PAGE_CITY_SUCCESS = "get/pageCity/success";
+export const GET_PAGE_CITY_FAILED = "get/pageCity/failed";
+
 export const ADD_CITY_REQUEST = "add/city/request";
 export const ADD_CITY_SUCCESS = "add/city/success";
 export const ADD_CITY_FAILED = "add/city/failed";

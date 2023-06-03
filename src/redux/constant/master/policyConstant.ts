@@ -2,6 +2,10 @@ export const GET_POLICY_REQUEST = "get/policy/request";
 export const GET_POLICY_SUCCESS = "get/policy/success";
 export const GET_POLICY_FAILED = "get/policy/failed";
 
+export const GET_PAGE_POLICY_REQUEST = "get/pagePolicy/request";
+export const GET_PAGE_POLICY_SUCCESS = "get/pagePolicy/success";
+export const GET_PAGE_POLICY_FAILED = "get/pagePolicy/failed";
+
 export const ADD_POLICY_REQUEST = "add/policy/request";
 export const ADD_POLICY_SUCCESS = "add/policy/success";
 export const ADD_POLICY_FAILED = "add/policy/failed";

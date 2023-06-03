@@ -3,6 +3,8 @@ import City from "../../../api/master/city";
 import {
   GetCitySuccess,
   GetCityFailed,
+  GetPageCitySuccess,
+  GetPageCityFailed,
   AddCitySuccess,
   AddCityFailed,
   FindCitySuccess,
@@ -19,6 +21,16 @@ function* handleCity(): any {
     yield put(GetCitySuccess(result));
   } catch (error) {
     yield put(GetCityFailed(error));
+  }
+}
+
+function* handlePageCity(action: any): any {
+  const { payload } = action;
+  try {
+    const result = yield call(City.listPage, payload);
+    yield put(GetPageCitySuccess(result));
+  } catch (error) {
+    yield put(GetPageCityFailed(error));
   }
 }
 
@@ -62,4 +74,11 @@ function* deleteCity(action: any): any {
   }
 }
 
-export { handleCity, handleAddCity, findCity, editCity, deleteCity };
+export {
+  handleCity,
+  handlePageCity,
+  handleAddCity,
+  findCity,
+  editCity,
+  deleteCity,
+};

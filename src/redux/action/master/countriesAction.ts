@@ -14,6 +14,21 @@ export const GetCountriesFailed = (payload: any) => ({
   payload,
 });
 
+export const GetPageCountriesRequest = (payload: any) => ({
+  type: ActionCountries.GET_PAGE_COUNTRIES_REQUEST,
+  payload,
+});
+
+export const GetPageCountriesSuccess = (payload: any) => ({
+  type: ActionCountries.GET_PAGE_COUNTRIES_SUCCESS,
+  payload,
+});
+
+export const GetPageCountriesFailed = (payload: any) => ({
+  type: ActionCountries.GET_PAGE_COUNTRIES_FAILED,
+  payload,
+});
+
 export const AddCountriesRequest = (payload: any) => ({
   type: ActionCountries.ADD_COUNTRIES_REQUEST,
   payload,

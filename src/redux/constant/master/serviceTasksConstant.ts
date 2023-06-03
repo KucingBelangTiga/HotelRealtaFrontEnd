@@ -2,6 +2,10 @@ export const GET_SERVICE_TASKS_REQUEST = "get/serviceTasks/request";
 export const GET_SERVICE_TASKS_SUCCESS = "get/serviceTasks/success";
 export const GET_SERVICE_TASKS_FAILED = "get/serviceTasks/failed";
 
+export const GET_PAGE_SERVICE_TASKS_REQUEST = "get/pageServiceTasks/request";
+export const GET_PAGE_SERVICE_TASKS_SUCCESS = "get/pageServiceTasks/success";
+export const GET_PAGE_SERVICE_TASKS_FAILED = "get/pageServiceTasks/failed";
+
 export const ADD_SERVICE_TASKS_REQUEST = "add/serviceTasks/request";
 export const ADD_SERVICE_TASKS_SUCCESS = "add/serviceTasks/success";
 export const ADD_SERVICE_TASKS_FAILED = "add/serviceTasks/failed";

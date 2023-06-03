@@ -14,6 +14,21 @@ export const GetRegionsFailed = (payload: any) => ({
   payload,
 });
 
+export const GetPageRegionsRequest = (payload: any) => ({
+  type: ActionRegions.GET_PAGE_REGIONS_REQUEST,
+  payload,
+});
+
+export const GetPageRegionsSuccess = (payload: any) => ({
+  type: ActionRegions.GET_PAGE_REGIONS_SUCCESS,
+  payload,
+});
+
+export const GetPageRegionsFailed = (payload: any) => ({
+  type: ActionRegions.GET_PAGE_REGIONS_FAILED,
+  payload,
+});
+
 export const AddRegionsRequest = (payload: any) => ({
   type: ActionRegions.ADD_REGIONS_REQUEST,
   payload,

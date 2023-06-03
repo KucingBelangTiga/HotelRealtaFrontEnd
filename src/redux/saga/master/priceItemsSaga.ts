@@ -3,6 +3,8 @@ import PriceItems from "../../../api/master/priceItems";
 import {
   GetPriceItemsSuccess,
   GetPriceItemsFailed,
+  GetPagePriceItemsSuccess,
+  GetPagePriceItemsFailed,
   AddPriceItemsSuccess,
   AddPriceItemsFailed,
   FindPriceItemsSuccess,
@@ -19,6 +21,16 @@ function* handlePriceItems(): any {
     yield put(GetPriceItemsSuccess(result));
   } catch (error) {
     yield put(GetPriceItemsFailed(error));
+  }
+}
+
+function* handlePagePriceItems(action: any): any {
+  const { payload } = action;
+  try {
+    const result = yield call(PriceItems.listPage, payload);
+    yield put(GetPagePriceItemsSuccess(result));
+  } catch (error) {
+    yield put(GetPagePriceItemsFailed(error));
   }
 }
 
@@ -64,6 +76,7 @@ function* deletePriceItems(action: any): any {
 
 export {
   handlePriceItems,
+  handlePagePriceItems,
   handleAddPriceItems,
   findPriceItems,
   editPriceItems,

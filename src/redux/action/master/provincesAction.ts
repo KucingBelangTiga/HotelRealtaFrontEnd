@@ -14,6 +14,21 @@ export const GetProvincesFailed = (payload: any) => ({
   payload,
 });
 
+export const GetPageProvincesRequest = (payload: any) => ({
+  type: ActionProvinces.GET_PAGE_PROVINCES_REQUEST,
+  payload,
+});
+
+export const GetPageProvincesSuccess = (payload: any) => ({
+  type: ActionProvinces.GET_PAGE_PROVINCES_SUCCESS,
+  payload,
+});
+
+export const GetPageProvincesFailed = (payload: any) => ({
+  type: ActionProvinces.GET_PAGE_PROVINCES_FAILED,
+  payload,
+});
+
 export const AddProvincesRequest = (payload: any) => ({
   type: ActionProvinces.ADD_PROVINCES_REQUEST,
   payload,

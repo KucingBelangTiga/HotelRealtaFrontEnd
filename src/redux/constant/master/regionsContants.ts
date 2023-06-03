@@ -2,6 +2,10 @@ export const GET_REGIONS_REQUEST = "get/regions/request";
 export const GET_REGIONS_SUCCESS = "get/regions/success";
 export const GET_REGIONS_FAILED = "get/regions/failed";
 
+export const GET_PAGE_REGIONS_REQUEST = "get/pageRegions/request";
+export const GET_PAGE_REGIONS_SUCCESS = "get/pageRegions/success";
+export const GET_PAGE_REGIONS_FAILED = "get/pageRegions/failed";
+
 export const ADD_REGIONS_REQUEST = "add/regions/request";
 export const ADD_REGIONS_SUCCESS = "add/regions/success";
 export const ADD_REGIONS_FAILED = "add/regions/failed";

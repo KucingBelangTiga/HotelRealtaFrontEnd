@@ -14,6 +14,21 @@ export const GetCategoryFailed = (payload: any) => ({
   payload,
 });
 
+export const GetPageCategoryRequest = (payload: any) => ({
+  type: ActionCategory.GET_PAGE_CATEGORY_REQUEST,
+  payload,
+});
+
+export const GetPageCategorySuccess = (payload: any) => ({
+  type: ActionCategory.GET_PAGE_CATEGORY_SUCCESS,
+  payload,
+});
+
+export const GetPageCategoryFailed = (payload: any) => ({
+  type: ActionCategory.GET_PAGE_CATEGORY_FAILED,
+  payload,
+});
+
 export const AddCategoryRequest = (payload: any) => ({
   type: ActionCategory.ADD_CATEGORY_REQUEST,
   payload,

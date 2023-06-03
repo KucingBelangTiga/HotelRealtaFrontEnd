@@ -3,28 +3,62 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   EditPriceItemsRequest,
   FindPriceItemsRequest,
+  GetPriceItemsRequest,
 } from "../../../redux/action/master/priceItemsAction";
 import { useFormik, FormikProvider } from "formik";
+import * as Yup from "yup";
 
 export default function EditPriceItems(props: any) {
   const [showModal, setShowModal] = useState(false);
   const [id, setId] = useState<number>();
+  const [name, setName] = useState<string>("");
   const dispatch = useDispatch();
-  const { priceItem } = useSelector((state: any) => state.priceItemsState);
+  const { priceItem, priceItems } = useSelector(
+    (state: any) => state.priceItemsState
+  );
 
   useEffect(() => {
+    dispatch(GetPriceItemsRequest());
     dispatch(FindPriceItemsRequest(id));
   }, [dispatch, id, showModal]);
 
-  const formik = useFormik({
+  const formik: any = useFormik({
     enableReinitialize: true,
     initialValues: {
       pritId: props.id,
       pritName: priceItem.pritName,
       pritDescription: priceItem.pritDescription,
-      pritPrice: priceItem.pritPrice,
+      pritPrice:
+        priceItem.pritPrice &&
+        Number(priceItem.pritPrice.replace(/[^0-9]+/g, "") / 100),
       pritType: priceItem.pritType,
     },
+    validationSchema: Yup.object().shape({
+      pritName: Yup.string()
+        .min(1, "Too Short!")
+        .max(54, "Too Long!")
+        .required("Required")
+        .test("unique", "Name is already in use", function (value: any) {
+          if (
+            !priceItems.some(
+              (item: any) => item.pritName.toLowerCase() === value.toLowerCase()
+            ) ||
+            props.name.toLowerCase() === value.toLowerCase()
+          ) {
+            return true;
+          }
+        }),
+      pritDescription: Yup.string()
+        .min(1, "Too Short!")
+        .max(254, "Too Long!")
+        .required("Required"),
+      pritPrice: Yup.string()
+        .min(3, "Too Short!")
+        .max(10, "Too Long!")
+        .required("Required")
+        .matches(/^[0-9]*$/, "Price must be a number"),
+      pritType: Yup.string().required("Required"),
+    }),
     onSubmit: async (values) => {
       dispatch(EditPriceItemsRequest(values));
       props.setRefresh(true);
@@ -34,6 +68,7 @@ export default function EditPriceItems(props: any) {
 
   const editButton = () => {
     setId(props.id);
+    setName(props.name);
     setShowModal(true);
   };
 
@@ -77,6 +112,9 @@ export default function EditPriceItems(props: any) {
                         <div className="flex gap-10 ">
                           <label className="py-2 text-black font-bold w-full">
                             Item Name
+                            <span className="text-red-400">
+                              &nbsp; * {formik.errors.pritName}
+                            </span>
                           </label>
                           <input
                             className="border rounded w-full py-2 px-3 text-black border-slate-900 "
@@ -92,7 +130,10 @@ export default function EditPriceItems(props: any) {
                       <div className="py-4 px-8 ">
                         <div className="flex gap-10 ">
                           <label className="text-black py-2 font-bold w-full">
-                            Item price
+                            Item Type
+                            <span className="text-red-400">
+                              &nbsp; * {formik.errors.pritType}
+                            </span>
                           </label>
                           <select
                             name="pritType"
@@ -123,6 +164,9 @@ export default function EditPriceItems(props: any) {
                         <div className="flex gap-10 ">
                           <label className="text-black py-2 font-bold w-full">
                             Item price
+                            <span className="text-red-400">
+                              &nbsp; * {formik.errors.pritPrice}
+                            </span>
                           </label>
 
                           <input
@@ -138,6 +182,9 @@ export default function EditPriceItems(props: any) {
                         <div className="flex gap-10 ">
                           <label className="text-black py-2 font-bold w-full">
                             Description
+                            <span className="text-red-400">
+                              &nbsp; * {formik.errors.pritDescription}
+                            </span>
                           </label>
                         </div>
                         <textarea

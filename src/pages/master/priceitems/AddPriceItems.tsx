@@ -1,11 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AddPriceItemsRequest } from "../../../redux/action/master/priceItemsAction";
+import {
+  AddPriceItemsRequest,
+  GetPriceItemsRequest,
+} from "../../../redux/action/master/priceItemsAction";
 import { useFormik, FormikProvider, Field } from "formik";
+import * as Yup from "yup";
 
 export default function AddPriceItems(props: any) {
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
+  const { priceItems } = useSelector((state: any) => state.priceItemsState);
+
+  useEffect(() => {
+    dispatch(GetPriceItemsRequest());
+  }, [dispatch]);
 
   const formik = useFormik({
     initialValues: {
@@ -14,6 +23,31 @@ export default function AddPriceItems(props: any) {
       pritPrice: "",
       pritType: "",
     },
+    validationSchema: Yup.object().shape({
+      pritName: Yup.string()
+        .min(1, "Too Short!")
+        .max(54, "Too Long!")
+        .required("Required")
+        .test("unique", "Name is already in use", function (value: any) {
+          if (
+            !priceItems.some(
+              (item: any) => item.pritName.toLowerCase() === value.toLowerCase()
+            )
+          ) {
+            return true;
+          }
+        }),
+      pritDescription: Yup.string()
+        .min(1, "Too Short!")
+        .max(254, "Too Long!")
+        .required("Required"),
+      pritPrice: Yup.string()
+        .min(3, "Too Short!")
+        .max(10, "Too Long!")
+        .required("Required")
+        .matches(/^[0-9]*$/, "Price must be a number"),
+      pritType: Yup.string().required("Required"),
+    }),
     onSubmit: async (values) => {
       dispatch(AddPriceItemsRequest(values));
       props.setRefresh(true);
@@ -61,6 +95,9 @@ export default function AddPriceItems(props: any) {
                         <div className="flex gap-10 ">
                           <label className="py-2 text-black font-bold w-full">
                             Item Name
+                            <span className="text-red-400">
+                              &nbsp; * {formik.errors.pritName}
+                            </span>
                           </label>
                           <input
                             className="border rounded w-full py-2 px-3 text-black border-slate-900 "
@@ -76,7 +113,10 @@ export default function AddPriceItems(props: any) {
                       <div className="py-4 px-8 ">
                         <div className="flex gap-10 ">
                           <label className="text-black py-2 font-bold w-full">
-                            Item price
+                            Item Type
+                            <span className="text-red-400">
+                              &nbsp; * {formik.errors.pritType}
+                            </span>
                           </label>
                           <select
                             name="pritType"
@@ -107,6 +147,9 @@ export default function AddPriceItems(props: any) {
                         <div className="flex gap-10 ">
                           <label className="text-black py-2 font-bold w-full">
                             Item price
+                            <span className="text-red-400">
+                              &nbsp; * {formik.errors.pritPrice}
+                            </span>
                           </label>
 
                           <input
@@ -122,6 +165,9 @@ export default function AddPriceItems(props: any) {
                         <div className="flex gap-10 ">
                           <label className="text-black py-2 font-bold w-full">
                             Description
+                            <span className="text-red-400">
+                              &nbsp; * {formik.errors.pritDescription}
+                            </span>
                           </label>
                         </div>
                         <textarea

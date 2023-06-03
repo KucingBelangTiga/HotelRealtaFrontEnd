@@ -14,6 +14,21 @@ export const GetPolicyFailed = (payload: any) => ({
   payload,
 });
 
+export const GetPagePolicyRequest = (payload: any) => ({
+  type: ActionPolicy.GET_PAGE_POLICY_REQUEST,
+  payload,
+});
+
+export const GetPagePolicySuccess = (payload: any) => ({
+  type: ActionPolicy.GET_PAGE_POLICY_SUCCESS,
+  payload,
+});
+
+export const GetPagePolicyFailed = (payload: any) => ({
+  type: ActionPolicy.GET_PAGE_POLICY_FAILED,
+  payload,
+});
+
 export const AddPolicyRequest = (payload: any) => ({
   type: ActionPolicy.ADD_POLICY_REQUEST,
   payload,

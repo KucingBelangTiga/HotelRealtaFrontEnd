@@ -5,6 +5,7 @@ import {
   FindPolicyRequest,
 } from "../../../redux/action/master/policyAction";
 import { useFormik, FormikProvider } from "formik";
+import * as Yup from "yup";
 
 export default function EditPolicy(props: any) {
   const [showModal, setShowModal] = useState(false);
@@ -16,13 +17,23 @@ export default function EditPolicy(props: any) {
     dispatch(FindPolicyRequest(id));
   }, [dispatch, id, showModal]);
 
-  const formik = useFormik({
+  const formik: any = useFormik({
     enableReinitialize: true,
     initialValues: {
       poliId: props.id,
       poliName: policy.poliName,
       poliDescription: policy.poliDescription,
     },
+    validationSchema: Yup.object().shape({
+      poliName: Yup.string()
+        .min(1, "Too Short!")
+        .max(54, "Too Long!")
+        .required("Required"),
+      poliDescription: Yup.string()
+        .min(1, "Too Short!")
+        .max(254, "Too Long!")
+        .required("Required"),
+    }),
     onSubmit: async (values) => {
       dispatch(EditPolicyRequest(values));
       props.setRefresh(true);
@@ -75,6 +86,9 @@ export default function EditPolicy(props: any) {
                         <div className="flex gap-10 ">
                           <label className="py-2 text-black font-bold w-full">
                             Policy Name
+                            <span className="text-red-400">
+                              &nbsp; * {formik.errors.poliName}
+                            </span>
                           </label>
                           <input
                             className="border rounded w-full py-2 px-3 text-black border-slate-900 "
@@ -91,6 +105,9 @@ export default function EditPolicy(props: any) {
                         <div className="flex gap-10 ">
                           <label className="text-black py-2 font-bold w-full">
                             Policy Description
+                            <span className="text-red-400">
+                              &nbsp; * {formik.errors.poliDescription}
+                            </span>
                           </label>
 
                           <textarea

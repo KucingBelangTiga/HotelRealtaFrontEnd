@@ -2,6 +2,10 @@ export const GET_PROVINCES_REQUEST = "get/provinces/request";
 export const GET_PROVINCES_SUCCESS = "get/provinces/success";
 export const GET_PROVINCES_FAILED = "get/provinces/failed";
 
+export const GET_PAGE_PROVINCES_REQUEST = "get/pageProvinces/request";
+export const GET_PAGE_PROVINCES_SUCCESS = "get/pageProvinces/success";
+export const GET_PAGE_PROVINCES_FAILED = "get/pageProvinces/failed";
+
 export const ADD_PROVINCES_REQUEST = "add/provinces/request";
 export const ADD_PROVINCES_SUCCESS = "add/provinces/success";
 export const ADD_PROVINCES_FAILED = "add/provinces/failed";

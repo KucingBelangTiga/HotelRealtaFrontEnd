@@ -5,16 +5,40 @@ import {
   GetServiceTasksRequest,
 } from "../../../redux/action/master/serviceTasksAction";
 import { useFormik, FormikProvider } from "formik";
+import * as Yup from "yup";
 
 export default function AddServiceTask(props: any) {
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
-  const { priceItems } = useSelector((state: any) => state.priceItemsState);
+  const { serviceTasks } = useSelector((state: any) => state.serviceTasksState);
+  useEffect(() => {
+    dispatch(GetServiceTasksRequest());
+  }, [dispatch]);
   const formik = useFormik({
     initialValues: {
       setaName: "",
       setSeq: "",
     },
+    validationSchema: Yup.object().shape({
+      setaName: Yup.string()
+        .min(1, "Too Short!")
+        .max(84, "Too Long!")
+        .required("Required")
+        .test("unique", "Name is already in use", function (value: any) {
+          if (
+            !serviceTasks.some(
+              (item: any) => item.setaName.toLowerCase() === value.toLowerCase()
+            )
+          ) {
+            return true;
+          }
+        }),
+      setSeq: Yup.string()
+        .min(1, "Too Short!")
+        .max(10, "Too Long!")
+        .required("Required")
+        .matches(/^[0-9]*$/, "Sequence must be a number"),
+    }),
     onSubmit: async (values) => {
       dispatch(AddServiceTasksRequest(values));
       props.setRefresh(true);
@@ -62,6 +86,9 @@ export default function AddServiceTask(props: any) {
                         <div className="flex gap-10 ">
                           <label className="py-2 text-black font-bold w-full">
                             Task Name
+                            <span className="text-red-400">
+                              &nbsp; * {formik.errors.setaName}
+                            </span>
                           </label>
                           <input
                             className="border rounded w-full py-2 px-3 text-black border-slate-900 "
@@ -77,7 +104,10 @@ export default function AddServiceTask(props: any) {
                       <div className="py-4 px-8 ">
                         <div className="flex gap-10 ">
                           <label className="text-black py-2 font-bold w-full">
-                            Sequence Order
+                            Sequence Order{" "}
+                            <span className="text-red-400">
+                              &nbsp; * {formik.errors.setSeq}
+                            </span>
                           </label>
 
                           <input

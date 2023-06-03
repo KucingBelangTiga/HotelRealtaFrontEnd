@@ -3,6 +3,7 @@ import * as ActionType from "../../constant/master/cityConstant";
 const INIT_STATE = {
   cities: [],
   city: [],
+  cityPage: [],
 };
 
 const CityReduce = (state = INIT_STATE, action: any) => {
@@ -11,6 +12,10 @@ const CityReduce = (state = INIT_STATE, action: any) => {
       return { ...state };
     case ActionType.GET_CITY_SUCCESS:
       return GetCitySuccessfully(state, action);
+    case ActionType.GET_PAGE_CITY_REQUEST:
+      return { ...state };
+    case ActionType.GET_PAGE_CITY_SUCCESS:
+      return GetPageCitySuccessfully(state, action);
     case ActionType.ADD_CITY_REQUEST:
       return { ...state };
     case ActionType.ADD_CITY_SUCCESS:
@@ -37,6 +42,14 @@ const GetCitySuccessfully = (state: any, action: any) => {
   return {
     ...state,
     cities: payload,
+  };
+};
+
+const GetPageCitySuccessfully = (state: any, action: any) => {
+  const { payload } = action;
+  return {
+    ...state,
+    cityPage: payload,
   };
 };
 

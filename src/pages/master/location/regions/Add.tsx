@@ -1,16 +1,41 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AddRegionsRequest } from "../../../../redux/action/master/regionsAction";
+import {
+  AddRegionsRequest,
+  GetRegionsRequest,
+} from "../../../../redux/action/master/regionsAction";
 import { useFormik, FormikProvider } from "formik";
+import * as Yup from "yup";
 
 export default function Add(props: any) {
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
+  const { regions } = useSelector((state: any) => state.regionsState);
+
+  useEffect(() => {
+    dispatch(GetRegionsRequest());
+  }, [dispatch]);
 
   const formik = useFormik({
     initialValues: {
       regionName: "",
     },
+    validationSchema: Yup.object().shape({
+      regionName: Yup.string()
+        .min(1, "Too Short!")
+        .max(34, "Too Long!")
+        .required("Required")
+        .test("unique", "Region Name is already in use", function (value: any) {
+          if (
+            !regions.some(
+              (item: any) =>
+                item.regionName.toLowerCase() === value.toLowerCase()
+            )
+          ) {
+            return true;
+          }
+        }),
+    }),
     onSubmit: async (values) => {
       dispatch(AddRegionsRequest(values));
       props.setRefresh(true);
@@ -26,7 +51,7 @@ export default function Add(props: any) {
   return (
     <>
       <button
-        className="bg-coldBlue text-white active:bg-coldBlue font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+        className="bg-coldBlue text-white  active:bg-coldBlue font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
         type="button"
         onClick={() => setShowModal(true)}
       >
@@ -58,6 +83,9 @@ export default function Add(props: any) {
                         <div className="flex gap-10 ">
                           <label className="py-2 text-black font-bold w-full">
                             Region Name
+                            <span className="text-red-400">
+                              &nbsp; * {formik.errors.regionName}
+                            </span>
                           </label>
                           <input
                             className=" border rounded w-full py-2 px-3 text-black border-slate-900 "

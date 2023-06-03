@@ -4,6 +4,7 @@ import {
   EditCategoryRequest,
   EditCategoryPolicyRequest,
   FindCategoryRequest,
+  GetCategoryRequest,
 } from "../../../redux/action/master/categoryAction";
 import { GetPolicyRequest } from "../../../redux/action/master/policyAction";
 import { useFormik, FormikProvider } from "formik";
@@ -12,6 +13,7 @@ import {
   AutoCompleteCompleteEvent,
 } from "primereact/autocomplete";
 import { Toast } from "primereact/toast";
+import * as Yup from "yup";
 
 interface Policy {
   poliId: number;
@@ -25,17 +27,21 @@ export default function EditCategory(props: any) {
   const [previewImg, setPreviewImg] = useState<any>();
   const [upload, setUpload] = useState(false);
   const [items, setItems] = useState<Policy[]>([]);
+  const [name, setName] = useState<string>("");
   const toast = useRef(null);
   const dispatch = useDispatch();
   const { policies } = useSelector((state: any) => state.policyState);
-  const { category } = useSelector((state: any) => state.categoryState);
+  const { category, categories } = useSelector(
+    (state: any) => state.categoryState
+  );
   const [selectedPolicy, setSelectedPolicy] = useState<Policy>(null);
 
   useEffect(() => {
+    dispatch(GetCategoryRequest());
     dispatch(FindCategoryRequest(id));
   }, [dispatch, id, showModal]);
 
-  const formik = useFormik({
+  const formik: any = useFormik({
     enableReinitialize: true,
     initialValues: {
       cagroId: props.id,
@@ -46,6 +52,50 @@ export default function EditCategory(props: any) {
         category.policyCategoryGroups && category.policyCategoryGroups.pocaId,
       file: category.cagroIcon,
     },
+    validationSchema: Yup.object().shape({
+      cagroName: Yup.string()
+        .min(1, "Too Short!")
+        .max(25, "Too Long!")
+        .required("Required")
+        .test("unique", "Name is already in use", function (value: any) {
+          if (
+            !categories.some(
+              (item: any) =>
+                item.cagroName.toLowerCase() === value.toLowerCase()
+            ) ||
+            props.name.toLowerCase() === value.toLowerCase()
+          ) {
+            return true;
+          }
+        }),
+      cagroDescription: Yup.string()
+        .min(1, "Too Short!")
+        .max(254, "Too Long!")
+        .required("Required"),
+      cagroType: Yup.string().required("Required"),
+      file: Yup.mixed()
+        .required("A file is required")
+        .test(
+          "FILE_SIZE",
+          "Uploaded file is too big.",
+          (value: any) => !value || (value && value.size <= 1000000)
+        )
+        .test(
+          "FILE_FORMAT",
+          "Uploaded file has unsupported format.",
+          (value: any) => {
+            if (value) {
+              return (
+                value.type === "image/jpeg" ||
+                value.type === "image/jpg" ||
+                value.type === "image/png"
+              );
+            } else {
+              return true;
+            }
+          }
+        ),
+    }),
     onSubmit: async (values) => {
       let payload = new FormData();
       payload.append("cagroId", values.cagroId);
@@ -66,6 +116,7 @@ export default function EditCategory(props: any) {
 
   const editButton = () => {
     setId(props.id);
+    setName(props.name);
     setSelectedPolicy(props.category);
     setShowModal(true);
   };
@@ -152,6 +203,9 @@ export default function EditCategory(props: any) {
                         <div className="flex gap-10 ">
                           <label className="py-2 text-black font-bold w-full">
                             Category Name
+                            <span className="text-red-400">
+                              &nbsp; * {formik.errors.cagroName}
+                            </span>
                           </label>
                           <input
                             className="border rounded w-full py-2 px-3 text-black border-slate-900 "
@@ -168,6 +222,9 @@ export default function EditCategory(props: any) {
                         <div className="flex gap-10 ">
                           <label className="text-black py-2 font-bold w-full">
                             Type
+                            <span className="text-red-400">
+                              &nbsp; * {formik.errors.cagroType}
+                            </span>
                           </label>
                           <select
                             name="cagroType"
@@ -196,9 +253,11 @@ export default function EditCategory(props: any) {
                         <div className="flex gap-10 ">
                           <label className="py-2 text-black font-bold w-full">
                             Policy Rules
+                            <span className="text-red-400">&nbsp; *</span>
                           </label>
                           <Toast ref={toast} />
                           <AutoComplete
+                            minLength={1}
                             id="pocaPoli"
                             name="pocaPoli"
                             field="poliName"
@@ -214,6 +273,9 @@ export default function EditCategory(props: any) {
                         <div className="gap-10">
                           <label className="text-black py-2 font-bold w-full ">
                             Description
+                            <span className="text-red-400">
+                              &nbsp; * {formik.errors.cagroDescription}
+                            </span>
                           </label>
 
                           <textarea
@@ -231,6 +293,9 @@ export default function EditCategory(props: any) {
                           className="text-black py-2 font-bold w-full"
                         >
                           Photo
+                          <span className="text-red-400">
+                            &nbsp; * {formik.errors.file}
+                          </span>
                         </label>
                         <div className="mt-2  rounded-lg border border-dashed border-gray-900/25 px-1 py-1 ">
                           {upload === false ? (

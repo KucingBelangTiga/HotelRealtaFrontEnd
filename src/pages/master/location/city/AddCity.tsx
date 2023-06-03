@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { AddCityRequest } from "../../../../redux/action/master/cityAction";
 import { useFormik, FormikProvider } from "formik";
+import * as Yup from "yup";
 
 export default function AddCity(props: any) {
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
 
-  const formik = useFormik({
+  const formik: any = useFormik({
     enableReinitialize: true,
     initialValues: {
       addrLine1: "",
@@ -15,6 +16,22 @@ export default function AddCity(props: any) {
       addrPostalCode: "",
       addrProv: props.province === undefined ? null : props.province.provId,
     },
+    validationSchema: Yup.object().shape({
+      addrProv: Yup.number().required("Required"),
+      addrLine1: Yup.string()
+        .min(1, "Too Short!")
+        .max(254, "Too Long!")
+        .required("Required"),
+      addrLine2: Yup.string()
+        .min(1, "Too Short!")
+        .max(254, "Too Long!")
+        .required("Required"),
+      addrPostalCode: Yup.string()
+        .min(1, "Too Short!")
+        .max(5, "Too Long!")
+        .required("Required")
+        .matches(/^[0-9]*$/, "Max vacant must be a number"),
+    }),
     onSubmit: async (values) => {
       dispatch(AddCityRequest(values));
       props.setRefresh(true);
@@ -62,6 +79,9 @@ export default function AddCity(props: any) {
                         <div className="flex gap-10 ">
                           <label className="py-2 text-black font-bold w-full">
                             Province Name
+                            <span className="text-red-400">
+                              &nbsp; * {formik.errors.addrProv}
+                            </span>
                           </label>
                           <p className=" w-full py-2 text-black border-slate-900">
                             {props.province === undefined
@@ -74,6 +94,9 @@ export default function AddCity(props: any) {
                         <div className="flex gap-10 ">
                           <label className="text-black py-2 font-bold w-full">
                             City Name
+                            <span className="text-red-400">
+                              &nbsp; * {formik.errors.addrLine2}
+                            </span>
                           </label>
                           <input
                             className="border rounded w-full py-2 px-3 text-black border-slate-900 "
@@ -90,6 +113,9 @@ export default function AddCity(props: any) {
                         <div className="flex gap-10 ">
                           <label className="text-black py-2 font-bold w-full">
                             Address
+                            <span className="text-red-400">
+                              &nbsp; * {formik.errors.addrLine1}
+                            </span>
                           </label>
                           <input
                             className="border rounded w-full py-2 px-3 text-black border-slate-900 "
@@ -106,6 +132,9 @@ export default function AddCity(props: any) {
                         <div className="flex gap-10 ">
                           <label className="text-black py-2 font-bold w-full">
                             Postal Code
+                            <span className="text-red-400">
+                              &nbsp; * {formik.errors.addrPostalCode}
+                            </span>
                           </label>
                           <input
                             className="border rounded w-full py-2 px-3 text-black border-slate-900 "

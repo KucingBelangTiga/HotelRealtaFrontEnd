@@ -3,6 +3,7 @@ import * as ActionType from "../../constant/master/priceItemsConstant";
 const INIT_STATE = {
   priceItems: [],
   priceItem: [],
+  priceItemPage: [],
 };
 
 const PriceItemsReduce = (state = INIT_STATE, action: any) => {
@@ -11,6 +12,10 @@ const PriceItemsReduce = (state = INIT_STATE, action: any) => {
       return { ...state };
     case ActionType.GET_PRICE_ITEMS_SUCCESS:
       return GetPriceItemsSuccessfully(state, action);
+    case ActionType.GET_PAGE_PRICE_ITEMS_REQUEST:
+      return { ...state };
+    case ActionType.GET_PAGE_PRICE_ITEMS_SUCCESS:
+      return GetPagePriceItemsSuccessfully(state, action);
     case ActionType.ADD_PRICE_ITEMS_REQUEST:
       return { ...state };
     case ActionType.ADD_PRICE_ITEMS_SUCCESS:
@@ -37,6 +42,14 @@ const GetPriceItemsSuccessfully = (state: any, action: any) => {
   return {
     ...state,
     priceItems: payload,
+  };
+};
+
+const GetPagePriceItemsSuccessfully = (state: any, action: any) => {
+  const { payload } = action;
+  return {
+    ...state,
+    priceItemPage: payload,
   };
 };
 

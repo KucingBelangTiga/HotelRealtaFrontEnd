@@ -3,6 +3,7 @@ import * as ActionType from "../../constant/master/categoryConstant";
 const INIT_STATE = {
   categories: [],
   category: [],
+  categoryPage: [],
 };
 
 const CategoryReduce = (state = INIT_STATE, action: any) => {
@@ -11,6 +12,10 @@ const CategoryReduce = (state = INIT_STATE, action: any) => {
       return { ...state };
     case ActionType.GET_CATEGORY_SUCCESS:
       return GetCategorySuccessfully(state, action);
+    case ActionType.GET_PAGE_CATEGORY_REQUEST:
+      return { ...state };
+    case ActionType.GET_PAGE_CATEGORY_SUCCESS:
+      return GetPageCategorySuccessfully(state, action);
     case ActionType.ADD_CATEGORY_REQUEST:
       return { ...state };
     case ActionType.ADD_CATEGORY_SUCCESS:
@@ -41,6 +46,14 @@ const GetCategorySuccessfully = (state: any, action: any) => {
   return {
     ...state,
     categories: payload,
+  };
+};
+
+const GetPageCategorySuccessfully = (state: any, action: any) => {
+  const { payload } = action;
+  return {
+    ...state,
+    categoryPage: payload,
   };
 };
 

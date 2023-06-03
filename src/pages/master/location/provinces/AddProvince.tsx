@@ -2,17 +2,25 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AddProvincesRequest } from "../../../../redux/action/master/provincesAction";
 import { useFormik, FormikProvider } from "formik";
+import * as Yup from "yup";
 
 export default function AddProvince(props: any) {
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
 
-  const formik = useFormik({
+  const formik: any = useFormik({
     enableReinitialize: true,
     initialValues: {
       provName: "",
       provCountry: props.country === undefined ? null : props.country.countryId,
     },
+    validationSchema: Yup.object().shape({
+      provCountry: Yup.number().required("Required"),
+      provName: Yup.string()
+        .min(1, "Too Short!")
+        .max(84, "Too Long!")
+        .required("Required"),
+    }),
     onSubmit: async (values) => {
       dispatch(AddProvincesRequest(values));
       props.setRefresh(true);
@@ -60,6 +68,9 @@ export default function AddProvince(props: any) {
                         <div className="flex gap-10 ">
                           <label className="py-2 text-black font-bold w-full">
                             Country Name
+                            <span className="text-red-400">
+                              &nbsp; * {formik.errors.provCountry}
+                            </span>
                           </label>
                           <p className=" w-full py-2 text-black border-slate-900">
                             {props.country === undefined
@@ -72,6 +83,9 @@ export default function AddProvince(props: any) {
                         <div className="flex gap-10 ">
                           <label className="text-black py-2 font-bold w-full">
                             Province Name
+                            <span className="text-red-400">
+                              &nbsp; * {formik.errors.provName}
+                            </span>
                           </label>
                           <input
                             className="border rounded w-full py-2 px-3 text-black border-slate-900 "

@@ -10,6 +10,17 @@ const list = async () => {
   }
 };
 
+const listPage = async (payload: any) => {
+  try {
+    const result = await axios.get(
+      `${config.domain}/category-group/page/?page=${payload.page}`
+    );
+    return result.data;
+  } catch (error) {
+    return await error;
+  }
+};
+
 const deleted = async (id: any) => {
   try {
     const result = await axios.delete(`${config.domain}/category-group/${id}`);
@@ -67,6 +78,7 @@ const findOne = async (id: any) => {
 
 const allApi = {
   list,
+  listPage,
   deleted,
   create,
   update,

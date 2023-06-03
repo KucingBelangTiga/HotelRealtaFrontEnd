@@ -3,6 +3,7 @@ import * as ActionType from "../../constant/master/regionsContants";
 const INIT_STATE = {
   regions: [],
   region: [],
+  regionPage: [],
 };
 
 const RegionsReduce = (state = INIT_STATE, action: any) => {
@@ -11,6 +12,10 @@ const RegionsReduce = (state = INIT_STATE, action: any) => {
       return { ...state };
     case ActionType.GET_REGIONS_SUCCESS:
       return GetRegionsSuccessfully(state, action);
+    case ActionType.GET_PAGE_REGIONS_REQUEST:
+      return { ...state };
+    case ActionType.GET_PAGE_REGIONS_SUCCESS:
+      return GetPageRegionsSuccessfully(state, action);
     case ActionType.ADD_REGIONS_REQUEST:
       return { ...state };
     case ActionType.ADD_REGIONS_SUCCESS:
@@ -37,6 +42,14 @@ const GetRegionsSuccessfully = (state: any, action: any) => {
   return {
     ...state,
     regions: payload,
+  };
+};
+
+const GetPageRegionsSuccessfully = (state: any, action: any) => {
+  const { payload } = action;
+  return {
+    ...state,
+    regionPage: payload,
   };
 };
 

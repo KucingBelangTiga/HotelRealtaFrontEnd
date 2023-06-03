@@ -3,6 +3,7 @@ import * as ActionType from "../../constant/master/countriesConstant";
 const INIT_STATE = {
   countries: [],
   country: [],
+  countryPage: [],
 };
 
 const CountriesReduce = (state = INIT_STATE, action: any) => {
@@ -11,6 +12,10 @@ const CountriesReduce = (state = INIT_STATE, action: any) => {
       return { ...state };
     case ActionType.GET_COUNTRIES_SUCCESS:
       return GetCountriesSuccessfully(state, action);
+    case ActionType.GET_PAGE_COUNTRIES_REQUEST:
+      return { ...state };
+    case ActionType.GET_PAGE_COUNTRIES_SUCCESS:
+      return GetPageCountriesSuccessfully(state, action);
     case ActionType.ADD_COUNTRIES_REQUEST:
       return { ...state };
     case ActionType.ADD_COUNTRIES_SUCCESS:
@@ -37,6 +42,14 @@ const GetCountriesSuccessfully = (state: any, action: any) => {
   return {
     ...state,
     countries: payload,
+  };
+};
+
+const GetPageCountriesSuccessfully = (state: any, action: any) => {
+  const { payload } = action;
+  return {
+    ...state,
+    countryPage: payload,
   };
 };
 
