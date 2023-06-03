@@ -1,6 +1,7 @@
 import * as ActionType from "../../constant/hotel/hotelConstant";
 
 const INIT_STATE = {
+  pageHotels: [],
   hotels: [],
   hotel: [],
 };
@@ -11,6 +12,10 @@ const HotelsReduce = (state = INIT_STATE, action: any) => {
       return { ...state };
     case ActionType.GET_HOTELS_SUCCESS:
       return GetHotelsSuccessfully(state, action);
+    case ActionType.GET_ALLHOTELS_REQUEST:
+      return { ...state };
+    case ActionType.GET_ALLHOTELS_SUCCESS:
+      return GetAllHotelsSuccessfully(state, action);
     case ActionType.ADD_HOTELS_REQUEST:
       return { ...state };
     case ActionType.ADD_HOTELS_SUCCESS:
@@ -32,10 +37,18 @@ const HotelsReduce = (state = INIT_STATE, action: any) => {
   }
 };
 
+const GetAllHotelsSuccessfully = (state: any, action: any) => {
+  const { payload } = action;
+  return {
+    ...state,
+    hotels: payload,
+  };
+};
+
 const GetHotelsSuccessfully = (state: any, action: any) => {
   return {
     ...state,
-    hotels: action.payload,
+    pageHotels: action.payload,
   };
 };
 

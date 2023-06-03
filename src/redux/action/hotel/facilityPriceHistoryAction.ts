@@ -1,5 +1,20 @@
 import * as ActionFacPriceHist from "../../constant/hotel/facilityPriceHistoryConstant";
 
+export const GetPageFacPriceHistRequest = (payload: any) => ({
+  type: ActionFacPriceHist.GET_PAGEFACPRICEHIST_REQUEST,
+  payload,
+});
+
+export const GetPageFacPriceHistSuccess = (payload: any) => ({
+  type: ActionFacPriceHist.GET_PAGEFACPRICEHIST_SUCCESS,
+  payload,
+});
+
+export const GetPageFacPriceHistFailed = (payload: any) => ({
+  type: ActionFacPriceHist.GET_PAGEFACPRICEHIST_FAILED,
+  payload,
+});
+
 export const GetFacPriceHistRequest = (payload: any) => ({
   type: ActionFacPriceHist.GET_FACPRICEHIST_REQUEST,
   payload,

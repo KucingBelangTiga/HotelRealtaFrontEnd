@@ -1,7 +1,18 @@
 import axios from "axios";
 import config from "../../config/config";
 
-const list = async () => {
+const list = async (payload: any) => {
+  try {
+    const result = await axios.get(
+      `${config.domain}/hotels/all/?page=${payload.page}&name=${payload.name}`
+    );
+    return result.data;
+  } catch (error) {
+    return await error;
+  }
+};
+
+const listAll = async () => {
   try {
     const result = await axios.get(`${config.domain}/hotels/`);
     return result.data;
@@ -50,6 +61,7 @@ const findOne = async (id: any) => {
 };
 
 const allApi = {
+  listAll,
   list,
   deleted,
   create,

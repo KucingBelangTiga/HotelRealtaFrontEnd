@@ -150,7 +150,7 @@ export default function Add(props: any) {
                   </button>
                 </div>
                 {/*body*/}
-                <div className="relative p-6 flex-auto">
+                <div className="relative p-6 flex-auto text-left">
                   <FormikProvider value={formik}>
                     <form onSubmit={formik.handleSubmit}>
                       <div className="flex">
@@ -247,7 +247,7 @@ export default function Add(props: any) {
                           </div>
                           <div className="mb-4">
                             <label className="block text-black text-sm font-bold mb-2">
-                              Start Date
+                              Start Date <span className="text-red-400">*</span>
                             </label>
                             <input
                               className=" border rounded w-full py-2 px-3 text-black border-slate-900"
@@ -280,7 +280,7 @@ export default function Add(props: any) {
                         <div className="py-4 px-8">
                           <div className="mb-4">
                             <label className="block text-black text-sm font-bold mb-2">
-                              Category
+                              Category <span className="text-red-400">*</span>
                             </label>
                             <select
                               name="faciCagro"
@@ -313,7 +313,8 @@ export default function Add(props: any) {
                           </div>
                           <div className="mb-4">
                             <label className="block text-black text-sm font-bold mb-2">
-                              Measure Unit
+                              Measure Unit{" "}
+                              <span className="text-red-400">*</span>
                             </label>
                             <select
                               name="faciMeasureUnit"
@@ -374,7 +375,7 @@ export default function Add(props: any) {
                           </div>
                           <div className="mb-4">
                             <label className="block text-black text-sm font-bold mb-2">
-                              End Date
+                              End Date <span className="text-red-400">*</span>
                             </label>
                             <input
                               className=" border rounded w-full py-2 px-3 text-black border-slate-900"

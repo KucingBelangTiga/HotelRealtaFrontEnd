@@ -6,6 +6,7 @@ import * as ActionCategoryGroup from "../constant/master/categoryGroupConstant";
 import * as ActionAddress from "../constant/master/addressConstant";
 import * as ActionFacilityPhotos from "../constant/hotel/facilityPhotosConstant";
 import {
+  handleAllHotels,
   handleHotels,
   handleAddHotels,
   findHotels,
@@ -23,6 +24,7 @@ import {
 import {
   handleFacPriceHist,
   handleAddFacPriceHist,
+  handlePageFacPriceHist,
 } from "./hotel/facilityPriceHistorySaga";
 
 import { handleAddress, findAddress } from "./master/addressSaga";
@@ -40,6 +42,7 @@ import {
 function* watchAll() {
   yield all([
     takeEvery(ActionHotels.GET_HOTELS_REQUEST, handleHotels),
+    takeEvery(ActionHotels.GET_ALLHOTELS_REQUEST, handleAllHotels),
     takeEvery(ActionHotels.ADD_HOTELS_REQUEST, handleAddHotels),
     takeEvery(ActionHotels.FIND_HOTELS_REQUEST, findHotels),
     takeEvery(ActionHotels.EDIT_HOTELS_REQUEST, editHotels),
@@ -53,6 +56,10 @@ function* watchAll() {
     takeEvery(ActionFacilities.DEL_FACILITIES_REQUEST, deleteFacilities),
 
     takeEvery(ActionFacPriceHist.GET_FACPRICEHIST_REQUEST, handleFacPriceHist),
+    takeEvery(
+      ActionFacPriceHist.GET_PAGEFACPRICEHIST_REQUEST,
+      handlePageFacPriceHist
+    ),
     takeEvery(
       ActionFacPriceHist.ADD_FACPRICEHIST_REQUEST,
       handleAddFacPriceHist

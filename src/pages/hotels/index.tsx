@@ -1,113 +1,42 @@
 import React, { useEffect, useState } from "react";
 import Layout from "@/src/components/layout";
 import { useDispatch, useSelector } from "react-redux";
-import { GetHotelsRequest } from "../../redux/action/hotel/hotelsAction";
-
-import { DataTable } from "primereact/datatable";
-import { Column } from "primereact/column";
-import { FilterMatchMode } from "primereact/api";
-
-import "primereact/resources/themes/lara-light-indigo/theme.css";
-import "primereact/resources/primereact.css";
+import {
+  GetAllHotelsRequest,
+  GetHotelsRequest,
+} from "../../redux/action/hotel/hotelsAction";
 
 import { useRouter } from "next/router";
 import Add from "./hotel/Add";
 import Edit from "./hotel/Edit";
 import LayoutHotel from "./layout";
+import Pagination from "@/src/components/component/Pagination";
 
 export default function Index() {
   const dispatch = useDispatch();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [first, setFirst] = useState(0);
+  const [page, setpage] = useState<number>(1);
   const [search, setSearch] = useState<string>("");
   const [refresh, setRefresh] = useState(false);
   const [id, setId] = useState<number>();
   const [kebabMenu, setKebabMenu] = useState<boolean>(false);
-  const { hotels } = useSelector((state: any) => state.hotelsState);
-  const [filters, setFilters] = useState({
-    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-  });
+  const { pageHotels } = useSelector((state: any) => state.hotelsState);
 
   useEffect(() => {
-    dispatch(GetHotelsRequest());
+    const payload = {
+      page: page,
+      name: search,
+    };
+    dispatch(GetHotelsRequest(payload));
+    dispatch(GetAllHotelsRequest());
     setRefresh(false);
     setLoading(true);
-  }, [dispatch, refresh]);
-
-  const ratingStarTemplate = (rowData: any) => {
-    return (
-      <div className="star-rating">
-        {[...Array(5)].map((star, index) => {
-          index += 1;
-          return (
-            <span
-              key={index}
-              className={
-                index <= rowData.hotelRatingStar ? "text-yellow-400" : "off"
-              }
-            >
-              &#9733;
-            </span>
-          );
-        })}
-      </div>
-    );
-  };
+  }, [dispatch, page, search, refresh]);
 
   const displayKebabMenu = (id: number) => {
     setId(id);
     setKebabMenu(!kebabMenu);
-  };
-
-  const kebabHotel = (rowData: any) => {
-    return (
-      <div className="flex justify-end gap-4 relative">
-        <button
-          x-data="{ tooltip: 'Edite' }"
-          className="text-coldBlue hover:bg-coldBlue hover:text-white p-2 rounded-full"
-          onClick={() => displayKebabMenu(rowData.hotelId)}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            version="1.1"
-            viewBox="0 0 16 16"
-            width="16"
-            height="16"
-            fill="none"
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="1.5"
-          >
-            <circle cx="8" cy="2.5" r=".75" />
-            <circle cx="8" cy="8" r=".75" />
-            <circle cx="8" cy="13.5" r=".75" />
-          </svg>
-        </button>
-        {rowData.hotelId === id && kebabMenu && (
-          <div className="absolute top-10 border-coldBlue text-coldBlue w-96 z-30">
-            <ul className="bg-white  absolute right-3  border-coldBlue border-solid border-2 rounded-md text-center">
-              <li>
-                <Edit
-                  id={rowData.hotelId}
-                  setRefresh={setRefresh}
-                  address={rowData.hotelAddr.addrId}
-                />
-              </li>
-              <li>
-                <button
-                  onClick={() => onFacility(rowData.hotelId)}
-                  className="p-3 hover:bg-coldBlue hover:text-white w-full"
-                >
-                  Facilities
-                </button>
-              </li>
-            </ul>
-          </div>
-        )}
-      </div>
-    );
   };
 
   const onFacility = (id: number) => {
@@ -115,16 +44,6 @@ export default function Index() {
       pathname: "/hotels/facility/[id]",
       query: { id: id },
     });
-  };
-
-  const handleSearch = (e: any) => {
-    const value = e.target.value;
-    let _filters = { ...filters };
-
-    _filters["global"].value = value;
-
-    setFilters(_filters);
-    setSearch(value);
   };
 
   return (
@@ -160,39 +79,193 @@ export default function Index() {
                   id="default-search"
                   className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="Search Hotel"
-                  onChange={handleSearch}
+                  onChange={(e) => setSearch(e.target.value)}
                   value={search}
                 />
               </div>
-              <DataTable
-                value={hotels}
-                stripedRows
-                tableStyle={{ minWidth: "50rem" }}
-                className="bg-white text-black"
-                paginator
-                rows={10}
-                first={first}
-                globalFilterFields={["hotelName"]}
-                filters={filters}
-              >
-                <Column field="hotelId" header="Id"></Column>
-                <Column field="hotelName" header="Name"></Column>
-                <Column
-                  field="hotelRatingStar"
-                  header="Rating Star"
-                  body={ratingStarTemplate}
-                ></Column>
-                <Column field="hotelPhonenumber" header="Phone Number"></Column>
-                <Column
-                  field="hotelModifiedDate"
-                  header="Modified Date"
-                ></Column>
-                <Column
-                  field="regionCode"
-                  header={<Add setRefresh={setRefresh} />}
-                  body={kebabHotel}
-                ></Column>
-              </DataTable>
+              <table className=" w-full border-collapse my-5 rounded-lg border border-gray-200 bg-white text-left text-sm text-gray-500 ">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th
+                      scope="col"
+                      className="px-6 py-4 font-medium text-gray-900 text-center"
+                    >
+                      Id
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-4 font-medium text-gray-900 text-center"
+                    >
+                      Name
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-4 font-medium text-gray-900 text-center"
+                    >
+                      Rating Star
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-4 font-medium text-gray-900 text-center"
+                    >
+                      Phone Number
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-4 font-medium text-gray-900 text-center"
+                    >
+                      Modified Date
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-4 font-medium text-gray-900 text-center"
+                    >
+                      <Add setRefresh={setRefresh} />
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100 border-t border-gray-100">
+                  {(pageHotels.items || []).map((item: any) => (
+                    <tr className="hover:bg-gray-50" key={item.hotelId}>
+                      <th className=" px-6 py-4 font-normal text-gray-900">
+                        <div className="text-sm">
+                          <div className="font-medium text-gray-700">
+                            {item.hotelId}
+                          </div>
+                        </div>
+                      </th>
+                      <td className="px-6 py-4">{item.hotelName}</td>
+                      <td className="px-6 py-4">
+                        <div className="star-rating">
+                          {[...Array(5)].map((star, index) => {
+                            index += 1;
+                            return (
+                              <span
+                                key={index}
+                                className={
+                                  index <= item.hotelRatingStar
+                                    ? "text-yellow-400"
+                                    : "off"
+                                }
+                              >
+                                &#9733;
+                              </span>
+                            );
+                          })}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4">{item.hotelPhonenumber}</td>
+                      <td className="px-6 py-4">{item.hotelModifiedDate}</td>
+                      <td className="px-6 py-4">
+                        <div className="flex justify-end gap-4 relative">
+                          <button
+                            x-data="{ tooltip: 'Edite' }"
+                            className="text-coldBlue hover:bg-coldBlue hover:text-white p-2 rounded-full"
+                            onClick={() => displayKebabMenu(item.hotelId)}
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              version="1.1"
+                              viewBox="0 0 16 16"
+                              width="16"
+                              height="16"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="1.5"
+                            >
+                              <circle cx="8" cy="2.5" r=".75" />
+                              <circle cx="8" cy="8" r=".75" />
+                              <circle cx="8" cy="13.5" r=".75" />
+                            </svg>
+                          </button>
+                          {item.hotelId === id && kebabMenu && (
+                            <div className="absolute top-10 border-coldBlue text-coldBlue w-96 z-30">
+                              <ul className="bg-white  absolute right-3  border-coldBlue border-solid border-2 rounded-md text-center">
+                                <li>
+                                  <Edit
+                                    id={item.hotelId}
+                                    setRefresh={setRefresh}
+                                    address={item.hotelAddr.addrId}
+                                  />
+                                </li>
+                                <li>
+                                  <button
+                                    onClick={() => onFacility(item.hotelId)}
+                                    className="p-3 hover:bg-coldBlue hover:text-white w-full"
+                                  >
+                                    Facilities
+                                  </button>
+                                </li>
+                              </ul>
+                            </div>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              {pageHotels.meta && (
+                <Pagination
+                  currentPage={pageHotels.meta.currentPage}
+                  totalPages={pageHotels.meta.totalPages}
+                  setpage={setpage}
+                  page={page}
+                  items={pageHotels.items}
+                />
+                // <nav
+                //   aria-label="Page navigation example"
+                //   className="flex justify-center items-center"
+                // >
+                //   <ul className="inline-flex -space-x-px">
+                //     <li>
+                //       <button
+                //         disabled={
+                //           pageHotels.meta.currentPage === 1 ? true : false
+                //         }
+                //         onClick={() => setpage(page - 1)}
+                //         className="px-3 py-2 ml-0  text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                //       >
+                //         Previous
+                //       </button>
+                //     </li>
+
+                //     {(pageHotels.items || [])
+                //       .slice(0, pageHotels.meta.totalPages)
+                //       .map((item: any, index: number) => (
+                //         <li key={index}>
+                //           <button
+                //             onClick={() => setpage(index + 1)}
+                //             className={
+                //               index + 1 === pageHotels.meta.currentPage
+                //                 ? "px-3 py-2  text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
+                //                 : "px-3 py-2  text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                //             }
+                //           >
+                //             {index + 1}
+                //           </button>
+                //         </li>
+                //       ))}
+
+                //     <li>
+                //       <button
+                //         disabled={
+                //           pageHotels.meta.currentPage ===
+                //           pageHotels.meta.totalPages
+                //             ? true
+                //             : false
+                //         }
+                //         onClick={() => setpage(page + 1)}
+                //         className="px-3 py-2  text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                //       >
+                //         Next
+                //       </button>
+                //     </li>
+                //   </ul>
+                // </nav>
+              )}
             </div>
           )}
         </LayoutHotel>

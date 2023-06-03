@@ -10,9 +10,11 @@ const listAll = async () => {
   }
 };
 
-const list = async (id: any) => {
+const list = async (payload: any) => {
   try {
-    const result = await axios.get(`${config.domain}/facilities/all/${id}`);
+    const result = await axios.get(
+      ` ${config.domain}/facilities/all/?page=${payload.page}&id=${payload.id}`
+    );
     return result.data;
   } catch (error) {
     return await error;

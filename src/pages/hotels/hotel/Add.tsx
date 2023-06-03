@@ -95,7 +95,7 @@ export default function Add(props: any) {
                   </button>
                 </div>
                 {/*body*/}
-                <div className="relative p-6 flex-auto">
+                <div className="relative p-6 flex-auto text-left">
                   <FormikProvider value={formik}>
                     <form onSubmit={formik.handleSubmit}>
                       <div className="py-4 px-8">
@@ -154,7 +154,7 @@ export default function Add(props: any) {
                         </div>
                         <div className="mb-4">
                           <label className="block text-black text-sm font-bold mb-2">
-                            City
+                            City<span className="text-red-400">&nbsp; *</span>
                           </label>
                           <select
                             name="hotelAddr"
@@ -188,7 +188,7 @@ export default function Add(props: any) {
                         </div>
                         <div className="mb-4 text-black">
                           <p className="block text-black text-sm font-bold mb-2">
-                            Description
+                            Address
                           </p>
                           <p className="border rounded w-full py-2 px-3 text-blue-950 border-slate-900 break-words">
                             {city === undefined
