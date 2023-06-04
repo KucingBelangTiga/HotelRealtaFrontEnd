@@ -59,7 +59,7 @@ export default function Index() {
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-4 font-medium text-gray-900 text-right"
+                    className="px-6 py-4 font-medium text-gray-900 text-center"
                   >
                     <AddServiceTask setRefresh={setRefresh} />
                   </th>
