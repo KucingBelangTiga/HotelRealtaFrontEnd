@@ -13,7 +13,7 @@ export default function Delete(props: any) {
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
   const toast = useRef<any>(null);
-
+  
   const deleteWode = async () => {
     await dispatch(DeleteWodeRequest(props.id));
     props.setRefresh(true);

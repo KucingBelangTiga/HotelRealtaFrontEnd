@@ -35,6 +35,8 @@ export default function Edit(props: any) {
   const { joros } = useSelector((state: any) => state.joroState);
   const [submitted, setSubmitted] = useState<boolean>(false);
   const toast = useRef<any>(null);
+  const [totalSize, setTotalSize] = useState(0);
+  const fileUploadRef = useRef(null);
   const [date, setDate] = useState<string | Date | Date[] | null>(null);
   const [inputNumberValue, setInputNumberValue] = useState<number | null>(null);
   const [previewImg, setPreviewImg] = useState<any>()
@@ -43,6 +45,7 @@ export default function Edit(props: any) {
   useEffect(() => {
     dispatch(FindEmpRequest(id));
   }, [dispatch, props.id, showModal]);
+ console.log("emp: ", emp);
  
   useEffect(() => {
     dispatch(GetJoroRequest());
@@ -68,7 +71,7 @@ export default function Edit(props: any) {
       empJoroId: emp.empJoro?.joroId, 
       empUserId: emp.empUser?.userId, 
     },
-    validationSchema: Yup.object({
+    validationSchema: Yup.object().shape({
       empNationalId: Yup.string().required('*Required empNationalId.'),
       empBirthDate: Yup.string().required('*Required BirthDate.'),
       empMaritalStatus: Yup.string().required('*Required MaritalStatus.'),
@@ -78,7 +81,28 @@ export default function Edit(props: any) {
       empCurrentFlag: Yup.string().required('*Required CurrentFlag.'),
       empJoroId: Yup.string().required('*Required JobRole.'),
       empUserId: Yup.string().required('*Required FullName.'),
-    }),
+      file: Yup.mixed()
+      .test(
+        "FILE_SIZE",
+        "*The file size exceeds the limit (1MB).",
+        (value: any) => !value || (value && value.size <= 1000000)
+      )
+      .test(
+        "FILE_FORMAT",
+        "*Unsupported file type.",
+        (value: any) => {
+          if (value) {
+            return (
+              value.type === "image/jpeg" ||
+              value.type === "image/jpg" ||
+              value.type === "image/png"
+            );
+          } else {
+            return true;
+          }
+        }
+      ),
+      }),
     onSubmit: async (values) => {
       dispatch(EditEmpRequest(values));
       props.setRefresh(true);
@@ -113,19 +137,18 @@ export default function Edit(props: any) {
     const file = event.target.files[0]
     console.log(event.target.files);
     reader.onload = () => {
-        formik.setFieldValue("file", file)
-        setPreviewImg(reader.result)
+        formik.setFieldValue('file', file)
+        // setPreviewImg(reader.result);
+        setPreviewImg(URL.createObjectURL(file))
     }
     reader.readAsDataURL(file)
     setUpload(true)
 }
-
   const onClear = (event: any) => {
     event.preventDefault()
-    setPreviewImg(null)
+    setPreviewImg(false) 
     setUpload(false)
 }
-//
 
   //get user
   const [users, setUsers] = useState<any[]>([]);
@@ -373,10 +396,10 @@ export default function Edit(props: any) {
                       <div className="upload-form">
                       <label htmlFor="empPhoto">Photo</label>
                         <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
-                          {
-                            upload === false ?
+                       {
+                            previewImg === false ? (
                                 <>
-                                    <span>Empty file</span></> :
+                                    <span>Empty file</span></> ) : ( 
                                 <>
                                     <div>
                                         <img src={previewImg} alt='img' className="max-w-xs" width={100} />
@@ -385,11 +408,25 @@ export default function Edit(props: any) {
                                         <button className="text-red-700 hover:text-white text-xs border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-small rounded-md text-sm px-3 py-2.5 text-center mr-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900" onClick={onClear}>Remove</button>
                                     </div>
                                 </>
-                        }
+                        )}
                     </div>
                     <div>
-                        <input className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="user_avatar_help" id="empPhoto" name="empPhoto" type="file" onChange={uploadConfig("file")} />
+                        <input className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="user_avatar_help" id="file" name="file" type="file" onChange={uploadConfig("file")} />
                         <div className="mt-1 text-sm text-gray-500 dark:text-gray-300" id="user_avatar_help" > </div>
+                    </div>
+
+                    {formik.errors.file && (
+                    <span className="text-red-400 text-sm">
+                      &nbsp; {formik.errors.file.toString()}
+                    </span>
+                  )}
+
+                    <div className="mt-3 border border-gray-300 border-dashed pt-2 pb-4 px-4 text-sm">
+                      <strong className="-ml-3 ">Photo to upload:</strong>
+                      <ul className="list-disc pl-2">
+                          <li>Allowed types: jpg, jpeg, and png;</li>
+                          <li>Max. size: 1MB.</li>
+                      </ul>
                     </div>
 
                      </div>
@@ -399,7 +436,7 @@ export default function Edit(props: any) {
                 
                           </Fieldset>
 
-          <div className="flex justify-end py-6">
+            <div className="flex justify-end py-6">
           <React.Fragment>
             <Button type="button" icon="pi pi-refresh" rounded outlined tooltip="Reset Form" tooltipOptions={{ position: 'left', showDelay: 300 }} className="mr-7" severity="warning" aria-label="Reset Form" label="Reset" onClick={handleReset} />
             <Button type="button" label="Cancel" severity="danger" icon="pi pi-times" raised className="mr-2" outlined onClick={hideDialog} />

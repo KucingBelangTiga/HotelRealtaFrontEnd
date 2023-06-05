@@ -6,7 +6,11 @@ import { GetWodeRequest, FindWodeRequest } from "../../../../redux/action/hr/wor
 import { FindWoroRequest } from "../../../../redux/action/hr/work_ordersAction";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
+import { FilterMatchMode, FilterOperator, PrimeIcons } from 'primereact/api';
 import { Badge } from 'primereact/badge';
+import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
+import { Calendar, CalendarChangeEvent } from 'primereact/calendar';
+import { Menu } from 'primereact/menu';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { InputText } from 'primereact/inputtext';
 import { OverlayPanel } from 'primereact/overlaypanel';
@@ -37,16 +41,6 @@ export default function IndexWode() {
     const { serviceTasks } = useSelector((state: any) => state.serviceTasksState); 
 
     useEffect(() => {
-      if (router.isReady) {
-        dispatch(GetWodeRequest(router.query.id)); 
-        dispatch(FindWoroRequest(router.query.id));
-        setLoading(true);
-      }else {
-        console.log('Invalid Id.');
-      }
-    }, [dispatch, router.query.id, refresh, router.isReady]);
-
-    useEffect(() => {
       dispatch(GetEmpRequest());
       setRefresh(false);
       setLoading(true);
@@ -60,13 +54,23 @@ export default function IndexWode() {
       }
       return mapping;
     }, {});
-    //
   
     useEffect(() => {
       dispatch(GetServiceTasksRequest());
       setRefresh(false);
       setLoading(true);
     }, [dispatch, refresh]);
+
+    useEffect(() => {
+      if (router.isReady) {
+        dispatch(GetWodeRequest(router.query.id)); 
+        // dispatch(GetWodeRequest()); 
+        dispatch(FindWoroRequest(router.query.id));
+        setLoading(true);
+      }else {
+        console.log('Invalid Id.');
+      }
+    }, [dispatch, router.query.id, refresh, router.isReady]);
 
     useEffect(() => {
       document.title = "Human Resource - Work Order Detail"; 
@@ -111,7 +115,6 @@ export default function IndexWode() {
             <InputText
               className="w-full md:w-10rem "
               id="date"
-              //en-GB = minus 1 hari tgl Indonesia
               value={woro.woroStartDate ? new Date(woro.woroStartDate).toLocaleDateString("en-GB", {
                 day: "numeric",
                 month: "short",
@@ -131,7 +134,7 @@ export default function IndexWode() {
         );
     };
 
-const header = renderHeader();
+    const header = renderHeader();
     return (
         <div>
           {/* <Layout> */}
@@ -164,12 +167,10 @@ const header = renderHeader();
                     body={(rowData: any) => rowData.wodeSeta?.setaName}
                     ></Column>
                     <Column field="wodeNotes" header="Notes" sortable style={{ width: '25%' }}
-                     body={(rowData: any) => (
+                    body={(rowData: any) => (
                       <span>
                         <strong>{rowData.wodeFaci?.faciName}</strong>
-                        {/* jika faciName ada */}
-                        <strong>{rowData.wodeFaci?.faciName && " : "}</strong><br/> 
-                        {/* faciName+notes */}
+                        <strong>{rowData.wodeFaci?.faciName && " : "}</strong><br/>
                         {rowData.wodeNotes}
                       </span>
                     )}

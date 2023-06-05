@@ -102,7 +102,7 @@ export default function IndexEphi() {
                         if (rowData.ephiEmp && rowData.ephiEmp.empId && empUserMapping[rowData.ephiEmp.empId]) {
                           return empUserMapping[rowData.ephiEmp.empId];
                         } else {
-                          return null;
+                          return null; 
                         }
                       }}
                     ></Column> 
@@ -131,7 +131,7 @@ export default function IndexEphi() {
                     body={(rowData: any) => rowData.ephiRateSalary}
                     >
                     </Column>
-                    <Column field="ephiPayFrequence" header="Pay Frequencies" sortable style={{ width: '25%' }}
+                    <Column field="ephiPayFrequence" header="Pay Frequency" sortable style={{ width: '25%' }}
                     body={(rowData: any) => {
                         if (rowData.ephiPayFrequence === 1) {
                           return 'Monthly';

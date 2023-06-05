@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useFormik, FormikProvider } from "formik";
 import { useRouter } from "next/router";
 import * as Yup from 'yup';
-import classStartDates from 'classnames';
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
@@ -16,7 +15,6 @@ import { GetEmpRequest } from "../../../../redux/action/hr/employeeAction";
 import { GetServiceTasksRequest } from "../../../../redux/action/master/serviceTasksAction";
 import { GetFacilitiesRequest } from "../../../../redux/action/hotel/facilitiesAction";
 import Facilities from "../../../../api/hotel/facilities";
-import Hotels from "../../../../api/hotel/hotels";
 
 import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
@@ -54,7 +52,6 @@ export default function Add(props: any) {
     setLoading(true);
   }, [dispatch, refresh]);
 
-  //get faci
   const [facilities, setFacis] = useState<any[]>([]);
 
   useEffect(() => {
@@ -69,22 +66,30 @@ export default function Add(props: any) {
     getFaciData();
   }, []);
   console.log(facilities);
-  //
+  
+  const selectedFacisTemplate = (option: any, props: any) => {
+    if (option) {
+      return (
+        <div className="flex align-items-center">
+          <div key={option.faciId}>{option.faciName}</div>
+        </div>
+      );
+    }
+    return <span>{props.placeholder}</span>;
+  };
 
   const formik = useFormik({
     initialValues: {
       wodeTaskName: "",
       wodeSetaId: "",
       wodeEmpId: "",
-      wodeStatus: "",
       wodeNotes: "",
       wodeFaciId: "",
-      wodeWoro: Number(props.id), //ketika add, id = router.query.id
+      wodeWoro: Number(props.id), //agar ketika add id = router.query.id
     },
     validationSchema: Yup.object({
         wodeSetaId: Yup.string().required('*Required taskName.'),
         wodeEmpId: Yup.string().required('*Required employee.'),
-        wodeStatus: Yup.string().required('*Required status.'),
         wodeFaciId: Yup.string().required('*Required facility.'),
       }), 
     onSubmit: async (values) => { 
@@ -92,7 +97,6 @@ export default function Add(props: any) {
         wodeTaskName: values.wodeTaskName,
         wodeSetaId: values.wodeSetaId,
         wodeEmpId: values.wodeEmpId,
-        wodeStatus: values.wodeStatus,
         wodeNotes: values.wodeNotes,
         wodeFaciId: values.wodeFaciId,
         wodeWoro: Number(props.id),
@@ -160,7 +164,7 @@ export default function Add(props: any) {
                                 inputId="taskName"
                                 name="wodeSetaId"
                                 value={formik.values.wodeSetaId}
-                                //simpan data taskName ke wodeTaskName sekaligus
+                                //simpan data ke wodeTaskName sekaligus
                                 onChange={(e: DropdownChangeEvent) => {
                                   const selectedValue = e.value;
                                   const selectedTask = serviceTasks.find((task: any) => task.setaId === selectedValue);
@@ -186,6 +190,7 @@ export default function Add(props: any) {
                             <div className="field col-12 md:col-4">
                                 <label htmlFor="wodeEmpId" className="mr-2">Assign To</label> 
                                 <Dropdown
+                                // className="w-full md:w-12rem"
                                 inputId="wodeEmpId"
                                 name="wodeEmpId"
                                 value={formik.values.wodeEmpId}
@@ -207,37 +212,7 @@ export default function Add(props: any) {
                                 )}
                               </div>
 
-                              <div className="field col-12 md:col-4">
-                                <label htmlFor="wodeStatus" className="mr-2">Status</label> 
-                                <Dropdown
-                                inputId="wodeStatus"
-                                name="wodeStatus"
-                                value={formik.values.wodeStatus}
-                                onChange={(e: DropdownChangeEvent) => {
-                                  formik.setFieldValue("wodeStatus", e.value); 
-                                }}
-                                options={[ { label: 'INPROGRESS', value: 'INPROGRESS' },
-                                { label: 'COMPLETED', value: 'COMPLETED' },
-                                { label: 'CANCELLED', value: 'CANCELLED' },
-                              ]}
-                                optionLabel="label"
-                                placeholder="Select Status"
-                              />
-                              {formik.touched.wodeStatus && formik.errors.wodeStatus && (
-                                  <small className="p-invalid text-red-500">{formik.errors.wodeStatus}</small>
-                                )}
-                              </div>
-
-                              <div className="field col-8">
-                                <label htmlFor="wodeNotes" className="mr-2">Notes</label> 
-                                <InputTextarea 
-                                autoResize  rows={3} cols={20} 
-                                value={formik.values.wodeNotes} 
-                                onChange={(e) => formik.setFieldValue("wodeNotes", e.target.value)} 
-                                />
-                             </div>
-
-                             <div className="field col-4">
+                                <div className="field col-12 md:col-4">
                                 <label htmlFor="wodeFaciId" className="mr-2">Facilities</label> 
                                 <Dropdown
                                 inputId="wodeFaciId"
@@ -260,7 +235,16 @@ export default function Add(props: any) {
                                   <small className="p-invalid text-red-500">{formik.errors.wodeFaciId}</small>
                                 )}
                               </div>
-                              
+
+                              <div className="field col-12">
+                                <label htmlFor="wodeNotes" className="mr-2">Notes</label> 
+                                <InputTextarea 
+                                autoResize rows={3} cols={20} 
+                                value={formik.values.wodeNotes} 
+                                onChange={(e) => formik.setFieldValue("wodeNotes", e.target.value)} 
+                                />
+                             </div>
+
                              </div></div></div>
 
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import Layout from "../../../components/layout";
-import { GetEmpRequest, FindEmpRequest } from "../../../redux/action/hr/employeeAction";
+import { GetEmpRequest } from "../../../redux/action/hr/employeeAction";
 
 import { DataTable, DataTableFilterMeta } from "primereact/datatable";
 import { Column } from "primereact/column";
@@ -89,7 +89,7 @@ export default function IndexEmp() {
         });
       };
 
-  //filter name
+    //name filter
     const onGlobalFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
       let _filters = { ...filters };
@@ -103,7 +103,7 @@ export default function IndexEmp() {
   }; 
   // 
 
-  //filter status
+    //status filter
     const onStatusFilterChange = (e: DropdownChangeEvent) => {
       const value = e.value;
       let _filters = { ...filters };
@@ -113,7 +113,7 @@ export default function IndexEmp() {
       }
       setFilters(_filters);
     };  
-  //  
+    //  
 
     const renderHeader = () => {
         return (
@@ -183,7 +183,7 @@ export default function IndexEmp() {
                     body={(rowData: any) =>
                       new Date(rowData.empBirthDate).toLocaleDateString("en-GB", {
                         day: "numeric",
-                        month: "short", 
+                        month: "short", //nama bulan lengkap pakai: long
                         year: "numeric"
                       })
                     }
@@ -209,7 +209,7 @@ export default function IndexEmp() {
                       sortable
                       style={{ width: "25%" }}
                       body={(rowData: any) =>
-                        rowData.empCurrentFlag === 1 ? ( //pakai operator === (identik nilai dan tipe data), jadi nilai harus sesuai db: number. kalau pakai operator ==(identik nilai saja) isinya boleh string, misal: empCurrentFlag == "1"
+                        rowData.empCurrentFlag === 1 ? ( 
                           <span className="p-badge p-badge-success">Active</span>
                         ) : (
                           <span className="p-badge p-badge-danger">Inactive</span>

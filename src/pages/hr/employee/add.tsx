@@ -31,12 +31,16 @@ export default function Add(props: any) {
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [submitted, setSubmitted] = useState<boolean>(false);
+  // const [users, setUsers] = useState([]);
   const { emps } = useSelector((state: any) => state.empState);
   const { joros } = useSelector((state: any) => state.joroState);
   const { departments } = useSelector((state: any) => state.deptState);
   const { shifts } = useSelector((state: any) => state.shiftState);
   const toast = useRef<any>(null);
+  const [totalSize, setTotalSize] = useState(0);
+  const fileUploadRef = useRef(null);
   const [date, setDate] = useState<string | Date | Date[] | null>(null);
+  const [time, setTime] = useState<string | Date | Date[] | null>(null);
   const [inputNumberValue, setInputNumberValue] = useState<number | null>(null);
   const [previewImg, setPreviewImg] = useState<any>()
   const [upload, setUpload] = useState(false)
@@ -103,7 +107,7 @@ export default function Add(props: any) {
       edhiDept: "",
       edhiShift: "",
     },
-    validationSchema: Yup.object({
+    validationSchema: Yup.object().shape({
       empNationalId: Yup.string().required('*Required NationalId.'),
       empBirthDate: Yup.string().required('*Required BirthDate.'),
       empMaritalStatus: Yup.string().required('*Required MaritalStatus.'),
@@ -114,7 +118,32 @@ export default function Add(props: any) {
       empJoroId: Yup.string().required('*Required JobRole.'),
       ephiRateSalary: Yup.string().required('*Required RateSalary.'),
       ephiPayFrequence: Yup.string().required('*Required PayFrequence.'),
-    }),
+      edhiDept: Yup.string().required('*Required Department.'),
+      edhiStartDate: Yup.string().required('*Required startDate.'),
+      edhiEndDate: Yup.string().required('*Required endDate.'),
+      edhiShift: Yup.string().required('*Required Shift.'),
+      file: Yup.mixed()
+      .test(
+        "FILE_SIZE",
+        "*The file size exceeds the limit (1MB).",
+        (value: any) => !value || (value && value.size <= 1000000)
+      )
+      .test(
+        "FILE_FORMAT",
+        "*Unsupported file type.",
+        (value: any) => {
+          if (value) {
+            return (
+              value.type === "image/jpeg" ||
+              value.type === "image/jpg" ||
+              value.type === "image/png"
+            );
+          } else {
+            return true;
+          }
+        }
+      ),
+      }),
     onSubmit: async (values) => {
       let payload = new FormData();
       payload.append('empNationalId', values.empNationalId)
@@ -132,6 +161,10 @@ export default function Add(props: any) {
       payload.append('empUserId', values.empUserId)
       payload.append('ephiRateSalary', values.ephiRateSalary)
       payload.append('ephiPayFrequence', values.ephiPayFrequence)
+      payload.append('edhiDept', values.edhiDept)
+      payload.append('edhiStartDate', values.edhiStartDate)
+      payload.append('edhiEndDate', values.edhiEndDate)
+      payload.append('edhiShift', values.edhiShift)
 
       dispatch(AddEmpRequest(values));
       setShowModal(false);
@@ -140,6 +173,7 @@ export default function Add(props: any) {
     },
   });
 
+  //photo berhasil
   const uploadConfig = (name: any) => (event: any) => {
     let reader = new FileReader()
     const file = event.target.files[0]
@@ -188,7 +222,17 @@ export default function Add(props: any) {
    getUserData();
  }, []);
  console.log(users);
- //
+ 
+ const selectedUsersTemplate = (option: any, props: any) => {
+   if (option) {
+     return (
+       <div className="flex align-items-center">
+         <div key={option.userId}>{option.userFullName}</div>
+       </div>
+     );
+   }
+   return <span>{props.placeholder}</span>;
+ };
   
   //get joroname
   const [selectedJoros, setSelectedJoros] = useState<typeof joros | null>(null);
@@ -249,7 +293,7 @@ export default function Add(props: any) {
     if (selectedShift) {
       setShift({
         shiftId: selectedShift.shiftId,
-        shiftStartTime: selectedShift.shiftStartTime,
+        shiftStartTime: selectedShift.shiftStartTime, 
         shiftEndTime: selectedShift.shiftEndTime,
       });
       formik.setFieldValue("edhiShiftId", selectedShiftId);
@@ -263,6 +307,15 @@ export default function Add(props: any) {
     }
   };  
   //
+  //
+
+const empsOptionTemplate = (option: typeof emps) => {
+  return (
+      <div className="flex align-items-center">
+          <div>{option.empUser?.userFullName}</div>
+      </div>
+  );
+};
 
   return (
     <>
@@ -292,7 +345,7 @@ export default function Add(props: any) {
                                 )}
                               </div>
                 
-                            <div className="col-6">
+                              <div className="col-6">
                             <label htmlFor="FullName" style={{ marginRight: '3.2rem' }}>Full Name</label>
                               <Dropdown
                                 className="w-full md:w-12rem"
@@ -466,7 +519,7 @@ export default function Add(props: any) {
                                 className="w-full md:w-12rem"
                                 inputId="JobRole"
                                 name="empJoro.joroName"
-                                value={formik.values.empJoroId} 
+                                value={formik.values.empJoroId}
                                 onChange={(e: DropdownChangeEvent) => {
                                   formik.setFieldValue("empJoroId", e.value); 
                                 }}
@@ -490,7 +543,8 @@ export default function Add(props: any) {
                     <div className="col-4">
                       <div className="upload-form">
                       <label htmlFor="file">Photo</label>
-                        <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
+
+                                <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
                         {
                             upload === false ?
                                 <>
@@ -508,6 +562,18 @@ export default function Add(props: any) {
                     <div>
                         <input className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="user_avatar_help" id="user_avatar" type="file" onChange={uploadConfig('file')} />
                         <div className="mt-1 text-sm text-gray-500 dark:text-gray-300" id="user_avatar_help"> </div>
+                    </div>
+
+                    <span className="text-red-400 text-sm">
+                      &nbsp; {formik.errors.file}
+                    </span>
+
+                    <div className="mt-2 border border-gray-300 border-dashed pt-2 pb-4 px-4 text-sm">
+                      <strong className="-ml-3 ">Photo to upload:</strong>
+                      <ul className="list-disc pl-2">
+                          <li>Allowed types: jpg, jpeg, and png;</li>
+                          <li>Max. size: 1MB.</li>
+                      </ul>
                     </div>
 
                                 </div> 
@@ -548,7 +614,7 @@ export default function Add(props: any) {
                                 onChange={(e: DropdownChangeEvent) => {
                                   formik.setFieldValue("ephiPayFrequence", e.value); 
                                 }}
-                                options={[ { label: 'Hourly', value: 0 },  
+                                options={[ { label: 'Hourly', value: 0 }, 
                                 { label: 'Monthly', value: 1 },]}
                                 optionLabel="label"
                                 placeholder="Select Frequency"
@@ -584,6 +650,9 @@ export default function Add(props: any) {
                                 filter showClear
                                 emptyMessage="No Department found."
                               />
+                              {formik.touched.edhiDept && formik.errors.edhiDept && (
+                                  <small className="p-invalid text-red-500">{formik.errors.edhiDept}</small>
+                                )}
                           </div>
 
                             <div className="col-4">
@@ -598,7 +667,10 @@ export default function Add(props: any) {
                                   formik.setFieldValue("edhiStartDate", e.value);
                                 }} 
                                 placeholder="mm/dd/yyyy"
-                                showButtonBar showIcon />
+                                showButtonBar showIcon /> <br />
+                                {formik.touched.edhiStartDate && formik.errors.edhiStartDate && (
+                                  <small className="p-invalid text-red-500">{formik.errors.edhiStartDate}</small>
+                                )}
                               </div>
 
                               <div className="col-4">
@@ -613,7 +685,10 @@ export default function Add(props: any) {
                                   formik.setFieldValue("edhiEndDate", e.value);
                                 }} 
                                 placeholder="mm/dd/yyyy"
-                                showButtonBar showIcon />
+                                showButtonBar showIcon /> <br />
+                                {formik.touched.edhiEndDate && formik.errors.edhiEndDate && (
+                                  <small className="p-invalid text-red-500">{formik.errors.edhiEndDate}</small>
+                                )}
                               </div>
 
                           </div></div></div>
@@ -645,12 +720,15 @@ export default function Add(props: any) {
                                 filter showClear
                                 emptyMessage="No Shift found."
                               />
+                              {formik.touched.edhiShift && formik.errors.edhiShift && (
+                                  <small className="p-invalid text-red-500">{formik.errors.edhiShift}</small>
+                                )}
                           </div>
 
-                              {/* starttime dan endtime muncul ketika shift dipilih */}
                               {selectedShifts && (
                               <div className="col-4">
                                 <label htmlFor="shiftStartTime" className="mr-2">Start Time</label> 
+                                {/* <Calendar  */}
                                 <span className="p-input-icon-right">
                                 <i className="pi pi-clock" />
                                 <InputText
@@ -665,7 +743,7 @@ export default function Add(props: any) {
 
                               {selectedShifts && (
                                 <div className="col-4">
-                                <label htmlFor="shiftEndTime" className="mr-2">End Time</label> 
+                                  <label htmlFor="shiftEndTime" className="mr-2">End Time</label> 
                                 <span className="p-input-icon-right">
                                 <i className="pi pi-clock" />
                                 <InputText

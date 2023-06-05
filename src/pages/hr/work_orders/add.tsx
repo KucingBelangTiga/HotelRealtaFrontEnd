@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useFormik, FormikProvider } from "formik";
 import * as Yup from 'yup';
+import classStartDates from 'classnames';
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
@@ -16,20 +17,17 @@ import 'primeicons/primeicons.css';
 
 export default function Add(props: any) {
   const [showModal, setShowModal] = useState(false);
-  const [submitted, setSubmitted] = useState<boolean>(false);
+  const [submitted, setSubmitted] = useState<boolean>(false); 
   const dispatch = useDispatch();
   const toast = useRef<any>(null);
   const [date, setDate] = useState<string | Date | Date[] | null>(null);
 
-  const formik = useFormik({
+  const formik = useFormik({ 
     initialValues: {
       woroStartDate: "",
-      woroStatus: "",
-    //   woroUserId: "", //user yang login saat ini. hanya get data dari user session
     },
     validationSchema: Yup.object({
         woroStartDate: Yup.string().required('*Required startDate.'),
-        woroStatus: Yup.string().required('*Required status.'),
       }), 
     onSubmit: async (values) => {
       dispatch(AddWoroRequest(values));
@@ -59,8 +57,8 @@ export default function Add(props: any) {
         <div className="grid">
                         <div className="col-12">
                         <div className="grid justify-center">
-                            <div className="col-4">
-                <label htmlFor="woroStartDate" className="mr-2">startDate</label>
+                            <div className="col-12">
+                <label htmlFor="woroStartDate" className="mr-2">Start Date</label>
                 <Calendar
                   className="w-full md:w-12rem"
                   id="woroStartDate"
@@ -72,46 +70,23 @@ export default function Add(props: any) {
                   }} 
                   placeholder="mm/dd/yyyy"
                   showButtonBar showIcon
-                  /> 
+                  /> <br />
                   {formik.touched.woroStartDate && formik.errors.woroStartDate && (
                  <small className="p-invalid text-red-500">{formik.errors.woroStartDate}</small>
                )}
               </div>
 
-              <div className="col-4">
-                <label htmlFor="woroStatus" className="mr-5">status</label>
-                <Dropdown
-                  className="w-full md:w-12rem"
-                  inputId="woroStatus"
-                  name="woroStatus"
-                  value={formik.values.woroStatus}
-                  onChange={(e: DropdownChangeEvent) => {
-                    formik.setFieldValue("woroStatus", e.value); 
-                  }}
-                  options={[ { label: 'OPEN', value: 'OPEN' },
-                             { label: 'CLOSED', value: 'CLOSED' },
-                             { label: 'CANCELLED', value: 'CANCELED' },
-                            ]}
-                                optionLabel="label"
-                                placeholder="Select Status"
-                  autoFocus
-                  /> 
-                  {formik.touched.woroStatus && formik.errors.woroStatus && (
-                 <small className="p-invalid text-red-500">{formik.errors.woroStatus}</small>
-               )}
-              </div>
-
               {/* hanya get user dari profilnya/session pada value*/}
               {/* <div className="col-4">
-                    <label htmlFor="woroUserId" className="mr-2">createdBy</label>
-                    <InputText
-                    className="w-full md:w-12rem"
-                    id="woroUserId"
-                    name="woroUserId"
-                    value={formik.values.woroUserId}
-                    autoFocus readOnly
-                    />
-                  </div> */}
+                                <label htmlFor="woroUserId" className="mr-2">createdBy</label>
+                                <InputText
+                                  className="w-full md:w-12rem"
+                                  id="woroUserId"
+                                  name="woroUserId"
+                                  value={formik.values.woroUserId}
+                                  autoFocus readOnly
+                                  />
+                              </div> */}
 
             </div> </div></div>
 

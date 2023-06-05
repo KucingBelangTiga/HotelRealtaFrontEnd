@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import Layout from "../../../components/layout";
-import { GetWoroRequest } from "../../../redux/action/hr/work_ordersAction";
+import { GetWoroRequest, GetFilteredWoroRequest } from "../../../redux/action/hr/work_ordersAction";
 
 import { DataTable, DataTableFilterMeta } from "primereact/datatable";
 import { Column, ColumnFilterElementTemplateOptions } from "primereact/column";
@@ -13,7 +13,7 @@ import { Button } from 'primereact/button';
 import { Menu } from 'primereact/menu';
 import { OverlayPanel } from 'primereact/overlaypanel';
 import { ProgressSpinner } from 'primereact/progressspinner';
-import { InputText } from 'primereact/inputtext';
+import { InputText } from 'primereact/inputtext'; 
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.css";
 import 'primeflex/primeflex.css';
@@ -29,6 +29,7 @@ export default function IndexWoro() {
     const [id, setId] = useState<number>();
     const [first, setFirst] = useState(0);
     const [filters, setFilters] = useState<DataTableFilterMeta>({
+    //   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     woroStartDate: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
     woroStatus: { value: 'OPEN', matchMode: FilterMatchMode.EQUALS },
     });
@@ -36,8 +37,9 @@ export default function IndexWoro() {
     const [refresh, setRefresh] = useState(false);
     const { woros } = useSelector((state: any) => state.woroState);
     const [dates, setDates] = useState<string | Date | Date[] | null>(null);
+
     const [startDate, setStartDate] = useState<string | Date | Date[] | null>(null);
-    const [endDate, setEndDate] = useState<string | Date | Date[] | null>(null);
+    const [endDate, setEndDate] = useState<string | Date | Date[] | null>(null);      
 
     useEffect(() => {
       dispatch(GetWoroRequest());
@@ -80,39 +82,14 @@ export default function IndexWoro() {
           pathname: "/hr/work_orders/order_detail/[id]",
           query: { id: id },
         }).then(() => {
+          // const urlWithId = urlWithoutOrderDetail + `/${id}`;
           const urlWithId = urlWithoutOrderDetail + `?id=${id}`;
           window.history.replaceState({}, "", urlWithId);
         });
       };      
 
-  //filter date
-  const handleStartDateChange = (e: any) => {
-    setStartDate(e.value);
-  };
-  const handleEndDateChange = (e: any) => {
-    setEndDate(e.value);
-  }; 
-
-  const onDateFilterChange = () => {
-    const newFilters = { ...filters };
-  
-    if (startDate && endDate) {
-      newFilters['woroStartDate'] = {
-        matchMode: FilterMatchMode.DATE_IS,
-        value: [startDate, endDate],
-      };
-    } else {
-      newFilters['woroStartDate'] = {
-        operator: FilterOperator.AND,
-        constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }],
-      };
-    }
-    setFilters(newFilters);
-  };
-  //
-
-  //filter status
-  const onStatusFilterChange = (e: DropdownChangeEvent) => {
+//filter status
+const onStatusFilterChange = (e: DropdownChangeEvent) => {
     const value = e.value;
     let _filters = { ...filters };
   
@@ -123,13 +100,14 @@ export default function IndexWoro() {
   }; 
   //
 
+  //date filter
   const handleStartDateChange = (e: any) => {
     setStartDate(e.value);
   };
   const handleEndDateChange = (e: any) => {
     setEndDate(e.value);
   };
-
+  
   const onDateFilterChange = () => {
     const newFilters = { ...filters };
   
@@ -146,23 +124,32 @@ export default function IndexWoro() {
     }
     setFilters(newFilters);
   };
+  //
 
-  const renderHeader = () => {
+const renderHeader = () => {
     return (
       <div className="flex justify-content-between align-items-center">
       <div className="flex align-items-center">
           <label htmlFor="dateFilter" className="search-label mr-2">Date Range: </label>
+            <div>
+            <Calendar
+              className="w-full md:w-10rem"
+              id="start-date"
+              dateFormat="dd/mm/yy"
+              showIcon showButtonBar
+            />
+          </div>
+          <span className="mx-2">-</span>
           <div>
-            <Calendar className="w-full md:w-10rem" value={startDate} onChange={handleStartDateChange} dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" showButtonBar />
-            <span className="mx-2">to</span>
-            <Calendar className="w-full md:w-10rem" value={endDate} onChange={handleEndDateChange} dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" showButtonBar /> 
-
-             <React.Fragment>
-             <Button className="ml-2" severity="secondary" type="button" tooltip="Filter Date" tooltipOptions={{ position: 'right', showDelay: 300 }} icon="pi pi-filter" outlined rounded onClick={onDateFilterChange} />
-             </React.Fragment>
-           </div> 
+            <Calendar
+              className="w-full md:w-10rem"
+              id="end-date"
+              dateFormat="dd/mm/yy"
+              showIcon showButtonBar
+            />
           </div>
 
+          </div>
             <div className="flex align-items-center">
             <label htmlFor="statusFilter" className="search-label ml-4 mr-2">Status: </label>
                 <Dropdown
@@ -196,7 +183,7 @@ const header = renderHeader();
                   <DataTable
                     value={woros}
                     stripedRows 
-                    tableStyle={{ minWidth: "50rem" }}
+                    tableStyle={{ minWidth: "50rem" }} //minWidth: "100%" : ketika dikecilkan tombol add tetap ada. pakai 50rem: ketika dikecilkan, muncul scroller ke samping di bawah table
                     className="bg-white text-black"
                     paginator
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
@@ -212,13 +199,13 @@ const header = renderHeader();
                   >
                     <Column 
                     field="woroStartDate" 
-                    header="WorkOrder Date" 
+                    header="WorkOrder Date"  
                     sortable 
                     style={{ width: '25%' }}
                     body={(rowData: any) =>
                       new Date(rowData.woroStartDate).toLocaleDateString("en-GB", {
                         day: "numeric",
-                        month: "short", 
+                        month: "short",  
                         year: "numeric"
                       })
                     }
