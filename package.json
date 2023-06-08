@@ -43,6 +43,7 @@
     "react-router-dom": "^6.9.0",
     "react-scripts": "5.0.1",
     "react-to": "^0.1.0",
+    "react-to-print": "^2.14.12",
     "redux": "^4.2.1",
     "redux-devtools-extension": "^2.13.9",
     "redux-logger": "^3.0.6",

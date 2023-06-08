@@ -13,6 +13,7 @@ import HotelDetails from './details/[id]';
 // import HotelCheckout from './checkout';
 import { useRouter } from 'next/router'
 import $ from 'jquery'; 
+import Modal from 'react-bootstrap/Modal';
 
 function Booking() {
     const [hotel, setHotel] = useState<any[]>([])
@@ -28,7 +29,7 @@ function Booking() {
     const [valuesfacility2, setValuesFacility2] = useState({});
     const [categoryFilters, setcategoryFilters] = useState(new Set());
     const [checkedState, setCheckedState] = useState([])
-
+    const [show, setShow] = useState(false);
 
     function updateFilters(checked, categoryFilter) {
         if (checked)
@@ -442,6 +443,16 @@ function Booking() {
                     </Row>
                 </Col>
             </Row>
+            <Modal
+                show={show}
+                // onHide={handleClose}
+                backdrop="static"
+                keyboard={false}>
+                <Modal.Body>
+                I will not close if you click outside me. Don not even try to press
+                escape key.
+                </Modal.Body>
+            </Modal>
         </Container>
   );
 }

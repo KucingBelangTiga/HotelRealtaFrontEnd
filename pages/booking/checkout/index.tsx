@@ -17,6 +17,7 @@ import React, {useRef} from 'react';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
+import Table from 'react-bootstrap/esm/Table';
 
 export default function HotelCheckout(){
     const [hotel, setHotel] = useState<any[]>([])
@@ -91,13 +92,77 @@ export default function HotelCheckout(){
         return result
     }
 
-    // console.log(addonname)
+    // console.log(addonid.length == 1)
     
     return(
         <Layout>
             <Container>
                 <Row className='bg-white mt-3 mb-3'>
-                    <p>Booking Order Number: {booking_order_number}</p>
+                    <Table className='mb-3'>
+                        <tbody>
+                            <tr>
+                                <th>Booking Order Number</th>
+                                <th>Transaction Number</th>
+                                <th>Account Number</th>
+                                <th>Pay With</th>
+                            </tr>
+                            <tr>
+                                <td>{booking_order_number}</td>
+                                <td>{transaction_order_number}</td>
+                                <td>{accountnumber}</td>
+                                <td>{payment[1]} ( {payment[0]})</td>
+                            </tr>
+                        </tbody>
+                    </Table>
+                    <Table className='mb-3 mt-3'>
+                        <tbody>
+                            <tr>
+                                <th>Check In</th>
+                                <th>Check Out</th>
+                                <th>Hotel Selected</th>
+                                <th>Add On</th>
+                            </tr>
+                            <tr>
+                                <td>{check_in}</td>
+                                <td>{check_out}</td>
+                                <td>{hotel_selected}</td>
+                                {(addonname.length == 1 ? <td></td> : 
+                                    <td>{addOnName()} (id: {addOnId()})</td>
+                                )}
+                            </tr>
+                        </tbody>
+                    </Table>
+                    <Table className='mb-3 mt-3'>
+                        <tbody>
+                            <tr>
+                                <th>Full Name</th>
+                                <th>Email</th>
+                                <th>Phone Number</th>
+                            </tr>
+                            <tr>
+                                <td>{fullname}</td>
+                                <td>{email}</td>
+                                <td>{phone}</td>
+                            </tr>
+                        </tbody>
+                    </Table>
+                    <Table className='mb-3 mt-3'>
+                        <tbody>
+                            <tr>
+                                <th>Total Payment</th>
+                                <th>Total Discount Applied</th>
+                                <th>Voucher Applied</th>
+                            </tr>
+                            <tr>
+                                <td>{grand_total}</td>
+                                <td>{total_discount}</td>
+                                {(voucherapplied.length == 0 ? <td></td> : 
+                                    <td> {voucherAppliedName()} ({voucherAppliedId()})</td>
+                                )}
+                            </tr>
+                        </tbody>
+                    </Table>
+                    {/* <p>Booking Order Number: {booking_order_number}</p>
                     <p>Transaction Number: {transaction_order_number}</p>
                     <p>Account Number: {accountnumber} | Pay with: {payment[1]} ( {payment[0]})</p>
                     <p>Check In : {check_in} | Check Out : {check_out}</p>
@@ -108,7 +173,7 @@ export default function HotelCheckout(){
                     <p>Add On: {addOnName()} (id: {addOnId()})</p>
                     <p>Total Payment: {grand_total}</p>
                     <p>Total Discount Applied: {total_discount}</p>
-                    <p>Voucher Applied: {voucherAppliedName()} (id: {voucherAppliedId()})</p>
+                    <p>Voucher Applied: {voucherAppliedName()} (id: {voucherAppliedId()})</p> */}
                 </Row>
             </Container>
         </Layout>

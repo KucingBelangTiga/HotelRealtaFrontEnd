@@ -909,8 +909,8 @@ export default function HotelDetails(){
                                         <hr />
                                         <Button variant='success' 
                                         // href={`/booking/checkout/${GatherAllData()}`}
-                                        onClick={(formvalues.fullname == undefined || formvalues.email == undefined || formvalues.accountnumber == undefined || formvalues.phone == undefined) ? ()=>{alert("Please fill all of your detail for payment")} : passData()}
-                                        // onClick={()=>passData()}
+                                        // onClick={(formvalues.fullname == undefined || formvalues.email == undefined || formvalues.accountnumber == undefined || formvalues.phone == undefined) ? ()=>{alert("Please fill all of your detail for payment")} : passData()}
+                                        onClick={()=>passData()}
                                         >Proceed</Button>
                 
                                     </Form>
