@@ -113,6 +113,7 @@ export default function AddPriceItems(props: any) {
                             className="border rounded w-full py-2 px-3 text-black border-slate-900 "
                             name="pritPrice"
                             id="pritPrice"
+                            type="number"
                             onChange={formik.handleChange}
                             value={formik.values.pritPrice}
                           />

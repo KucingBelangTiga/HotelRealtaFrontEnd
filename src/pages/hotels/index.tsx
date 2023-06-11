@@ -31,6 +31,7 @@ export default function Index() {
 
   useEffect(() => {
     dispatch(GetHotelsRequest());
+    setRefresh(false);
     setLoading(true);
   }, [dispatch, refresh]);
 
@@ -99,7 +100,7 @@ export default function Index() {
                   onClick={() => onFacility(rowData.hotelId)}
                   className="p-3 hover:bg-coldBlue hover:text-white w-full"
                 >
-                  Add Facilities
+                  Facilities
                 </button>
               </li>
             </ul>

@@ -11,6 +11,7 @@ export default function EditPolicy(props: any) {
   const [id, setId] = useState<number>();
   const dispatch = useDispatch();
   const { policy } = useSelector((state: any) => state.policyState);
+  console.log(policy);
 
   useEffect(() => {
     dispatch(FindPolicyRequest(id));

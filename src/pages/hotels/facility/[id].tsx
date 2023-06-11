@@ -30,6 +30,7 @@ export default function Index() {
     if (router.isReady) {
       dispatch(GetFacilitiesRequest(router.query.id));
       dispatch(FindHotelsRequest(router.query.id));
+      setRefresh(false);
       setLoading(true);
     }
   }, [dispatch, router.query.id, refresh, router.isReady]);
