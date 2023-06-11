@@ -29,6 +29,7 @@ export default function Index() {
   const [itemTarget, setItemTarget] = useState<any[]>([]);
   const [refresh, setRefresh] = useState<boolean>(false);
   const toast = useRef<any>(null);
+  const [isButtonDisabled, SetButtonDisabled] = useState<boolean>(false);
   const [source, setSource] = useState({
     account: undefined,
     saldo: undefined,
@@ -49,7 +50,52 @@ export default function Index() {
     dispatch(GetBankRequest());
     dispatch(GetPaymentGatewayRequest());
     dispatch(GetUserAccountRequest());
-  }, [dispatch, refresh]);
+    handleDisableButtonTransfer();
+  }, [dispatch, refresh, isButtonDisabled]);
+
+  const handleCurrValue =
+    (name: any) =>
+    (event: any): any => {
+      if (name == "sourceAccount") {
+        formik.setFieldValue("source_account", event.target.value);
+        userAccountApi.findCurrAccountSource(event.target.value).then((data) => {
+          setSource({
+            ...source,
+            account: event.target.value,
+            saldo: data.usacSaldo,
+            typeAccount: data.usacType,
+            entity: data.usacEntityId,
+            user: data.usacUserId,
+          });
+          setUserId(data.usacUserId);
+          console.log("source user ini", userId);
+          if (event.target.value === target.account) {
+            showToast("Source and Target cannot be the same!", "warn");
+            SetButtonDisabled(true);
+          } else {
+            SetButtonDisabled(false);
+          }
+        });
+      } else if (name == "targetAccount") {
+        formik.setFieldValue("target_account", event.target.value);
+        userAccountApi.findCurrAccountTarget(event.target.value).then((data) => {
+          setTarget({
+            ...target,
+            account: event.target.value,
+            saldo: data.usacSaldo,
+            typeAccount: data.usacType,
+            entity: data.usacEntityId,
+            user: data.usacUserId,
+          });
+        });
+        if (source.account === event.target.value) {
+          showToast("Source and Target cannot be the same!", "warn");
+          SetButtonDisabled(true);
+        } else {
+          SetButtonDisabled(false);
+        }
+      }
+    };
 
   const formik = useFormik({
     initialValues: {
@@ -59,6 +105,11 @@ export default function Index() {
       user_id: "",
     },
     onSubmit: async (values, { resetForm }) => {
+      if (Number(values.transfer) > Number(source.saldo)) {
+        showToast("Nominal must be less than the source balance", "error");
+        handleDisableButtonTransfer();
+        return;
+      }
       const numberAccountCredit = "TP#" + moment(Date()).format("YYYYMMDD") + "-" + Math.floor(1000 + Math.random() * 9000);
       const numberAccountDebit = "TP#" + moment(Date()).format("YYYYMMDD") + "-" + Math.floor(1000 + Math.random() * 9000);
       const orderNumber = moment(Date()).format("YYYYMMDD") + "-" + Math.floor(1000 + Math.random() * 9000);
@@ -67,22 +118,24 @@ export default function Index() {
         patrDebet: "0",
         patrCredit: values.transfer,
         patrType: "TP",
+        patrModifiedDate: new Date(),
         patrNote: "Top Up",
         patrOrderNumber: orderNumber,
         patrSourceId: values.source_account,
         patrTargetId: values.target_account,
-        patrUserId: userId,
+        patrUser: userId,
       };
       let payloadDebetTransaction = {
         patrTrxId: numberAccountDebit,
         patrDebet: values.transfer,
         patrCredit: "0",
         patrType: "TP",
+        patrModifiedDate: new Date(),
         patrNote: "Top Up",
         patrOrderNumber: orderNumber,
         patrSourceId: values.source_account,
         patrTargetId: values.target_account,
-        patrUserId: userId,
+        patrUser: userId,
       };
       const payloadCredit = {
         usacEntityId: source.entity,
@@ -116,48 +169,17 @@ export default function Index() {
           showToast("Transfer Cancelled", "warn");
         },
       });
+      if (Object.keys(formik.errors).length > 0) {
+        showToast("Fixing errors in forms", "error");
+        return;
+      }
     },
   });
-
   const showToast = (message: string, severity: string) => {
     if (toast.current) {
       toast.current.show({ severity, summary: "Information", detail: message, life: 3000 });
     }
   };
-
-  const handleCurrValue =
-    (name: any) =>
-    (event: any): any => {
-      if (name == "sourceAccount") {
-        formik.setFieldValue("source_account", event.target.value);
-        userAccountApi.findCurrAccountSource(event.target.value).then((data) => {
-          setSource({
-            ...source,
-            account: event.target.value,
-            saldo: data.usacSaldo,
-            typeAccount: data.usacType,
-            entity: data.usacEntityId,
-            user: data.usacUserId,
-          });
-          setUserId(data.usacUserId);
-        });
-      } else if (name == "targetAccount") {
-        formik.setFieldValue("target_account", event.target.value);
-        userAccountApi.findCurrAccountTarget(event.target.value).then((data) => {
-          console.log("bank", data);
-          setTarget({
-            ...target,
-            account: event.target.value,
-            saldo: data.usacSaldo,
-            typeAccount: data.usacType,
-            entity: data.usacEntityId,
-            user: data.usacUserId,
-          });
-          setUserId(data.usacUserId);
-        });
-      }
-    };
-
   const SearchSource = (event: AutoCompleteCompleteEvent) => {
     setTimeout(() => {
       let _filteredBankSource;
@@ -165,13 +187,13 @@ export default function Index() {
         _filteredBankSource = [...banks];
       } else {
         _filteredBankSource = banks.filter((item: any) => {
+          console.log("bank", item.bankName);
           return item.bankName.toLowerCase().startsWith(event.query.toLowerCase());
         });
       }
       setItemSource(_filteredBankSource);
     }, 250);
   };
-
   const SearchTarget = (event: AutoCompleteCompleteEvent) => {
     setTimeout(() => {
       let _filteredPagaTarget;
@@ -185,7 +207,6 @@ export default function Index() {
       setItemTarget(_filteredPagaTarget);
     }, 250);
   };
-
   const itemTemplateSource = (item: any) => {
     return (
       <div className="flex align-items-center">
@@ -193,7 +214,6 @@ export default function Index() {
       </div>
     );
   };
-
   const itemTemplateTarget = (item: any) => {
     return (
       <div className="flex align-items-center">
@@ -201,7 +221,18 @@ export default function Index() {
       </div>
     );
   };
-
+  const handleDisableButtonTransfer = () => {
+    const button = document.getElementById("transfer") as HTMLButtonElement | null;
+    if (button) {
+      if (isButtonDisabled) {
+        button.setAttribute("disabled", "disabled");
+        button.style.backgroundColor = "gray";
+      } else {
+        button.removeAttribute("disabled");
+        button.style.backgroundColor = "blue";
+      }
+    }
+  };
   return (
     <div>
       <Layout>
@@ -253,7 +284,9 @@ export default function Index() {
                   <div className="flex gap-2 mt-20">
                     <Toast ref={toast} className="mt-14" />
                     <ConfirmDialog />
-                    <button className="group h-18 w-[30%] border border-green-500 rounded-md bg-coldBlue hover:bg-moderateBlue px-4 py-2 -mt-1 text-white relative overflow-hidden text-xl">Transfer</button>
+                    <button id="transfer" className="group h-18 w-[30%] border border-green-500 rounded-md bg-coldBlue hover:bg-moderateBlue px-4 py-2 -mt-1 text-white relative overflow-hidden text-xl">
+                      Transfer
+                    </button>
                     <input
                       type="number"
                       name="transfer"
@@ -262,7 +295,6 @@ export default function Index() {
                       placeholder="Nominal Transfer"
                       value={formik.values.transfer}
                       onChange={formik.handleChange}
-                      required
                     />
                   </div>
                 </div>

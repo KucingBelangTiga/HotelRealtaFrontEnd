@@ -5,7 +5,7 @@ const getEntitys = async () => {
     const result = await axios.get(`${process.env.URL_DOMAIN}/entitys/`);
     return result.data;
   } catch (error) {
-    return error;
+    return await error;
   }
 };
 
@@ -14,7 +14,7 @@ const createEntitys = async (payload: any) => {
     const result = await axios.post(`${process.env.URL_DOMAIN}/entitys/`, payload);
     return result;
   } catch (error) {
-    return error;
+    return await error;
   }
 };
 
@@ -23,7 +23,7 @@ const updateEntitys = async (payload: any) => {
     const result = await axios.put(`${process.env.URL_DOMAIN}/entitys/${payload.id}`, payload);
     return result;
   } catch (error) {
-    return error;
+    return await error;
   }
 };
 
@@ -32,7 +32,7 @@ const findOneEntitys = async (id: any) => {
     const result = await axios.get(`${process.env.URL_DOMAIN}/entitys/${id}`);
     return result.data;
   } catch (error) {
-    return error;
+    return await error;
   }
 };
 
@@ -41,7 +41,7 @@ const deleteEntitys = async (id: any) => {
     const result = await axios.delete(`${process.env.URL_DOMAIN}/entitys/${id}`);
     return result.data;
   } catch (error) {
-    return error;
+    return await error;
   }
 };
 

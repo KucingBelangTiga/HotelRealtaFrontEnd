@@ -7,6 +7,10 @@ const init_state = {
 
 const BankReduce = (state = init_state, action: any) => {
   switch (action.type) {
+    case ActionTypeBank.GET_ALL_BANK_REQUEST:
+      return { ...state };
+    case ActionTypeBank.GET_ALL_BANK_SUCCESS:
+      return GetAllBank(state, action);
     case ActionTypeBank.GET_BANK_REQUEST:
       return { ...state };
     case ActionTypeBank.GET_BANK_SUCCESS:
@@ -30,6 +34,14 @@ const BankReduce = (state = init_state, action: any) => {
     default:
       return { ...state };
   }
+};
+
+const GetAllBank = (state: any, action: any) => {
+  const { payload } = action;
+  return {
+    ...state,
+    banks: payload,
+  };
 };
 
 const GetBank = (state: any, action: any) => {

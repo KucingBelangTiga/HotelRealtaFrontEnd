@@ -2,6 +2,10 @@ export const GET_PAYMENTTRANSACTION_REQUEST = "get/paymenttransaction/request";
 export const GET_PAYMENTTRANSACTION_SUCCESS = "get/paymenttransaction/success";
 export const GET_PAYMENTTRANSACTION_FAILED = "get/paymenttransaction/failed";
 
+export const GET_ALL_PAYMENTTRANSACTION_REQUEST = "get/allpaymenttransaction/request";
+export const GET_ALL_PAYMENTTRANSACTION_SUCCESS = "get/allpaymenttransaction/success";
+export const GET_ALL_PAYMENTTRANSACTION_FAILED = "get/allpaymenttransaction/failed";
+
 export const ADD_PAYMENTTRANSACTION_REQUEST = "add/paymenttransaction/request";
 export const ADD_PAYMENTTRANSACTION_SUCCESS = "add/paymenttransaction/success";
 export const ADD_PAYMENTTRANSACTION_FAILED = "add/paymenttransaction/failed";

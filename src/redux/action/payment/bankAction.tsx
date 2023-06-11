@@ -1,5 +1,20 @@
 import * as ActionBank from "../../constant/payment/bankConstant";
 
+export const GetAllBankRequest = (payload: any) => ({
+  type: ActionBank.GET_ALL_BANK_REQUEST,
+  payload,
+});
+
+export const GetAllBankSuccess = (payload: any) => ({
+  type: ActionBank.GET_ALL_BANK_SUCCESS,
+  payload,
+});
+
+export const GetAllBankFailed = (payload: any) => ({
+  type: ActionBank.GET_ALL_BANK_FAILED,
+  payload,
+});
+
 export const GetBankRequest = () => ({
   type: ActionBank.GET_BANK_REQUEST,
 });

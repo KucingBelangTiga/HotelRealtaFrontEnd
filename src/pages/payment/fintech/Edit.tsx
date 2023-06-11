@@ -75,12 +75,22 @@ export default function Edit(props: any) {
                             onChange={formik.handleChange}
                             value={formik.values.pagaCode}
                             placeholder="Code"
+                            autoComplete="off"
                           />
                         </div>
 
                         <div className="mb-4">
                           <label className="block text-black text-sm font-bold mb-2">Fintech</label>
-                          <input className=" border rounded w-full py-2 px-3 text-black border-slate-900" type="text" name="pagaName" id="pagaName" onChange={formik.handleChange} value={formik.values.pagaName} placeholder="Fintech" />
+                          <input
+                            className="border rounded w-full py-2 px-3 text-black border-slate-900"
+                            type="text"
+                            name="pagaName"
+                            id="pagaName"
+                            onChange={formik.handleChange}
+                            value={formik.values.pagaName}
+                            placeholder="Fintech"
+                            autoComplete="off"
+                          />
                         </div>
                         <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
                           <button className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" onClick={modal}>

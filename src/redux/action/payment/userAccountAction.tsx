@@ -1,5 +1,20 @@
 import * as ActionUserAccount from "../../constant/payment/userAccountConstant";
 
+export const GetAllUserAccountRequest = (payload: any) => ({
+  type: ActionUserAccount.GET_ALL_USERACCOUNT_REQUEST,
+  payload,
+});
+
+export const GetAllUserAccountSuccess = (payload: any) => ({
+  type: ActionUserAccount.GET_ALL_USERACCOUNT_SUCCESS,
+  payload,
+});
+
+export const GetAllUserAccountFailed = (payload: any) => ({
+  type: ActionUserAccount.GET_ALL_USERACCOUNT_FAILED,
+  payload,
+});
+
 export const GetUserAccountRequest = () => ({
   type: ActionUserAccount.GET_USERACCOUNT_REQUEST,
 });

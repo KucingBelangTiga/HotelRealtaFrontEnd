@@ -5,6 +5,8 @@ import {
   GetCurrAccountSourceFailed,
   GetCurrAccountTargetSuccess,
   GetCurrAccountTargetFailed,
+  GetAllUserAccountSuccess,
+  GetAllUserAccountFailed,
   GetUserAccountSuccess,
   GetUserAccountFailed,
   AddUserAccountSuccess,
@@ -17,10 +19,19 @@ import {
   DeleteUserAccountFailed,
 } from "../../action/payment/userAccountAction";
 
-function* handleGetUserAccount(action: any): any {
+function* handleGetAllUserAccount(action: any): any {
   const { payload } = action;
   try {
-    const result = yield call(UserAccountApi.getUserAccount, payload);
+    const result = yield call(UserAccountApi.getAllUserAccount, payload);
+    yield put(GetAllUserAccountSuccess(result));
+  } catch (error) {
+    yield put(GetAllUserAccountFailed(error));
+  }
+}
+
+function* handleGetUserAccount(): any {
+  try {
+    const result = yield call(UserAccountApi.getUserAccount);
     yield put(GetUserAccountSuccess(result));
   } catch (error) {
     yield put(GetUserAccountFailed(error));
@@ -87,4 +98,4 @@ function* handleDeleteUserAccount(action: any): any {
   }
 }
 
-export { handleGetUserAccount, handleCurrAccountSource, handleCurrAccountTarget, handleAddUserAccount, handleFindUserAccount, handleEditUserAccount, handleDeleteUserAccount };
+export { handleGetAllUserAccount, handleGetUserAccount, handleCurrAccountSource, handleCurrAccountTarget, handleAddUserAccount, handleFindUserAccount, handleEditUserAccount, handleDeleteUserAccount };

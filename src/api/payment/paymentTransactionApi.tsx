@@ -1,20 +1,20 @@
 import axios from "axios";
 
-const getAllPaymentTransaction = async () => {
+const getPaymentTransaction = async () => {
   try {
     const result = await axios.get(`${process.env.URL_DOMAIN}/paymenttrx/`);
     return result.data;
   } catch (error) {
-    return error;
+    return await error;
   }
 };
 
-const getPaymentTransaction = async (action: any) => {
+const getAllPaymentTransaction = async (payload: any) => {
   try {
-    const result = await axios.get(`${process.env.URL_DOMAIN}/paymenttrx/?page=${action.page}&name=${action.name}`);
+    const result = await axios.get(`${process.env.URL_DOMAIN}/paymenttrx/page/?page=${payload.page}&name=${payload.name}&type=${payload.type}`);
     return result.data;
   } catch (error) {
-    return error;
+    return await error;
   }
 };
 
@@ -23,7 +23,7 @@ const createPaymentTransaction = async (payload: any) => {
     const result = await axios.post(`${process.env.URL_DOMAIN}/paymenttrx/`, payload);
     return result;
   } catch (error) {
-    return error;
+    return await error;
   }
 };
 
@@ -32,7 +32,7 @@ const updatePaymentTransaction = async (payload: any) => {
     const result = await axios.put(`${process.env.URL_DOMAIN}/paymenttrx/${payload.id}`, payload);
     return result;
   } catch (error) {
-    return error;
+    return await error;
   }
 };
 
@@ -41,7 +41,7 @@ const findOnePaymentTransaction = async (id: any) => {
     const result = await axios.get(`${process.env.URL_DOMAIN}/paymenttrx/${id}`);
     return result.data;
   } catch (error) {
-    return error;
+    return await error;
   }
 };
 
@@ -50,7 +50,7 @@ const deletePaymentTransaction = async (id: any) => {
     const result = await axios.delete(`${process.env.URL_DOMAIN}/paymenttrx/${id}`);
     return result.data;
   } catch (error) {
-    return error;
+    return await error;
   }
 };
 

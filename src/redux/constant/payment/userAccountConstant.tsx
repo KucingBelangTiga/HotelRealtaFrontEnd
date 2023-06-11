@@ -2,6 +2,10 @@ export const GET_USERACCOUNT_REQUEST = "get/useraccount/request";
 export const GET_USERACCOUNT_SUCCESS = "get/useraccount/success";
 export const GET_USERACCOUNT_FAILED = "get/useraccount/failed";
 
+export const GET_ALL_USERACCOUNT_REQUEST = "get/alluseraccount/request";
+export const GET_ALL_USERACCOUNT_SUCCESS = "get/alluseraccount/success";
+export const GET_ALL_USERACCOUNT_FAILED = "get/alluseraccount/failed";
+
 export const GET_CURACCOUNT_SOURCE_REQUEST = "get/currentaccountsource/request";
 export const GET_CURACCOUNT_SOURCE_SUCCESS = "get/currentaccountsource/success";
 export const GET_CURACCOUNT_SOURCE_FAILED = "get/currentaccountsource/failed";

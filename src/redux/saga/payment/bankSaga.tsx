@@ -1,6 +1,29 @@
 import { call, put } from "redux-saga/effects";
 import BankApi from "../../../api/payment/bankApi";
-import { GetBankSuccess, GetBankFailed, AddBankSuccess, AddBankFailed, FindBankSuccess, FindBankFailed, EditBankSuccess, EditBankFailed, DeleteBankSuccess, DeleteBankFailed } from "../../action/payment/bankAction";
+import {
+  GetAllBankSuccess,
+  GetAllBankFailed,
+  GetBankSuccess,
+  GetBankFailed,
+  AddBankSuccess,
+  AddBankFailed,
+  FindBankSuccess,
+  FindBankFailed,
+  EditBankSuccess,
+  EditBankFailed,
+  DeleteBankSuccess,
+  DeleteBankFailed,
+} from "../../action/payment/bankAction";
+
+function* handleGetAllBank(action: any): any {
+  const { payload } = action;
+  try {
+    const result = yield call(BankApi.getAllBanks, payload);
+    yield put(GetAllBankSuccess(result));
+  } catch (error) {
+    yield put(GetAllBankFailed(error));
+  }
+}
 
 function* handleGetBank(): any {
   try {
@@ -51,4 +74,4 @@ function* handleDeleteBank(action: any): any {
   }
 }
 
-export { handleGetBank, handleAddBank, handleFindBank, handleEditBank, handleDeleteBank };
+export { handleGetAllBank, handleGetBank, handleAddBank, handleFindBank, handleEditBank, handleDeleteBank };

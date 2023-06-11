@@ -2,6 +2,15 @@ import React, { useEffect, useState } from "react";
 import { FormikProvider, useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { EditUserAccountRequest, FindUserAccountRequest } from "@/src/redux/action/payment/userAccountAction";
+import * as Yup from "yup";
+
+interface EditFormValues {
+  usacEntityId: number;
+  usacUserId: number;
+  usacAccountNumber: string;
+  usacSaldo: string;
+  usacType: string;
+}
 
 export default function Edit(props: any) {
   const dispatch = useDispatch();
@@ -13,7 +22,7 @@ export default function Edit(props: any) {
     dispatch(FindUserAccountRequest(id));
   }, [dispatch, id]);
 
-  const formik = useFormik({
+  const formik = useFormik<EditFormValues>({
     enableReinitialize: true,
     initialValues: {
       usacEntityId: userAccount.usacEntityId,
@@ -22,6 +31,13 @@ export default function Edit(props: any) {
       usacSaldo: userAccount.usacSaldo,
       usacType: userAccount.usacType,
     },
+    validationSchema: Yup.object().shape({
+      usacEntityId: Yup.string().min(1, "Too Short!").max(2, "Too Long!").required("Required"),
+      usacUserId: Yup.string().min(1, "Too Short!").max(2, "Too Long!").required("Required"),
+      usacAccountNumber: Yup.string().min(7, "Too Short!").max(9, "Too Long!").required("Required"),
+      usacSaldo: Yup.string().min(3, "Too Short!").max(9, "Too Long!").required("Required"),
+      usacType: Yup.string().required("Required"),
+    }),
     onSubmit: async (values) => {
       const payload = {
         usacEntityId: values.usacEntityId,
@@ -83,10 +99,12 @@ export default function Edit(props: any) {
                           />
                         </div>
                         <div className="mb-4">
-                          <label className="block text-black text-sm font-bold mb-2">Saldo</label>
+                          <label className="block text-black text-sm font-bold mb-2">
+                            Saldo<span className="text-red-400">&nbsp; * {formik.errors.usacSaldo}</span>
+                          </label>
                           <input
                             className=" border rounded w-full py-2 px-3 text-black border-slate-900"
-                            type="text"
+                            type="number"
                             name="usacSaldo"
                             id="usacSaldo"
                             onChange={formik.handleChange}
@@ -96,14 +114,16 @@ export default function Edit(props: any) {
                           />
                         </div>
                         <div className="mb-4">
-                          <label className="block text-black text-sm font-bold mb-2">Type</label>
+                          <label className="block text-black text-sm font-bold mb-2">
+                            Type<span className="text-red-400">&nbsp; *</span>
+                          </label>
                           <select name="usacType" id="usacType" onChange={formik.handleChange} value={formik.values.usacType} className=" border rounded w-full py-2 px-3 text-black border-slate-900">
                             <option value="" selected disabled hidden className="text-black">
                               Choose Type Account
                             </option>
-                            <option value={"Debit"}>Debit</option>
-                            <option value={"Credit"}>Credit</option>
-                            <option value={"Fintech"}>Fintech</option>
+                            <option value={"Debet"}>Debet</option>
+                            <option value={"Credit Card"}>Credit Card</option>
+                            <option value={"Payment"}>Payment</option>
                           </select>
                         </div>
                         <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">

@@ -2,6 +2,10 @@ export const GET_BANK_REQUEST = "get/bank/request";
 export const GET_BANK_SUCCESS = "get/bank/success";
 export const GET_BANK_FAILED = "get/bank/failed";
 
+export const GET_ALL_BANK_REQUEST = "get/allbank/request";
+export const GET_ALL_BANK_SUCCESS = "get/allbank/success";
+export const GET_ALL_BANK_FAILED = "get/allbank/failed";
+
 export const ADD_BANK_REQUEST = "add/bank/request";
 export const ADD_BANK_SUCCESS = "add/bank/success";
 export const ADD_BANK_FAILED = "add/bank/failed";

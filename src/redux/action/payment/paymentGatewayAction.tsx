@@ -1,5 +1,20 @@
 import * as ActionPaymentGateway from "../../constant/payment/paymentGatewayConstant";
 
+export const GetAllPaymentGatewayRequest = (payload: any) => ({
+  type: ActionPaymentGateway.GET_ALL_PAYMENTGATEWAY_REQUEST,
+  payload,
+});
+
+export const GetAllPaymentGatewaySuccess = (payload: any) => ({
+  type: ActionPaymentGateway.GET_ALL_PAYMENTGATEWAY_SUCCESS,
+  payload,
+});
+
+export const GetAllPaymentGatewayFailed = (payload: any) => ({
+  type: ActionPaymentGateway.GET_ALL_PAYMENTGATEWAY_FAILED,
+  payload,
+});
+
 export const GetPaymentGatewayRequest = () => ({
   type: ActionPaymentGateway.GET_PAYMENTGATEWAY_REQUEST,
 });

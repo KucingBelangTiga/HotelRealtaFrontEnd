@@ -1,33 +1,65 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { AddBankRequest } from "@/src/redux/action/payment/bankAction";
 import { useFormik, FormikProvider } from "formik";
+import "react-toastify/dist/ReactToastify.css";
+import * as Yup from "yup";
+import { Toast } from "primereact/toast";
 
 export default function Create(props: any) {
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
+  const [refresh, setRefresh] = useState<boolean>(false);
+  const toast = useRef<any>(null);
+
+  useEffect(() => {
+    setRefresh(false);
+  }, [dispatch, refresh]);
+
   const formik = useFormik({
     initialValues: {
       entityId: undefined,
       bankCode: undefined,
       bankName: undefined,
     },
+    validationSchema: Yup.object().shape({
+      bankCode: Yup.string()
+        .matches(/^(0[0-9]{2}|[1-9][0-9]{0,2})$/, "Invalid bank code")
+        .test("maxLength", "Too Long!", (value: any): any => value && value.length <= 3)
+        .required("Required"),
+      bankName: Yup.string().min(3, "Too Short!").max(20, "Too Long!").required("Required"),
+    }),
     onSubmit: async (values, { resetForm }) => {
       let payload = {
         entityId: values.entityId,
         bankCode: values.bankCode,
         bankName: values.bankName,
       };
-      dispatch(AddBankRequest(payload));
-      props.setRefresh(true);
-      setShowModal(false);
-      resetForm();
+      try {
+        showToast("Add Bank Successfully", "success");
+        setTimeout(() => {
+          dispatch(AddBankRequest(payload));
+          setRefresh(true);
+        }, 900);
+        resetForm();
+        setRefresh(true);
+        setShowModal(false);
+      } catch (error) {
+        showToast("Add Bank Failed", "error");
+        console.log(error);
+      }
     },
   });
 
   const modal = () => {
     props.setRefresh(true);
     setShowModal(false);
+  };
+
+  const showToast = (message: string, severity: string) => {
+    if (toast.current) {
+      toast.current.show({ severity, summary: "Information", detail: message, life: 3000 });
+    }
   };
 
   return (
@@ -58,10 +90,12 @@ export default function Create(props: any) {
                     <form onSubmit={formik.handleSubmit}>
                       <div className="py-4 px-8 ">
                         <div className="flex gap-10 mb-4">
-                          <label className="text-black  font-bold border border-solid w-1/2">Bank Code</label>
+                          <label className="text-black  font-bold border border-solid w-1/2">
+                            Bank Code<span className="text-red-400">&nbsp; * {formik.errors.bankCode}</span>
+                          </label>
                           <input
                             className=" border rounded w-full py-2 px-3 text-black border-slate-900 "
-                            type="number"
+                            type="text"
                             name="bankCode"
                             id="bankCode"
                             onChange={formik.handleChange}
@@ -72,7 +106,9 @@ export default function Create(props: any) {
                           />
                         </div>
                         <div className="flex gap-10 mb-4">
-                          <label className="text-black  font-bold border border-solid w-1/2">Bank Name</label>
+                          <label className="text-black  font-bold border border-solid w-1/2">
+                            Bank Name<span className="text-red-400">&nbsp; * {formik.errors.bankName}</span>
+                          </label>
                           <input
                             className=" border rounded w-full py-2 px-3 text-black border-slate-900 "
                             type="text"
@@ -106,6 +142,7 @@ export default function Create(props: any) {
           <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
         </>
       ) : null}
+      <Toast ref={toast} position="top-right" />
     </>
   );
 }

@@ -5,7 +5,7 @@ const createCreditAccount = async (payload: any) => {
     const result = await axios.post(`${process.env.URL_DOMAIN}/topup/credit`, payload);
     return result;
   } catch (error) {
-    return error;
+    return await error;
   }
 };
 
@@ -14,7 +14,7 @@ const createDebitAccount = async (payload: any) => {
     const result = await axios.post(`${process.env.URL_DOMAIN}/topup/debet`, payload);
     return result;
   } catch (error) {
-    return error;
+    return await error;
   }
 };
 
@@ -23,7 +23,7 @@ const createCreditTransaction = async (payload: any) => {
     const result = await axios.post(`${process.env.URL_DOMAIN}/paymenttrx/credit`, payload);
     return result;
   } catch (error) {
-    return error;
+    return await error;
   }
 };
 
@@ -32,7 +32,7 @@ const createDebitTransaction = async (payload: any) => {
     const result = await axios.post(`${process.env.URL_DOMAIN}/paymenttrx/debet`, payload);
     return result;
   } catch (error) {
-    return error;
+    return await error;
   }
 };
 

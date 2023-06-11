@@ -1,5 +1,20 @@
 import * as ActionPaymentTransaction from "../../constant/payment/paymentTransactionConstant";
 
+export const GetAllPaymentTransactionRequest = (payload: any) => ({
+  type: ActionPaymentTransaction.GET_ALL_PAYMENTTRANSACTION_REQUEST,
+  payload,
+});
+
+export const GetAllPaymentTransactionSuccess = (payload: any) => ({
+  type: ActionPaymentTransaction.GET_ALL_PAYMENTTRANSACTION_SUCCESS,
+  payload,
+});
+
+export const GetAllPaymentTransactionFailed = (payload: any) => ({
+  type: ActionPaymentTransaction.GET_ALL_PAYMENTTRANSACTION_FAILED,
+  payload,
+});
+
 export const GetPaymentTransactionRequest = () => ({
   type: ActionPaymentTransaction.GET_PAYMENTTRANSACTION_REQUEST,
 });

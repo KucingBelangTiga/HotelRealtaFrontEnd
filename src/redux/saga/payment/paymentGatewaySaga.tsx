@@ -1,6 +1,8 @@
 import { call, put } from "redux-saga/effects";
 import PaymentGatewayApi from "../../../api/payment/paymentGatewayApi";
 import {
+  GetAllPaymentGatewaySuccess,
+  GetAllPaymentGatewayFailed,
   GetPaymentGatewaySuccess,
   GetPaymentGatewayFailed,
   AddPaymentGatewaySuccess,
@@ -12,6 +14,16 @@ import {
   DeletePaymentGatewaySuccess,
   DeletePaymentGatewayFailed,
 } from "../../action/payment/paymentGatewayAction";
+
+function* handleGetAllPaymentGateway(action: any): any {
+  const { payload } = action;
+  try {
+    const result = yield call(PaymentGatewayApi.getAllPaymentGateway, payload);
+    yield put(GetAllPaymentGatewaySuccess(result));
+  } catch (error) {
+    yield put(GetAllPaymentGatewayFailed(error));
+  }
+}
 
 function* handleGetPaymentGateway(): any {
   try {
@@ -62,4 +74,4 @@ function* handleDeletePaymentGateway(action: any): any {
   }
 }
 
-export { handleGetPaymentGateway, handleAddPaymentGateway, handleFindPaymentGateway, handleEditPaymentGateway, handleDeletePaymentGateway };
+export { handleGetAllPaymentGateway, handleGetPaymentGateway, handleAddPaymentGateway, handleFindPaymentGateway, handleEditPaymentGateway, handleDeletePaymentGateway };

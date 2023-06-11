@@ -7,6 +7,10 @@ const init_state = {
 
 const PaymentTransactionReduce = (state = init_state, action: any) => {
   switch (action.type) {
+    case ActionTypePaymentTransaction.GET_ALL_PAYMENTTRANSACTION_REQUEST:
+      return { ...state };
+    case ActionTypePaymentTransaction.GET_ALL_PAYMENTTRANSACTION_SUCCESS:
+      return GetAllPaymentTransaction(state, action);
     case ActionTypePaymentTransaction.GET_PAYMENTTRANSACTION_REQUEST:
       return { ...state };
     case ActionTypePaymentTransaction.GET_PAYMENTTRANSACTION_SUCCESS:
@@ -30,6 +34,14 @@ const PaymentTransactionReduce = (state = init_state, action: any) => {
     default:
       return { ...state };
   }
+};
+
+const GetAllPaymentTransaction = (state: any, action: any) => {
+  const { payload } = action;
+  return {
+    ...state,
+    paymentTransactions: payload,
+  };
 };
 
 const GetPaymentTransaction = (state: any, action: any) => {

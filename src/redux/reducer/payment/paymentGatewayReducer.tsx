@@ -7,6 +7,10 @@ const init_state = {
 
 const PaymentGatewayReduce = (state = init_state, action: any) => {
   switch (action.type) {
+    case ActionTypePaymentGateway.GET_ALL_PAYMENTGATEWAY_REQUEST:
+      return { ...state };
+    case ActionTypePaymentGateway.GET_ALL_PAYMENTGATEWAY_SUCCESS:
+      return GetAllPaymentGateway(state, action);
     case ActionTypePaymentGateway.GET_PAYMENTGATEWAY_REQUEST:
       return { ...state };
     case ActionTypePaymentGateway.GET_PAYMENTGATEWAY_SUCCESS:
@@ -30,6 +34,14 @@ const PaymentGatewayReduce = (state = init_state, action: any) => {
     default:
       return { ...state };
   }
+};
+
+const GetAllPaymentGateway = (state: any, action: any) => {
+  const { payload } = action;
+  return {
+    ...state,
+    paymentGateways: payload,
+  };
 };
 
 const GetPaymentGateway = (state: any, action: any) => {

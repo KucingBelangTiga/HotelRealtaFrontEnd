@@ -1,11 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { AddUserAccountRequest } from "@/src/redux/action/payment/userAccountAction";
 import { useFormik, FormikProvider } from "formik";
+import "react-toastify/dist/ReactToastify.css";
+import * as Yup from "yup";
+import { Toast } from "primereact/toast";
 
 export default function Create(props: any) {
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
+  const [refresh, setRefresh] = useState<boolean>(false);
+  const toast = useRef<any>(null);
+
+  useEffect(() => {
+    setRefresh(false);
+  }, [dispatch, refresh]);
+
   const formik = useFormik({
     initialValues: {
       usacEntityId: undefined,
@@ -14,6 +24,13 @@ export default function Create(props: any) {
       usacSaldo: undefined,
       usacType: undefined,
     },
+    validationSchema: Yup.object().shape({
+      usacEntityId: Yup.string().min(1, "Too Short!").max(2, "Too Long!").required("Required"),
+      usacUserId: Yup.string().min(1, "Too Short!").max(2, "Too Long!").required("Required"),
+      usacAccountNumber: Yup.string().min(7, "Too Short!").max(9, "Too Long!").required("Required"),
+      usacSaldo: Yup.string().min(3, "Too Short!").max(9, "Too Long!").required("Required"),
+      usacType: Yup.string().required("Required"),
+    }),
     onSubmit: async (values, { resetForm }) => {
       let payload = {
         usacEntityId: values.usacEntityId,
@@ -22,16 +39,31 @@ export default function Create(props: any) {
         usacSaldo: values.usacSaldo,
         usacType: values.usacType,
       };
-      dispatch(AddUserAccountRequest(payload));
-      setShowModal(false);
-      props.setRefresh(true);
-      resetForm();
+      try {
+        showToast("Add Account Successfully", "success");
+        setTimeout(() => {
+          dispatch(AddUserAccountRequest(payload));
+          setRefresh(true);
+        }, 900);
+        resetForm();
+        setRefresh(true);
+        setShowModal(false);
+      } catch (error) {
+        showToast("Add Bank Failed", "error");
+        console.log(error);
+      }
     },
   });
 
   const modal = () => {
     props.setRefresh(true);
     setShowModal(false);
+  };
+
+  const showToast = (message: string, severity: string) => {
+    if (toast.current) {
+      toast.current.show({ severity, summary: "Information", detail: message, life: 3000 });
+    }
   };
 
   return (
@@ -62,7 +94,9 @@ export default function Create(props: any) {
                     <form onSubmit={formik.handleSubmit}>
                       <div className="py-4 px-8 ">
                         <div className="flex gap-10 mb-4 ">
-                          <label className="text-black  font-bold pr-20 border border-solid w-1/2">Entity Id</label>
+                          <label className="text-black  font-bold pr-20 border border-solid w-1/2">
+                            Entity Id <span className="text-red-400">&nbsp; * {formik.errors.usacEntityId}</span>
+                          </label>
                           <input
                             className=" border rounded w-full py-2 px-3 text-black border-slate-900 "
                             type="number"
@@ -76,7 +110,9 @@ export default function Create(props: any) {
                           />
                         </div>
                         <div className="flex gap-10 mb-4 ">
-                          <label className="text-black  font-bold pr-20 border border-solid w-1/2 ">User Id</label>
+                          <label className="text-black  font-bold pr-20 border border-solid w-1/2 ">
+                            User Id <span className="text-red-400">&nbsp; * {formik.errors.usacUserId}</span>
+                          </label>
                           <input
                             className=" border rounded w-full py-2 px-3 text-black border-slate-900 "
                             type="number"
@@ -91,7 +127,9 @@ export default function Create(props: any) {
                           />
                         </div>
                         <div className="flex gap-10 mb-4 ">
-                          <label className="text-black  font-bold pr-20 border border-solid w-1/2 ">Account Number</label>
+                          <label className="text-black  font-bold pr-20 border border-solid w-1/2 ">
+                            Account Number <span className="text-red-400">&nbsp; * {formik.errors.usacAccountNumber}</span>
+                          </label>
                           <input
                             className=" border rounded w-full py-2 px-3 text-black border-slate-900 "
                             type="number"
@@ -106,7 +144,9 @@ export default function Create(props: any) {
                           />
                         </div>
                         <div className="flex gap-10 mb-4 ">
-                          <label className="text-black  font-bold pr-20 border border-solid w-1/2 ">Saldo</label>
+                          <label className="text-black  font-bold pr-20 border border-solid w-1/2 ">
+                            Saldo <span className="text-red-400">&nbsp; * {formik.errors.usacSaldo}</span>
+                          </label>
                           <input
                             className=" border rounded w-full py-2 px-3 text-black border-slate-900 "
                             type="number"
@@ -121,7 +161,9 @@ export default function Create(props: any) {
                           />
                         </div>
                         <div className="flex gap-10 mb-4 ">
-                          <label className="text-black  font-bold pr-20 border border-solid w-1/2 ">Type</label>{" "}
+                          <label className="text-black  font-bold pr-20 border border-solid w-1/2 ">
+                            Type<span className="text-red-400">&nbsp; *</span>
+                          </label>{" "}
                           <select name="usacType" id="usacType" onChange={formik.handleChange} value={formik.values.usacType} onBlur={formik.handleBlur} className=" border rounded w-full py-2 px-3 text-black border-slate-900" required>
                             <option value="" selected disabled hidden className="text-black">
                               Choose Measure Unit
@@ -152,6 +194,7 @@ export default function Create(props: any) {
           <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
         </>
       ) : null}
+      <Toast ref={toast} position="top-right" />
     </>
   );
 }

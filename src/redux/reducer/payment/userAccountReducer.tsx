@@ -9,6 +9,10 @@ const init_state = {
 
 const UserAccountReduce = (state = init_state, action: any) => {
   switch (action.type) {
+    case ActionTypeUserAccount.GET_ALL_USERACCOUNT_REQUEST:
+      return { ...state };
+    case ActionTypeUserAccount.GET_ALL_USERACCOUNT_SUCCESS:
+      return GetAllUserAccount(state, action);
     case ActionTypeUserAccount.GET_USERACCOUNT_REQUEST:
       return { ...state };
     case ActionTypeUserAccount.GET_USERACCOUNT_SUCCESS:
@@ -40,6 +44,14 @@ const UserAccountReduce = (state = init_state, action: any) => {
     default:
       return { ...state };
   }
+};
+
+const GetAllUserAccount = (state: any, action: any) => {
+  const { payload } = action;
+  return {
+    ...state,
+    userAccounts: payload,
+  };
 };
 
 const GetUserAccount = (state: any, action: any) => {

@@ -1,33 +1,62 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { AddPaymentGatewayRequest } from "@/src/redux/action/payment/paymentGatewayAction";
 import { useFormik, FormikProvider } from "formik";
+import "react-toastify/dist/ReactToastify.css";
+import * as Yup from "yup";
+import { Toast } from "primereact/toast";
 
 export default function Create(props: any) {
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
+  const [refresh, setRefresh] = useState<boolean>(false);
+  const toast = useRef<any>(null);
+
+  useEffect(() => {
+    setRefresh(false);
+  }, [dispatch, refresh]);
+
   const formik = useFormik({
     initialValues: {
       pagaEntityId: undefined,
       pagaCode: undefined,
       pagaName: undefined,
     },
+    validationSchema: Yup.object().shape({
+      pagaCode: Yup.string().min(2, "Too Short!").max(3, "Too Long!").required("Required"),
+      pagaName: Yup.string().min(3, "Too Short!").max(20, "Too Long!").required("Required"),
+    }),
     onSubmit: async (values, { resetForm }) => {
       let payload = {
         pagaEntityId: values.pagaEntityId,
         pagaCode: values.pagaCode,
         pagaName: values.pagaName,
       };
-      dispatch(AddPaymentGatewayRequest(payload));
-      props.setRefresh(true);
-      setShowModal(false);
-      resetForm();
+      try {
+        showToast("Add Fintech Successfully", "success");
+        setTimeout(() => {
+          dispatch(AddPaymentGatewayRequest(payload));
+          setRefresh(true);
+        }, 900);
+        resetForm();
+        setRefresh(true);
+        setShowModal(false);
+      } catch (error) {
+        showToast("Add Bank Failed", "error");
+        console.log(error);
+      }
     },
   });
 
   const modal = () => {
     props.setRefresh(true);
     setShowModal(false);
+  };
+
+  const showToast = (message: string, severity: string) => {
+    if (toast.current) {
+      toast.current.show({ severity, summary: "Information", detail: message, life: 3000 });
+    }
   };
 
   return (
@@ -58,7 +87,9 @@ export default function Create(props: any) {
                     <form onSubmit={formik.handleSubmit}>
                       <div className="py-4 px-8 ">
                         <div className="flex gap-10 mb-4">
-                          <label className="text-black  font-bold border border-solid w-1/2 ">Code</label>
+                          <label className="text-black  font-bold border border-solid w-1/2 ">
+                            Code<span className="text-red-400">&nbsp; * {formik.errors.pagaCode}</span>
+                          </label>
                           <input
                             className=" border rounded w-full py-2 px-3 text-black border-slate-900 "
                             type="text"
@@ -72,7 +103,9 @@ export default function Create(props: any) {
                           />
                         </div>
                         <div className="flex gap-10 mb-4">
-                          <label className="text-black  font-bold border border-solid w-1/2 ">Fintech</label>
+                          <label className="text-black  font-bold border border-solid w-1/2 ">
+                            Fintech<span className="text-red-400">&nbsp; * {formik.errors.pagaName}</span>
+                          </label>
                           <input
                             className=" border rounded w-full py-2 px-3 text-black border-slate-900 "
                             type="text"
@@ -106,6 +139,7 @@ export default function Create(props: any) {
           <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
         </>
       ) : null}
+      <Toast ref={toast} position="top-right" />
     </>
   );
 }

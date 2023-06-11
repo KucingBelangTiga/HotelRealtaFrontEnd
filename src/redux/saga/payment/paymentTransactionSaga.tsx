@@ -3,6 +3,8 @@ import PaymentTransactionApi from "../../../api/payment/paymentTransactionApi";
 import {
   GetPaymentTransactionSuccess,
   GetPaymentTransactionFailed,
+  GetAllPaymentTransactionSuccess,
+  GetAllPaymentTransactionFailed,
   AddPaymentTransactionSuccess,
   AddPaymentTransactionFailed,
   FindPaymentTransactionSuccess,
@@ -13,9 +15,19 @@ import {
   DeletePaymentTransactionFailed,
 } from "../../action/payment/paymentTransactionAction";
 
+function* handleGetAllPaymentTransaction(action: any): any {
+  const { payload } = action;
+  try {
+    const result = yield call(PaymentTransactionApi.getAllPaymentTransaction, payload);
+    yield put(GetAllPaymentTransactionSuccess(result));
+  } catch (error) {
+    yield put(GetAllPaymentTransactionFailed(error));
+  }
+}
+
 function* handleGetPaymentTransaction(): any {
   try {
-    const result = yield call(PaymentTransactionApi.getAllPaymentTransaction);
+    const result = yield call(PaymentTransactionApi.getPaymentTransaction);
     yield put(GetPaymentTransactionSuccess(result));
   } catch (error) {
     yield put(GetPaymentTransactionFailed(error));
@@ -62,4 +74,4 @@ function* handleDeletePaymentTransaction(action: any): any {
   }
 }
 
-export { handleGetPaymentTransaction, handleAddPaymentTransaction, handleFindPaymentTransaction, handleEditPaymentTransaction, handleDeletePaymentTransaction };
+export { handleGetPaymentTransaction, handleGetAllPaymentTransaction, handleAddPaymentTransaction, handleFindPaymentTransaction, handleEditPaymentTransaction, handleDeletePaymentTransaction };
