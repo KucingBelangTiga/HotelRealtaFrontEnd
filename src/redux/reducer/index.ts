@@ -13,6 +13,13 @@ import FacPriceHistReduce from "./hotel/facilityPriceHistoryReducer";
 import CategoryGroupReduce from "./master/categoryGroupReducer";
 import AddressReduce from "./master/addressReducer";
 import FacilityPhotosReduce from "./hotel/facilityPhotosReducer";
+import vendorReduce from "./purchasing/vendorReducer";
+import vendorProductReduce from "./purchasing/vendorProductReducer";
+import stockReduce from "./purchasing/stockReducer";
+import stodetReduce from "./purchasing/stockDetailReducer";
+import poheReduce from "./purchasing/purchasingHeaderReducer";
+import podetReduce from "./purchasing/purchaseDetailReducer";
+import stopotReduce from "./purchasing/stockPhotoReducer";
 
 const rootReducer = combineReducers({
   regionsState: RegionsReduce,
@@ -29,6 +36,13 @@ const rootReducer = combineReducers({
   facilityPhotosState: FacilityPhotosReduce,
   categoryGroupState: CategoryGroupReduce,
   addressState: AddressReduce,
+  vendorState: vendorReduce,
+  vendorProductState: vendorProductReduce,
+  stockState: stockReduce,
+  stockDetailState: stodetReduce,
+  poheState: poheReduce,
+  podetState: podetReduce,
+  stopotState: stopotReduce,
 });
 
 export default rootReducer;
